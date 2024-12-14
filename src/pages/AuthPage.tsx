@@ -211,7 +211,9 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
             )}
 
             {error && (
-              <div className="mt-4 text-center text-sm text-error">{error}</div>
+              <div className="mt-4 text-center text-sm text-error">
+                Error: {error}
+              </div>
             )}
 
             {success && (
