@@ -12,15 +12,17 @@ import pupilBadge from "../assets/07_badges_pupil.png";
 import noviceBadge from "../assets/08_badges_novice.png";
 
 interface HeaderProps {
-  isLoggedIn: boolean;
+  isAuthenticated: boolean;
   userReputation: number;
   roleId: number;
+  onLogout: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  isLoggedIn,
+  isAuthenticated,
   userReputation,
   roleId,
+  onLogout,
 }) => {
   const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
     return (
@@ -74,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
       <div className="navbar-start">
-        <div className="btn btn-ghost px-2">
+        <div className="btn btn-ghost">
           <img className="w-10" src="/logo.png" alt="App Logo" />
           <Link to="/" className="text-xl">
             Olympliance
@@ -84,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="navbar-end">
         <button
           onClick={toggleTheme}
-          className={`btn ${isLoggedIn ? "" : "mx-4"} rounded-full`}
+          className={`btn ${isAuthenticated ? "" : "mx-4"} rounded-full`}
         >
           {theme === "dark" ? (
             <SunIcon className="h-6 w-6" />
@@ -92,9 +94,9 @@ const Header: React.FC<HeaderProps> = ({
             <MoonIcon className="h-6 w-6" />
           )}
         </button>
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <div className="dropdown">
-            <button className="avatar btn btn-ghost">
+            <button className="avatar btn btn-ghost mx-4 p-0">
               <div className="w-10 rounded-full">
                 <img src={getBadgeImage(userReputation)} alt="User Badge" />
               </div>
@@ -117,7 +119,13 @@ const Header: React.FC<HeaderProps> = ({
                 <Link to="/change-password">Change Password</Link>
               </li>
               <li>
-                <Link to="/">Logout</Link>
+                <button
+                  onClick={() => {
+                    onLogout();
+                  }}
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>

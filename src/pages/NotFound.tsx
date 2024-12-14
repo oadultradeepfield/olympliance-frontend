@@ -9,7 +9,7 @@ const NotFound: React.FC = () => {
       <div className="text-base-content-100 mb-6 text-lg">
         Oops! The page you are looking for doesn't exist.
       </div>
-      <Link to="/" className="btn btn-secondary">
+      <Link to="/" className="btn btn-outline btn-secondary">
         Return to Home
       </Link>
     </div>
