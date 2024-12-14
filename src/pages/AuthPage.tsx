@@ -1,6 +1,7 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -22,6 +23,10 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
   });
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -84,10 +89,14 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
         username: "",
         password: "",
       });
+
+      setTimeout(() => {
+        setSuccess("");
+      }, 1000);
     } catch (error: any) {
       const errorMessage =
         error.response.data.error ||
-        "An unkown error occurred during registration. Please try again later.";
+        "An unknown error occurred during registration. Please try again later.";
       setError(errorMessage);
     }
   };
@@ -100,6 +109,16 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
       username: "",
       password: "",
     });
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -131,46 +150,72 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
               />
             </div>
 
-            <div className="form-control mx-auto mt-4 w-full max-w-xs">
+            <div className="form-control relative mx-auto mt-4 w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                name="password"
-                placeholder={
-                  isLogin ? "Enter your password" : "Create a password"
-                }
-                className="input input-bordered w-full max-w-xs"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            {!isLogin && (
-              <div className="form-control mx-auto mt-4 w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Confirm Password</span>
-                </label>
+              <div className="relative">
                 <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  className="input input-bordered w-full max-w-xs"
-                  value={formData.confirmPassword || ""}
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder={
+                    isLogin ? "Enter your password" : "Create a password"
+                  }
+                  className="input input-bordered w-full max-w-xs pr-10"
+                  value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="text-base-content-200 absolute right-2 top-1/2 -translate-y-1/2 hover:text-secondary focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {!isLogin && (
+              <div className="form-control relative mx-auto mt-4 w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Confirm Password</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm your password"
+                    className="input input-bordered w-full max-w-xs pr-10"
+                    value={formData.confirmPassword || ""}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={toggleConfirmPasswordVisibility}
+                    className="text-base-content-200 absolute right-2 top-1/2 -translate-y-1/2 hover:text-secondary focus:outline-none"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
               </div>
             )}
 
             {error && (
-              <div className="mt-2 text-center text-sm text-error">{error}</div>
+              <div className="mt-4 text-center text-sm text-error">{error}</div>
             )}
 
             {success && (
-              <div className="mt-2 text-center text-sm text-success">
+              <div className="mt-4 text-center text-sm text-success">
                 {success}
               </div>
             )}
