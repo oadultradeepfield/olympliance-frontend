@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Category {
   id: number;
@@ -81,20 +82,24 @@ const Categories: React.FC = () => {
     <div className="container mx-auto mb-12 px-6 py-8">
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
         {categories.map((category) => (
-          <div
-            key={category.id}
-            className={`card transform border-2 transition-all duration-300 hover:border-secondary hover:text-secondary`}
-          >
-            <div className="card-body items-center text-center">
-              <div className="mb-4 flex h-16 w-24 items-center justify-center rounded-full text-6xl">
-                {category.emoji}
+          <Link to={`/${category.title.toLowerCase()}`}>
+            <div
+              key={category.id}
+              className={
+                "card transform border-2 transition-all duration-300 hover:border-secondary hover:text-secondary"
+              }
+            >
+              <div className="card-body items-center text-center">
+                <div className="mb-4 flex h-16 w-24 items-center justify-center rounded-full text-6xl">
+                  {category.emoji}
+                </div>
+                <h3 className="card-title mb-2 text-xl font-semibold">
+                  {category.title}
+                </h3>
+                <p className="text-base-3-content">{category.description}</p>
               </div>
-              <h3 className="card-title mb-2 text-xl font-semibold">
-                {category.title}
-              </h3>
-              <p className="text-base-3-content">{category.description}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

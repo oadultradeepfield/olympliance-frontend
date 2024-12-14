@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@heroicons/react/16/solid";
 
 interface HeaderProps {
@@ -50,9 +51,9 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, userAvatar }) => {
       <div className="navbar-start">
         <div className="btn btn-ghost px-2">
           <img className="w-10" src="/logo.png" alt="App Logo" />
-          <a href="/" className="text-xl">
+          <Link to="/" className="text-xl">
             Olympliance
-          </a>
+          </Link>
         </div>
       </div>
       <div className="navbar-end">
@@ -86,9 +87,9 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, userAvatar }) => {
             </ul>
           </div>
         ) : (
-          <a href="/login" className="btn btn-primary">
+          <Link to="/login" className="btn btn-primary">
             Login/Register
-          </a>
+          </Link>
         )}
       </div>
     </div>
