@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import { SunIcon, MoonIcon } from "@heroicons/react/16/solid";
 
 import grandmasterBadge from "../assets/01_badges_grandmaster.png";
