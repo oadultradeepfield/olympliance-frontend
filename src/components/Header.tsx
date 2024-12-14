@@ -1,13 +1,28 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import { SunIcon, MoonIcon } from "@heroicons/react/16/solid";
+
+import grandmasterBadge from "../assets/01_badges_grandmaster.png";
+import masterBadge from "../assets/02_badges_master.png";
+import candidateMasterBadge from "../assets/03_badges_candidate_master.png";
+import expertBadge from "../assets/04_badges_expert.png";
+import specialistBadge from "../assets/05_badges_specialist.png";
+import apprenticeBadge from "../assets/06_badges_apprentice.png";
+import pupilBadge from "../assets/07_badges_pupil.png";
+import noviceBadge from "../assets/08_badges_novice.png";
 
 interface HeaderProps {
   isLoggedIn: boolean;
-  userAvatar: string;
+  userReputation: number;
+  roleId: number;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn, userAvatar }) => {
+const Header: React.FC<HeaderProps> = ({
+  isLoggedIn,
+  userReputation,
+  roleId,
+}) => {
   const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
     return (
       (localStorage.getItem("theme") as "light" | "dark" | "system") || "system"
@@ -46,6 +61,17 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, userAvatar }) => {
     }
   }, []);
 
+  const getBadgeImage = (reputation: number) => {
+    if (reputation >= 3500) return grandmasterBadge;
+    if (reputation >= 2000) return masterBadge;
+    if (reputation >= 800) return candidateMasterBadge;
+    if (reputation >= 400) return expertBadge;
+    if (reputation >= 100) return specialistBadge;
+    if (reputation >= 50) return apprenticeBadge;
+    if (reputation >= 15) return pupilBadge;
+    return noviceBadge;
+  };
+
   return (
     <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
       <div className="navbar-start">
@@ -71,18 +97,28 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, userAvatar }) => {
           <div className="dropdown">
             <button className="avatar btn btn-ghost">
               <div className="w-10 rounded-full">
-                <img src={userAvatar} alt="User Avatar" />
+                <img src={getBadgeImage(userReputation)} alt="User Badge" />
               </div>
             </button>
             <ul className="menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
+              {roleId > 0 && (
+                <li>
+                  <Link to="/ban-user">Ban User</Link>
+                </li>
+              )}
+              {roleId > 1 && (
+                <li>
+                  <Link to="/assign-moderator">Assign Moderator</Link>
+                </li>
+              )}
               <li>
-                <a>View Followed Threads</a>
+                <Link to="/followed-threads">View Followed Threads</Link>
               </li>
               <li>
-                <a>Change Password</a>
+                <Link to="/change-password">Change Password</Link>
               </li>
               <li>
-                <a>Logout</a>
+                <Link to="/">Logout</Link>
               </li>
             </ul>
           </div>

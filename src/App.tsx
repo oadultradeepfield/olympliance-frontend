@@ -5,14 +5,19 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
-  const isLoggedIn: boolean = false;
-  const userAvatar: string = "/src/assets/01_badges_grandmaster.png";
+  const isLoggedIn: boolean = true;
+  const userReputation: number = 800;
+  const roleId: number = 2;
 
   return (
     <Router>
       <div className="flex h-screen flex-col">
         <div className="border-b-2">
-          <Header isLoggedIn={isLoggedIn} userAvatar={userAvatar} />
+          <Header
+            isLoggedIn={isLoggedIn}
+            userReputation={userReputation}
+            roleId={roleId}
+          />
         </div>
         <Routes>
           <Route path="/" element={<Home />} />

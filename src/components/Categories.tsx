@@ -79,7 +79,7 @@ const Categories: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto mb-12 px-6 py-8">
+    <div className="container mx-auto mb-12 px-6 py-4">
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
         {categories.map((category) => (
           <Link to={`/${category.title.toLowerCase()}`}>
@@ -93,7 +93,7 @@ const Categories: React.FC = () => {
                 <div className="mb-4 flex h-16 w-24 items-center justify-center rounded-full text-6xl">
                   {category.emoji}
                 </div>
-                <h3 className="card-title mb-2 text-xl font-semibold">
+                <h3 className="card-title text-xl font-semibold">
                   {category.title}
                 </h3>
                 <p className="text-base-3-content">{category.description}</p>
