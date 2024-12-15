@@ -1,4 +1,4 @@
-const Hero = () => {
+const Hero: React.FC = () => {
   return (
     <div className="hero mt-8">
       <div className="hero-content text-center">

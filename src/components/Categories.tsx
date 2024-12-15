@@ -82,7 +82,10 @@ const Categories: React.FC = () => {
     <div className="container mx-auto mb-12 px-6 py-4">
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
         {categories.map((category) => (
-          <Link to={`/${category.title.toLowerCase().replace(/\s/g, "")}`}>
+          <Link
+            key={category.id}
+            to={`/${category.title.toLowerCase().replace(/\s/g, "")}`}
+          >
             <div
               key={category.id}
               className={

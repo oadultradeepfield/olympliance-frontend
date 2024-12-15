@@ -2,7 +2,7 @@ import { useParams, Navigate } from "react-router-dom";
 import CategoryHero from "../components/CategoryHero";
 import ThreadList from "../components/ThreadList";
 
-const CategoryThreads = () => {
+const CategoryThreads: React.FC = () => {
   const { categoryTitle } = useParams();
   const categories = [
     {
@@ -73,12 +73,15 @@ const CategoryThreads = () => {
   }
 
   return (
-    <div className="mx-auto h-full w-full max-w-5xl flex-col items-center justify-center px-6">
+    <div className="mx-auto mb-24 h-full w-full max-w-5xl flex-col items-center justify-center px-6">
       <CategoryHero
         categoryEmoji={category.emoji}
         categoryTitle={category.title}
       />
-      <ThreadList categoryId={category.id} />
+      <ThreadList
+        categoryId={category.id}
+        categoryTitle={category.title.toLowerCase().replace(/\s/g, "")}
+      />
     </div>
   );
 };

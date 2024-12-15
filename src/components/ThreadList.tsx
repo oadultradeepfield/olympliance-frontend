@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   ChatBubbleLeftIcon,
@@ -20,6 +21,7 @@ import noviceBadge from "../assets/08_badges_novice.png";
 
 interface ThreadListProps {
   categoryId: number;
+  categoryTitle: string;
 }
 
 interface UserInfo {
@@ -67,7 +69,20 @@ const getBadgeImage = (reputation: number) => {
   return { image: noviceBadge, title: "Novice" };
 };
 
-const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
+const slugify = (title: string, wordLimit: number = 5) => {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .split(/\s+/)
+    .slice(0, wordLimit)
+    .join("-");
+};
+
+const ThreadList: React.FC<ThreadListProps> = ({
+  categoryId,
+  categoryTitle,
+}) => {
   const [threads, setThreads] = useState<(ThreadData & { user?: UserInfo })[]>(
     [],
   );
@@ -87,7 +102,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
             params: {
               sort_by: sortBy,
               page: page,
-              per_page: 10,
+              per_page: 5,
             },
           },
         );
@@ -134,58 +149,68 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
     };
 
     return (
-      <div
+      <Link
         key={thread.thread_id}
-        className="card mx-auto mb-3 flex w-full max-w-3xl border-2 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary"
+        to={`/${categoryTitle}/${slugify(thread.title)}-${thread.thread_id}`}
       >
-        <div className="card-body flex flex-row items-center p-3">
-          {badge && (
-            <div className="avatar mr-3 shrink-0">
-              <div className="bg-neutral-focus h-10 w-10 rounded-full text-neutral-content">
-                <img
-                  src={badge.image}
-                  alt={`${badge.title} Badge`}
-                  className="h-8 w-8"
-                />
+        <div
+          key={thread.thread_id}
+          className="card mx-auto mb-3 flex w-full max-w-3xl border-2 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary"
+        >
+          <div className="card-body flex flex-row items-center p-3">
+            {badge && (
+              <div className="avatar mr-3 shrink-0">
+                <div className="bg-neutral-focus h-10 w-10 rounded-full text-neutral-content">
+                  <img
+                    src={badge.image}
+                    alt={`${badge.title} Badge`}
+                    className="h-8 w-8"
+                  />
+                </div>
               </div>
-            </div>
-          )}
-          <div className="flex flex-grow flex-col">
-            <div className="mb-1 text-base font-semibold" title={thread.title}>
-              {getRoleBadge()}
-              {thread.title}
-            </div>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-base-content/75">
-              <div className="flex items-center space-x-1">
-                <ArrowUpIcon className="h-4 w-4 text-success" />
-                <span>{thread.stats.upvotes}</span>
+            )}
+            <div className="flex flex-grow flex-col">
+              <div
+                className="mb-1 text-base font-semibold"
+                title={thread.title}
+              >
+                {getRoleBadge()}
+                {thread.title}
               </div>
-              <div className="flex items-center space-x-1">
-                <ArrowDownIcon className="h-4 w-4 text-error" />
-                <span>{thread.stats.downvotes}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <ChatBubbleLeftIcon className="h-4 w-4" />
-                <span>{thread.stats.comments}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <ClockIcon className="h-4 w-4" />
-                <span>{new Date(thread.created_at).toLocaleDateString()}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span>
-                  Author: {thread.user?.username}
-                  {badge && (
-                    <span className="ml-1 text-xs">
-                      ({badge.title}: {thread.user?.reputation})
-                    </span>
-                  )}
-                </span>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-base-content/75">
+                <div className="flex items-center space-x-1">
+                  <ArrowUpIcon className="h-4 w-4 text-success" />
+                  <span>{thread.stats.upvotes}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <ArrowDownIcon className="h-4 w-4 text-error" />
+                  <span>{thread.stats.downvotes}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <ChatBubbleLeftIcon className="h-4 w-4" />
+                  <span>{thread.stats.comments}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <ClockIcon className="h-4 w-4" />
+                  <span>
+                    {new Date(thread.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <span>
+                    Author: {thread.user?.username}
+                    {badge && (
+                      <span className="ml-1 text-xs">
+                        ({badge.title}: {thread.user?.reputation})
+                      </span>
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     );
   };
 
@@ -228,10 +253,12 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
           >
             «
           </button>
-          <button className="btn join-item">{page}</button>
+          <button className="btn join-item pointer-events-none">
+            Page {page}
+          </button>
           <button
             className="btn join-item"
-            disabled={threads.length < 10}
+            disabled={threads.length < 5}
             onClick={() => setPage(page + 1)}
           >
             »

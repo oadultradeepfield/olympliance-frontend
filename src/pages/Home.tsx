@@ -1,7 +1,7 @@
-import Categories from "../components/Category";
+import Categories from "../components/Categories";
 import Hero from "../components/Hero";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-2">
       <Hero />

@@ -1,6 +1,10 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import axios from "axios";
+
+interface NewThreadProps {
+  isAuthenticated: boolean;
+}
 
 interface ThreadFormData {
   title: string;
@@ -8,7 +12,7 @@ interface ThreadFormData {
   tags: string;
 }
 
-const NewThread: React.FC = () => {
+const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { categoryTitle } = useParams<{ categoryTitle: string }>();
   const apiUrl: string = import.meta.env.VITE_API_URL;
@@ -25,6 +29,12 @@ const NewThread: React.FC = () => {
     { id: 10, emoji: "💬", title: "Linguistics" },
     { id: 11, emoji: "🗿", title: "Earth Science" },
   ];
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const category = categories.find(
     (cat) =>
