@@ -3,8 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-const apiUrl: string = import.meta.env.VITE_API_URL;
-
 interface AuthState {
   username: string;
   password: string;
@@ -16,6 +14,7 @@ interface AuthPageProps {
 }
 
 const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
+  const apiUrl: string = import.meta.env.VITE_API_URL;
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [formData, setFormData] = useState<AuthState>({
     username: "",

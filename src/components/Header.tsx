@@ -76,12 +76,12 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
       <div className="navbar-start">
-        <div className="btn btn-ghost">
-          <img className="w-10" src="/logo.png" alt="App Logo" />
-          <Link to="/" className="text-xl">
-            Olympliance
-          </Link>
-        </div>
+        <Link to="/">
+          <div className="btn btn-ghost">
+            <img className="w-10" src="/logo.png" alt="App Logo" />
+            <div className="text-xl">Olympliance</div>
+          </div>
+        </Link>
       </div>
       <div className="navbar-end">
         <button

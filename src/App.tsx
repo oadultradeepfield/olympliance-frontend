@@ -12,6 +12,8 @@ import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
 import ChangePassword from "./pages/ChangePassword";
+import CategoryThreads from "./pages/CategoryThreads";
+import NewThread from "./pages/NewThread";
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -62,6 +64,7 @@ const App: React.FC = () => {
         </div>
         <Routes>
           <Route path="/" element=<Home /> />
+          <Route path="/:categoryTitle" element=<CategoryThreads /> />
           <Route
             path="/login"
             element={
@@ -80,6 +83,8 @@ const App: React.FC = () => {
             path="/change-password"
             element={<ChangePassword isAuthenticated={isAuthenticated} />}
           />
+          <Route path="/:categoryTitle/new" element=<NewThread /> />
+          <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

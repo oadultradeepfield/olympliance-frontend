@@ -3,8 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-const apiUrl: string = import.meta.env.VITE_API_URL;
-
 interface ChangePasswordProps {
   isAuthenticated: boolean;
 }
@@ -16,6 +14,7 @@ interface PasswordState {
 }
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
+  const apiUrl: string = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<PasswordState>({
