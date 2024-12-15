@@ -96,7 +96,9 @@ const Categories: React.FC = () => {
                 <h3 className="card-title text-xl font-semibold">
                   {category.title}
                 </h3>
-                <p className="text-base-3-content">{category.description}</p>
+                <div className="text-base-3-content">
+                  {category.description}
+                </div>
               </div>
             </div>
           </Link>

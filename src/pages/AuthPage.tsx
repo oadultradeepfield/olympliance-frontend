@@ -231,12 +231,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
 
           <div className="divider">OR</div>
 
-          <p className="text-sm">
+          <div className="text-sm">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button onClick={toggleAuthMode} className="link link-primary ml-1">
               {isLogin ? "Register" : "Login"}
             </button>
-          </p>
+          </div>
         </div>
       </div>
     </div>
