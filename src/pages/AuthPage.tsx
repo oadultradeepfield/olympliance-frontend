@@ -123,7 +123,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
-      <div className="card w-96 border-2 bg-base-100 shadow-xl">
+      <div className="card w-96 border-2 bg-base-100">
         <div className="card-body items-center text-center">
           <h2 className="card-title mb-4 text-2xl">
             {isLogin ? "Login" : "Create Account"}
