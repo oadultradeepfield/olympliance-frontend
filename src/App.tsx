@@ -16,6 +16,7 @@ import CategoryThreads from "./pages/CategoryThreads";
 import NewThread from "./pages/NewThread";
 import ThreadPage from "./pages/ThreadPage";
 import BanUserPage from "./pages/BanUserPage";
+import AssignModeratorPage from "./pages/AssignModeratorPage";
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -88,7 +89,17 @@ const App: React.FC = () => {
           />
           <Route
             path="/ban-user"
-            element=<BanUserPage isAuthenticated={isAuthenticated} />
+            element=<BanUserPage
+              isAuthenticated={isAuthenticated}
+              roleId={roleId}
+            />
+          />
+          <Route
+            path="/assign-moderator"
+            element=<AssignModeratorPage
+              isAuthenticated={isAuthenticated}
+              roleId={roleId}
+            />
           />
           <Route
             path="/:categoryTitle/new"

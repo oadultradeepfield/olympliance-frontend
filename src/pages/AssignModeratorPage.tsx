@@ -2,24 +2,24 @@ import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-interface BanUserPageProps {
+interface AssignModeratorPageProps {
   isAuthenticated: boolean;
   roleId: number;
 }
 
-interface BanUserState {
+interface AssignModeratorState {
   username: string;
   confirmUsername: string;
 }
 
-const BanUserPage: React.FC<BanUserPageProps> = ({
+const AssignModeratorPage: React.FC<AssignModeratorPageProps> = ({
   isAuthenticated,
   roleId,
 }) => {
   const apiUrl: string = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<BanUserState>({
+  const [formData, setFormData] = useState<AssignModeratorState>({
     username: "",
     confirmUsername: "",
   });
@@ -32,7 +32,7 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
       navigate("/login");
     }
 
-    if (roleId <= 0) {
+    if (roleId <= 1) {
       navigate("/not-found");
       return;
     }
@@ -46,7 +46,7 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
     }));
   };
 
-  const handleBanUser = async (e: FormEvent<HTMLFormElement>) => {
+  const handleToggleModerator = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -70,8 +70,8 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
 
       const userId = userIdResponse.data.user_id;
 
-      const banResponse = await axios.put(
-        `${apiUrl}/api/users/${userId}/toggle-ban`,
+      const moderatorResponse = await axios.put(
+        `${apiUrl}/api/users/${userId}/toggle-moderator`,
         {},
         {
           headers: {
@@ -81,7 +81,8 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
       );
 
       setSuccess(
-        banResponse.data.message || "User ban status toggled successfully!",
+        moderatorResponse.data.message ||
+          "User moderator status toggled successfully!",
       );
 
       setFormData({
@@ -95,7 +96,7 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
     } catch (error: any) {
       const errorMessage =
         error.response.data.error ||
-        "An unknown error occurred while toggling user ban. Please try again.";
+        "An unknown error occurred while toggling moderator status. Please try again.";
       setError(errorMessage);
     }
   };
@@ -104,8 +105,8 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
       <div className="card w-96 border-2 bg-base-100">
         <div className="card-body items-center text-center">
-          <h2 className="card-title mb-4 text-2xl">Toggle User Ban</h2>
-          <form onSubmit={handleBanUser} className="w-full">
+          <h2 className="card-title mb-4 text-2xl">Toggle Moderator Status</h2>
+          <form onSubmit={handleToggleModerator} className="w-full">
             <div className="form-control mx-auto w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Username</span>
@@ -148,8 +149,8 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
             )}
 
             <div className="form-control mx-auto mt-6 w-full max-w-xs">
-              <button type="submit" className="btn btn-error w-full">
-                Toggle Ban
+              <button type="submit" className="btn btn-secondary w-full">
+                Toggle Moderator
               </button>
             </div>
           </form>
@@ -159,4 +160,4 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
   );
 };
 
-export default BanUserPage;
+export default AssignModeratorPage;
