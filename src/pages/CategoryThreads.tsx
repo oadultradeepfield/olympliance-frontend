@@ -73,7 +73,7 @@ const CategoryThreads = () => {
   }
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-grow flex-col px-2">
+    <div className="mx-auto h-full w-full max-w-5xl flex-col items-center justify-center px-6">
       <CategoryHero
         categoryEmoji={category.emoji}
         categoryTitle={category.title}

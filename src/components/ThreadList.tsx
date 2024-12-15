@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  EyeIcon,
   ChatBubbleLeftIcon,
   ArrowUpIcon,
+  ShieldCheckIcon,
+  StarIcon,
+  ArrowDownIcon,
   ClockIcon,
-  NoSymbolIcon,
 } from "@heroicons/react/24/outline";
 
 import grandmasterBadge from "../assets/01_badges_grandmaster.png";
@@ -92,7 +93,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
         );
 
         const threadsWithUsers = await Promise.all(
-          threadsResponse.data.map(async (thread: ThreadData) => {
+          threadsResponse.data.threads.map(async (thread: ThreadData) => {
             const userResponse = await axios.get(
               `${apiUrl}/api/users/${thread.user_id}`,
             );
@@ -113,62 +114,73 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
 
   const renderThreadCard = (thread: ThreadData & { user?: UserInfo }) => {
     const badge = thread.user ? getBadgeImage(thread.user.reputation) : null;
+    const getRoleBadge = () => {
+      switch (thread.user?.role_id) {
+        case 1:
+          return (
+            <div className="badge badge-secondary mr-2 items-center text-xs">
+              <ShieldCheckIcon className="mr-1 h-3 w-3" /> Moderator
+            </div>
+          );
+        case 2:
+          return (
+            <div className="badge badge-success mr-2 items-center text-xs">
+              <StarIcon className="mr-1 h-3 w-3" /> Admin
+            </div>
+          );
+        default:
+          return null;
+      }
+    };
 
     return (
       <div
         key={thread.thread_id}
-        className="card mb-4 bg-base-100 shadow-md transition-all hover:shadow-xl"
+        className="card mx-auto mb-3 flex w-full max-w-3xl border-2 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary"
       >
-        <div className="card-body">
-          <div className="flex items-start space-x-4">
-            <div className="flex flex-col items-center">
-              {badge && (
-                <div className="avatar placeholder mb-2">
-                  <div className="bg-neutral-focus h-12 w-12 rounded-full text-neutral-content">
-                    <img
-                      src={badge.image}
-                      alt={`${badge.title} Badge`}
-                      className="h-8 w-8"
-                    />
-                  </div>
-                </div>
-              )}
-              {thread.user && (
-                <div className="text-center">
-                  <p
-                    className={`font-semibold ${thread.user.is_banned ? "text-error" : ""}`}
-                  >
-                    {thread.user.username}
-                    {thread.user.is_banned && (
-                      <NoSymbolIcon className="ml-1 inline h-4 w-4 text-error" />
-                    )}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {badge?.title}: {thread.user.reputation}
-                  </p>
-                </div>
-              )}
-            </div>
-            <div className="flex-grow">
-              <h3 className="card-title text-lg">{thread.title}</h3>
-            </div>
-
-            <div className="flex flex-col items-end space-y-2">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <EyeIcon className="h-4 w-4" />
-                <span>{thread.stats.views} Views</span>
+        <div className="card-body flex flex-row items-center p-3">
+          {badge && (
+            <div className="avatar mr-3 shrink-0">
+              <div className="bg-neutral-focus h-10 w-10 rounded-full text-neutral-content">
+                <img
+                  src={badge.image}
+                  alt={`${badge.title} Badge`}
+                  className="h-8 w-8"
+                />
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+            </div>
+          )}
+          <div className="flex flex-grow flex-col">
+            <div className="mb-1 text-base font-semibold" title={thread.title}>
+              {getRoleBadge()}
+              {thread.title}
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-base-content/75">
+              <div className="flex items-center space-x-1">
                 <ArrowUpIcon className="h-4 w-4 text-success" />
-                <span>{thread.stats.upvotes} Upvotes</span>
+                <span>{thread.stats.upvotes}</span>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-1">
+                <ArrowDownIcon className="h-4 w-4 text-error" />
+                <span>{thread.stats.downvotes}</span>
+              </div>
+              <div className="flex items-center space-x-1">
                 <ChatBubbleLeftIcon className="h-4 w-4" />
-                <span>{thread.stats.comments} Comments</span>
+                <span>{thread.stats.comments}</span>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-1">
                 <ClockIcon className="h-4 w-4" />
                 <span>{new Date(thread.created_at).toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <span>
+                  Author: {thread.user?.username}
+                  {badge && (
+                    <span className="ml-1 text-xs">
+                      ({badge.title}: {thread.user?.reputation})
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
           </div>
@@ -179,7 +191,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-8 flex items-center justify-between">
         <select
           className="select select-bordered mx-auto max-w-xs"
           value={sortBy}
@@ -195,7 +207,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
 
       {loading && (
         <div className="text-center">
-          <span className="loading loading-spinner loading-lg"></span>
+          <span className="loading loading-spinner loading-lg text-base-content/75"></span>
         </div>
       )}
 
@@ -207,7 +219,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categoryId }) => {
 
       {!loading && threads.map(renderThreadCard)}
 
-      <div className="mt-6 flex justify-center">
+      <div className="mb-8 mt-12 flex justify-center">
         <div className="join">
           <button
             className="btn join-item"
