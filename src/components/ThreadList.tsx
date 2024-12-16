@@ -177,7 +177,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
                 {getRoleBadge()}
                 {thread.title}
               </div>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-base-content/75">
+              <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/75">
                 <div className="flex items-center space-x-1">
                   <ArrowUpIcon className="h-4 w-4 text-success" />
                   <span>{thread.stats.upvotes}</span>

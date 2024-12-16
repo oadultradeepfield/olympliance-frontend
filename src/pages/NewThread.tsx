@@ -144,7 +144,7 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
               <textarea
                 name="content"
                 placeholder="Write your thread content here"
-                className="textarea textarea-bordered h-60 w-full text-base"
+                className="textarea textarea-bordered h-60 w-full resize-none text-base"
                 value={formData.content}
                 onChange={handleInputChange}
                 maxLength={5000}
