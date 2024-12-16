@@ -17,6 +17,7 @@ import NewThread from "./pages/NewThread";
 import ThreadPage from "./pages/ThreadPage";
 import BanUserPage from "./pages/BanUserPage";
 import AssignModeratorPage from "./pages/AssignModeratorPage";
+import FollowedThreads from "./pages/FollowedThreads";
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -94,6 +95,10 @@ const App: React.FC = () => {
                 <Navigate to="/" />
               )
             }
+          />
+          <Route
+            path="/followed-threads"
+            element={<FollowedThreads userId={userId} />}
           />
           <Route
             path="/change-password"
