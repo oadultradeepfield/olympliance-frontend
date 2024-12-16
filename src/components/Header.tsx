@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="navbar-end">
         <button
           onClick={toggleTheme}
-          className={`btn ${isAuthenticated ? "" : "mx-4"} rounded-full`}
+          className={`btn ${isAuthenticated ? "" : "mx-4"} swap swap-rotate rounded-full`}
         >
           {theme === "dark" ? (
             <SunIcon className="h-6 w-6" />

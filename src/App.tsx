@@ -26,6 +26,7 @@ const App: React.FC = () => {
   });
   const [userReputation, setUserReputation] = useState<number>(0);
   const [roleId, setRoleId] = useState<number>(0);
+  const [userId, setUserId] = useState<number>(0);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
           },
         })
         .then((response) => {
+          setUserId(response.data.user_id);
           setRoleId(response.data.role_id);
           setUserReputation(response.data.reputation);
         })
@@ -68,7 +70,14 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element=<Home /> />
           <Route path="/:categoryTitle" element=<CategoryThreads /> />
-          <Route path="/:categoryTitle/:slug" element=<ThreadPage /> />
+          <Route
+            path="/thread/:slug"
+            element=<ThreadPage
+              isAuthenticated={isAuthenticated}
+              roleId={roleId}
+              userId={userId}
+            />
+          />
           <Route
             path="/login"
             element={

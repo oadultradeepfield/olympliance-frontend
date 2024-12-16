@@ -41,7 +41,6 @@ interface ThreadData {
     upvotes: number;
     downvotes: number;
     comments: number;
-    views: number;
   };
   created_at: string;
   updated_at: string;
@@ -49,7 +48,6 @@ interface ThreadData {
 }
 
 const SORT_OPTIONS = [
-  { value: "followers", label: "Most Followed" },
   { value: "upvotes", label: "Top Upvoted" },
   { value: "comments", label: "Most Commented" },
   { value: "created_at", label: "Newest" },
@@ -151,7 +149,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
     return (
       <Link
         key={thread.thread_id}
-        to={`/${categoryTitle}/${slugify(thread.title)}-${thread.thread_id}`}
+        to={`/thread/${categoryTitle}-${slugify(thread.title)}-${thread.thread_id}`}
       >
         <div
           key={thread.thread_id}
