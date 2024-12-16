@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import ThreadInteraction from "../components/ThreadInteraction";
+import ThreadInteraction from "../components/thread/ThreadInteraction";
+import ThreadComment from "../components/thread/ThreadComment";
 
 interface ThreadPageProps {
   isAuthenticated: boolean;
@@ -25,6 +26,7 @@ const ThreadPage: React.FC<ThreadPageProps> = ({
         roleId={roleId}
         userId={userId}
       />
+      <ThreadComment threadId={id} />
     </div>
   );
 };

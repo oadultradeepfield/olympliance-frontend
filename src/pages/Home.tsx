@@ -1,5 +1,5 @@
-import Categories from "../components/Categories";
-import Hero from "../components/Hero";
+import Categories from "../components/home/Categories";
+import Hero from "../components/home/Hero";
 
 const Home: React.FC = () => {
   return (

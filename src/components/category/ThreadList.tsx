@@ -10,14 +10,14 @@ import {
   ClockIcon,
 } from "@heroicons/react/24/outline";
 
-import grandmasterBadge from "../assets/01_badges_grandmaster.png";
-import masterBadge from "../assets/02_badges_master.png";
-import candidateMasterBadge from "../assets/03_badges_candidate_master.png";
-import expertBadge from "../assets/04_badges_expert.png";
-import specialistBadge from "../assets/05_badges_specialist.png";
-import apprenticeBadge from "../assets/06_badges_apprentice.png";
-import pupilBadge from "../assets/07_badges_pupil.png";
-import noviceBadge from "../assets/08_badges_novice.png";
+import grandmasterBadge from "../../assets/01_badges_grandmaster.png";
+import masterBadge from "../../assets/02_badges_master.png";
+import candidateMasterBadge from "../../assets/03_badges_candidate_master.png";
+import expertBadge from "../../assets/04_badges_expert.png";
+import specialistBadge from "../../assets/05_badges_specialist.png";
+import apprenticeBadge from "../../assets/06_badges_apprentice.png";
+import pupilBadge from "../../assets/07_badges_pupil.png";
+import noviceBadge from "../../assets/08_badges_novice.png";
 
 interface ThreadListProps {
   categoryId: number;

@@ -13,6 +13,7 @@ import noviceBadge from "../assets/08_badges_novice.png";
 
 interface HeaderProps {
   isAuthenticated: boolean;
+  username: string;
   userReputation: number;
   roleId: number;
   onLogout: () => void;
@@ -20,6 +21,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   isAuthenticated,
+  username,
   userReputation,
   roleId,
   onLogout,
@@ -86,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="navbar-end">
         <button
           onClick={toggleTheme}
-          className={`btn ${isAuthenticated ? "" : "mx-4"} swap swap-rotate rounded-full`}
+          className={`btn ${isAuthenticated ? "mr-3" : "mr-4"} swap swap-rotate rounded-full`}
         >
           {theme === "dark" ? (
             <SunIcon className="h-6 w-6" />
@@ -95,39 +97,39 @@ const Header: React.FC<HeaderProps> = ({
           )}
         </button>
         {isAuthenticated ? (
-          <div className="dropdown">
-            <button className="avatar btn btn-ghost mx-4 p-0">
-              <div className="w-10 rounded-full">
-                <img src={getBadgeImage(userReputation)} alt="User Badge" />
-              </div>
-            </button>
-            <ul className="menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
-              {roleId > 0 && (
+          <div className="mr-2 flex items-center space-x-4">
+            <div className="dropdown">
+              <button className="avatar btn btn-ghost p-0">
+                <div className="w-10 rounded-full">
+                  <img src={getBadgeImage(userReputation)} alt="User Badge" />
+                </div>
+              </button>
+              <ul className="menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
+                {roleId > 0 && (
+                  <li>
+                    <Link to="/ban-user">Ban User</Link>
+                  </li>
+                )}
+                {roleId > 1 && (
+                  <li>
+                    <Link to="/assign-moderator">Assign Moderator</Link>
+                  </li>
+                )}
                 <li>
-                  <Link to="/ban-user">Ban User</Link>
+                  <Link to="/followed-threads">View Followed Threads</Link>
                 </li>
-              )}
-              {roleId > 1 && (
                 <li>
-                  <Link to="/assign-moderator">Assign Moderator</Link>
+                  <Link to="/change-password">Change Password</Link>
                 </li>
-              )}
-              <li>
-                <Link to="/followed-threads">View Followed Threads</Link>
-              </li>
-              <li>
-                <Link to="/change-password">Change Password</Link>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onLogout();
-                  }}
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
+                <li>
+                  <button onClick={onLogout}>Logout</button>
+                </li>
+              </ul>
+            </div>
+            <div className="hidden flex-col sm:flex">
+              <div>Welcome back,</div>
+              <div className="font-bold">{username}</div>
+            </div>
           </div>
         ) : (
           <Link to="/login" className="btn btn-primary">

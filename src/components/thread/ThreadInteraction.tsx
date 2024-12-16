@@ -50,6 +50,10 @@ interface ThreadFormData {
   tags: string;
 }
 
+interface CommentFormData {
+  comment: string;
+}
+
 interface Interaction {
   interaction_id: number;
   thread_id: number;
@@ -85,6 +89,7 @@ const getBadgeImage = (reputation: number) => {
 const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   threadId,
   category,
+  isAuthenticated,
   roleId,
   userId,
 }) => {
@@ -101,6 +106,9 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     title: "",
     content: "",
     tags: "",
+  });
+  const [commentFormData, setCommentFormData] = useState<CommentFormData>({
+    comment: "",
   });
   const navigate = useNavigate();
 
@@ -310,8 +318,30 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     }
   };
 
-  const handleComment = () => {
-    //TODO
+  const handleComment = async (threadId: number, content: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const newComment = {
+        thread_id: threadId,
+        content: content,
+      };
+
+      const response = await axios.post(`${apiUrl}/api/comments`, newComment, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "An unkown error occurred while posting the comment. Please try again.";
+      setError(errorMessage);
+    }
   };
 
   const handleEditThread = async (
@@ -381,6 +411,16 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     }));
   };
 
+  const handleInputChangeComment = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setCommentFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   if (loading) {
     return (
       <div className="p-6 text-center">
@@ -396,7 +436,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   const badge = thread.user ? getBadgeImage(thread.user.reputation) : null;
 
   return (
-    <div className="p-6">
+    <div className="px-6 pt-6">
       <div className="mb-2 flex items-center">
         <div className="mr-2 text-3xl font-bold">{thread.title}</div>
         {userId === thread.user?.user_id && (
@@ -595,7 +635,11 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
             className={`btn btn-success btn-sm flex items-center ${
               !interactions.upvote.active ? "btn-outline" : ""
             }`}
-            onClick={() => handleInteraction("upvote")}
+            onClick={
+              isAuthenticated
+                ? () => handleInteraction("upvote")
+                : () => navigate("/login")
+            }
           >
             <ArrowUpIcon className="mr-1 h-4 w-4" />
             {thread?.stats.upvotes}
@@ -610,7 +654,11 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
             className={`btn btn-error btn-sm flex items-center ${
               !interactions.downvote.active ? "btn-outline" : ""
             }`}
-            onClick={() => handleInteraction("downvote")}
+            onClick={
+              isAuthenticated
+                ? () => handleInteraction("downvote")
+                : () => navigate("/login")
+            }
           >
             <ArrowDownIcon className="mr-1 h-4 w-4" />
             {thread?.stats.downvotes}
@@ -625,7 +673,11 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
             className={`btn btn-secondary btn-sm flex items-center ${
               !interactions.follow.active ? "btn-outline" : ""
             }`}
-            onClick={() => handleInteraction("follow")}
+            onClick={
+              isAuthenticated
+                ? () => handleInteraction("follow")
+                : () => navigate("/login")
+            }
           >
             <PlusIcon className="mr-1 h-4 w-4" />
             {thread?.stats.followers}
@@ -635,13 +687,79 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
         <div className="tooltip tooltip-top" data-tip="Leave a reply!">
           <button
             className="btn btn-outline btn-primary btn-sm flex items-center"
-            onClick={() => {
-              handleComment();
-            }}
+            onClick={
+              isAuthenticated
+                ? () => {
+                    (
+                      document.getElementById(
+                        "comment_modal",
+                      ) as HTMLDialogElement
+                    ).showModal();
+                  }
+                : () => navigate("/login")
+            }
           >
             <ChatBubbleLeftIcon className="mr-1 h-4 w-4" />
             {thread?.stats.comments}
           </button>
+          <dialog id="comment_modal" className="modal">
+            <div className="modal-box min-w-96 max-w-2xl p-8 md:w-full">
+              <h2 className="mb-2 text-2xl font-bold">
+                You're replying to the thread:
+              </h2>
+              <p className="mb-2 text-lg italic">{thread?.title}</p>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleComment(thread.thread_id, commentFormData.comment);
+                }}
+                className="w-full"
+              >
+                <div className="form-control mb-4">
+                  <label className="label">
+                    <span className="label-text">Comment</span>
+                  </label>
+                  <textarea
+                    name="comment"
+                    placeholder="Write your comment here"
+                    className="textarea textarea-bordered h-60 w-full resize-none text-base"
+                    value={commentFormData.comment}
+                    onChange={handleInputChangeComment}
+                    maxLength={5000}
+                    required
+                  />
+                </div>
+                {error && (
+                  <div className="mt-4 text-center text-sm text-error">
+                    Error: {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="mt-4 text-center text-sm text-success">
+                    {success}
+                  </div>
+                )}
+                <div className="modal-action">
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() =>
+                      (
+                        document.getElementById(
+                          "comment_modal",
+                        ) as HTMLDialogElement
+                      ).close()
+                    }
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Post Comment
+                  </button>
+                </div>
+              </form>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

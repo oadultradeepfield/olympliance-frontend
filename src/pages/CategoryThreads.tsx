@@ -1,6 +1,6 @@
 import { useParams, Navigate } from "react-router-dom";
-import CategoryHero from "../components/CategoryHero";
-import ThreadList from "../components/ThreadList";
+import CategoryHero from "../components/category/CategoryHero";
+import ThreadList from "../components/category/ThreadList";
 
 const CategoryThreads: React.FC = () => {
   const { categoryTitle } = useParams();

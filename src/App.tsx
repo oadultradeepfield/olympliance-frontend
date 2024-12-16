@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const [userReputation, setUserReputation] = useState<number>(0);
   const [roleId, setRoleId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
           },
         })
         .then((response) => {
+          setUsername(response.data.username);
           setUserId(response.data.user_id);
           setRoleId(response.data.role_id);
           setUserReputation(response.data.reputation);
@@ -62,6 +64,7 @@ const App: React.FC = () => {
         <div className="border-b-2">
           <Header
             isAuthenticated={isAuthenticated}
+            username={username}
             userReputation={userReputation}
             roleId={roleId}
             onLogout={handleLogout}
