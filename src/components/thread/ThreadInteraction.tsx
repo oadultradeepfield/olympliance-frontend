@@ -111,9 +111,10 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     comment: "",
   });
   const navigate = useNavigate();
-
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+  const [shouldRefetchInteractions, setShouldRefetchInteractions] =
+    useState(false);
 
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -199,7 +200,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     };
 
     fetchInteractions();
-  }, [threadId, interactions]);
+  }, [threadId, shouldRefetchInteractions]);
 
   const handleInteraction = async (type: keyof InteractionState) => {
     try {
@@ -294,6 +295,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
           return { ...prev, stats: newStats };
         });
       }
+      setShouldRefetchInteractions((prev) => !prev);
     } catch (error) {
       console.error(`Error with ${type} interaction:`, error);
     }
