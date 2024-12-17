@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="navbar-end">
         <button
           onClick={toggleTheme}
-          className={`btn ${isAuthenticated ? "mr-3" : "mr-4"} swap swap-rotate rounded-full`}
+          className="btn swap swap-rotate mr-4 rounded-full"
         >
           {theme === "dark" ? (
             <SunIcon className="h-6 w-6" />
@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({
         {isAuthenticated ? (
           <div className="mr-2 flex items-center space-x-4">
             <div className="dropdown">
-              <button className="avatar btn btn-ghost p-0">
+              <button className="avatar btn btn-ghost -mr-1 p-0">
                 <div className="w-10 rounded-full">
                   <img src={getBadgeImage(userReputation)} alt="User Badge" />
                 </div>
@@ -127,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({
               </ul>
             </div>
             <div className="hidden flex-col sm:flex">
-              <div>Welcome back,</div>
+              <div className="-mb-1">Welcome back,</div>
               <div className="font-bold">{username}</div>
             </div>
           </div>

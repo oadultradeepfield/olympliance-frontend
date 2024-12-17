@@ -6,6 +6,8 @@ import {
   ShieldCheckIcon,
   StarIcon,
   ClockIcon,
+  PencilIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 
 import grandmasterBadge from "../../assets/01_badges_grandmaster.png";
@@ -32,6 +34,9 @@ const getBadgeImage = (reputation: number) => {
 
 interface ThreadCommentProps {
   threadId: number;
+  userId: number;
+  roleId: number;
+  isAuthenticated: boolean;
 }
 
 interface CommentData {
@@ -43,12 +48,19 @@ interface CommentData {
     downvotes: number;
   };
   created_at: string;
+  is_deleted: boolean;
 }
 
 interface UserInfo {
+  user_id: number;
   username: string;
   reputation: number;
   role_id: number;
+}
+
+interface EditCommentFormData {
+  comment_id: number;
+  comment: string;
 }
 
 const SORT_OPTIONS = [
@@ -56,13 +68,25 @@ const SORT_OPTIONS = [
   { value: "created_at", label: "Oldest" },
 ];
 
-const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
+const ThreadComment: React.FC<ThreadCommentProps> = ({
+  threadId,
+  userId,
+  roleId,
+  isAuthenticated,
+}) => {
   const [comments, setComments] = useState<
     (CommentData & { user?: UserInfo })[]
   >([]);
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [editCommentFormData, setEditCommentFormData] =
+    useState<EditCommentFormData>({
+      comment_id: 0,
+      comment: "",
+    });
 
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -74,7 +98,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
           params: {
             thread_id: threadId,
             sort_by: sortBy,
-            page: page,
+            page,
             per_page: 10,
           },
         });
@@ -98,6 +122,84 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
 
     fetchComments();
   }, [threadId, sortBy, page]);
+
+  const handleEditComment = async (commentId: number, comment: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `${apiUrl}/api/comments/${commentId}`,
+        { content: comment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setSuccess(response.data.message);
+      setComments((prevComments) =>
+        prevComments.map((c) =>
+          c.comment_id === commentId ? { ...c, content: comment } : c,
+        ),
+      );
+
+      setTimeout(() => {
+        setSuccess("");
+        (
+          document.getElementById(`edit_comment_modal`) as HTMLDialogElement
+        ).close();
+      }, 1000);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "An error occurred while updating the comment. Please try again.";
+      setError(errorMessage);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `${apiUrl}/api/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error: any) {
+      const errorMessage =
+        error.response.data.error ||
+        "An error occurred while deleting the comment. Please try again.";
+      setError(errorMessage);
+    }
+  };
+
+  const openEditModal = (comment: CommentData & { user?: UserInfo }) => {
+    setEditCommentFormData({
+      comment_id: comment.comment_id,
+      comment: comment.content,
+    });
+    (
+      document.getElementById("edit_comment_modal") as HTMLDialogElement
+    ).showModal();
+  };
+
+  const handleEditCommentInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const { value } = e.target;
+    setEditCommentFormData((prev) => ({
+      ...prev,
+      comment: value,
+    }));
+  };
 
   const renderCommentCard = (comment: CommentData & { user?: UserInfo }) => {
     const badge = comment.user ? getBadgeImage(comment.user.reputation) : null;
@@ -140,17 +242,150 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
           <div className="flex flex-grow flex-col">
             <div className="mb-1 text-base">
               {getRoleBadge()}
-              {comment.content}
+              <span
+                className={
+                  comment.is_deleted ? "italic text-base-content/75" : ""
+                }
+              >
+                {comment.is_deleted ? "[Comment deleted]" : comment.content}
+              </span>
+
+              {userId === comment.user?.user_id && !comment.is_deleted && (
+                <>
+                  <button
+                    className="pl-3"
+                    onClick={() => openEditModal(comment)}
+                  >
+                    <PencilIcon className="h-4 w-4 text-base-content hover:text-success" />
+                  </button>
+                  <dialog id="edit_comment_modal" className="modal">
+                    <div className="modal-box min-w-96 max-w-3xl p-8 md:w-full">
+                      <h2 className="mb-4 text-2xl font-bold">Edit Comment</h2>
+                      <form
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          handleEditComment(
+                            editCommentFormData.comment_id,
+                            editCommentFormData.comment,
+                          );
+                        }}
+                        className="w-full"
+                      >
+                        <div className="form-control mb-4">
+                          <label className="label">
+                            <span className="label-text">Comment</span>
+                          </label>
+                          <textarea
+                            name="content"
+                            placeholder="Write your thread content here"
+                            className="textarea textarea-bordered h-60 w-full resize-none text-base"
+                            value={editCommentFormData.comment}
+                            onChange={handleEditCommentInputChange}
+                            maxLength={5000}
+                            required
+                          />
+                        </div>
+                        {error && (
+                          <div className="mt-4 text-center text-sm text-error">
+                            Error: {error}
+                          </div>
+                        )}
+                        {success && (
+                          <div className="mt-4 text-center text-sm text-success">
+                            {success}
+                          </div>
+                        )}
+                        <div className="modal-action">
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() =>
+                              (
+                                document.getElementById(
+                                  "edit_comment_modal",
+                                ) as HTMLDialogElement
+                              ).close()
+                            }
+                          >
+                            Cancel
+                          </button>
+                          <button type="submit" className="btn btn-primary">
+                            Save Changes
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </dialog>
+                </>
+              )}
+              {(userId === comment.user?.user_id ||
+                roleId > comment.user?.role_id!) &&
+                !comment.is_deleted && (
+                  <>
+                    <button
+                      className="pl-2"
+                      onClick={() =>
+                        (
+                          document.getElementById(
+                            "delete_comment_modal",
+                          ) as HTMLDialogElement
+                        ).showModal()
+                      }
+                    >
+                      <TrashIcon className="h-4 w-4 text-base-content hover:text-error" />
+                    </button>
+                    <dialog id="delete_comment_modal" className="modal">
+                      <div className="modal-box w-96">
+                        <h3 className="text-lg font-bold">Confirm Deletion</h3>
+                        <p className="pt-4">
+                          Are you sure you want to delete this comment? This
+                          action cannot be undone.
+                        </p>
+                        <div className="modal-action">
+                          <button
+                            className="btn"
+                            onClick={() =>
+                              (
+                                document.getElementById(
+                                  "delete_comment_modal",
+                                ) as HTMLDialogElement
+                              ).close()
+                            }
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="btn btn-error"
+                            onClick={() => {
+                              handleDeleteComment(comment.comment_id);
+                              (
+                                document.getElementById(
+                                  "delete_comment_modal",
+                                ) as HTMLDialogElement
+                              ).close();
+                            }}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </div>
+                    </dialog>
+                  </>
+                )}
             </div>
             <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/75">
-              <div className="flex items-center space-x-1">
-                <ArrowUpIcon className="h-4 w-4 text-success" />
-                <span>{comment.stats.upvotes}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <ArrowDownIcon className="h-4 w-4 text-error" />
-                <span>{comment.stats.downvotes}</span>
-              </div>
+              {!comment.is_deleted && (
+                <>
+                  <div className="flex items-center space-x-1">
+                    <ArrowUpIcon className="h-4 w-4 text-success" />
+                    <span>{comment.stats.upvotes}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <ArrowDownIcon className="h-4 w-4 text-error" />
+                    <span>{comment.stats.downvotes}</span>
+                  </div>
+                </>
+              )}
               <div className="flex items-center space-x-1">
                 <ClockIcon className="h-4 w-4" />
                 <span>{new Date(comment.created_at).toLocaleDateString()}</span>

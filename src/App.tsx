@@ -57,6 +57,7 @@ const App: React.FC = () => {
     setIsAuthenticated(false);
     setUserReputation(0);
     setRoleId(0);
+    window.location.reload();
   };
 
   return (

@@ -26,7 +26,12 @@ const ThreadPage: React.FC<ThreadPageProps> = ({
         roleId={roleId}
         userId={userId}
       />
-      <ThreadComment threadId={id} />
+      <ThreadComment
+        threadId={id}
+        userId={userId}
+        roleId={roleId}
+        isAuthenticated={isAuthenticated}
+      />
     </div>
   );
 };
