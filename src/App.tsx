@@ -29,11 +29,13 @@ const App: React.FC = () => {
   const [roleId, setRoleId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
   const [username, setUsername] = useState<string>("");
+  const [isUserDataLoaded, setIsUserDataLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (isAuthenticated) {
       const token = localStorage.getItem("token");
       if (!token) return;
+
       axios
         .get(`${apiUrl}/api/users`, {
           headers: {
@@ -45,10 +47,14 @@ const App: React.FC = () => {
           setUserId(response.data.user_id);
           setRoleId(response.data.role_id);
           setUserReputation(response.data.reputation);
+          setIsUserDataLoaded(true);
         })
         .catch((error) => {
           console.error("Failed to fetch user data:", error);
+          setIsUserDataLoaded(true);
         });
+    } else {
+      setIsUserDataLoaded(true);
     }
   }, [isAuthenticated]);
 
@@ -62,80 +68,84 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="flex min-h-screen flex-col">
-        <div className="border-b-2">
-          <Header
-            isAuthenticated={isAuthenticated}
-            username={username}
-            userReputation={userReputation}
-            roleId={roleId}
-            onLogout={handleLogout}
-          />
-        </div>
-        <div className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/:categoryTitle" element={<CategoryThreads />} />
-            <Route
-              path="/thread/:slug"
-              element={
-                <ThreadPage
-                  isAuthenticated={isAuthenticated}
-                  roleId={roleId}
-                  userId={userId}
-                />
-              }
+      {isUserDataLoaded ? (
+        <div className="flex min-h-screen flex-col">
+          <div className="border-b-2">
+            <Header
+              isAuthenticated={isAuthenticated}
+              username={username}
+              userReputation={userReputation}
+              roleId={roleId}
+              onLogout={handleLogout}
             />
-            <Route
-              path="/login"
-              element={
-                !isAuthenticated ? (
-                  <AuthPage
-                    setIsAuthenticated={(authenticated: boolean) => {
-                      setIsAuthenticated(authenticated);
-                    }}
+          </div>
+          <div className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/:categoryTitle" element={<CategoryThreads />} />
+              <Route
+                path="/thread/:slug"
+                element={
+                  <ThreadPage
+                    isAuthenticated={isAuthenticated}
+                    roleId={roleId}
+                    userId={userId}
                   />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/followed-threads"
-              element={<FollowedThreads userId={userId} />}
-            />
-            <Route
-              path="/change-password"
-              element={<ChangePassword isAuthenticated={isAuthenticated} />}
-            />
-            <Route
-              path="/ban-user"
-              element={
-                <BanUserPage
-                  isAuthenticated={isAuthenticated}
-                  roleId={roleId}
-                />
-              }
-            />
-            <Route
-              path="/assign-moderator"
-              element={
-                <AssignModeratorPage
-                  isAuthenticated={isAuthenticated}
-                  roleId={roleId}
-                />
-              }
-            />
-            <Route
-              path="/:categoryTitle/new"
-              element={<NewThread isAuthenticated={isAuthenticated} />}
-            />
-            <Route path="/not-found" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  !isAuthenticated ? (
+                    <AuthPage
+                      setIsAuthenticated={(authenticated: boolean) => {
+                        setIsAuthenticated(authenticated);
+                      }}
+                    />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/followed-threads"
+                element={<FollowedThreads userId={userId} />}
+              />
+              <Route
+                path="/change-password"
+                element={<ChangePassword isAuthenticated={isAuthenticated} />}
+              />
+              <Route
+                path="/ban-user"
+                element={
+                  <BanUserPage
+                    isAuthenticated={isAuthenticated}
+                    roleId={roleId}
+                  />
+                }
+              />
+              <Route
+                path="/assign-moderator"
+                element={
+                  <AssignModeratorPage
+                    isAuthenticated={isAuthenticated}
+                    roleId={roleId}
+                  />
+                }
+              />
+              <Route
+                path="/:categoryTitle/new"
+                element={<NewThread isAuthenticated={isAuthenticated} />}
+              />
+              <Route path="/not-found" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      ) : (
+        <div>Loading...</div>
+      )}
     </Router>
   );
 };

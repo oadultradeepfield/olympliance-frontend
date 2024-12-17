@@ -154,14 +154,9 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   useEffect(() => {
     const fetchInteractions = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get<{ interactions: Interaction[] }>(
-          `${apiUrl}/api/interactions?thread_id=${threadId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+          `${apiUrl}/api/interactions?thread_id=${threadId}&user_id=${userId}`,
+          {},
         );
 
         const existingInteractions = response.data.interactions;
