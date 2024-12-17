@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   ArrowUpIcon,
@@ -70,6 +70,13 @@ interface EditCommentFormData {
   comment: string;
 }
 
+interface InteractionsInfo {
+  interaction_id: number;
+  user_id: number;
+  comment_id: number;
+  interaction_type: string;
+}
+
 const SORT_OPTIONS = [
   { value: "upvotes", label: "Top Upvoted" },
   { value: "created_at", label: "Oldest" },
@@ -82,7 +89,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   isAuthenticated,
 }) => {
   const [comments, setComments] = useState<
-    (CommentData & { user?: UserInfo })[]
+    (CommentData & { user?: UserInfo; interactions?: InteractionsInfo[] })[]
   >([]);
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
@@ -102,6 +109,11 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   const [parentCommentMap, setParentCommentMap] = useState<{
     [key: number]: CommentData;
   }>({});
+  const [userInteractions, setUserInteractions] = useState<
+    Record<number, { upvoted: boolean; downvoted: boolean }>
+  >({});
+  const [shouldRefetchInteractions, setShouldRefetchInteractions] =
+    useState<boolean>(false);
 
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -109,6 +121,8 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
     const fetchComments = async () => {
       try {
         setLoading(true);
+        const token = localStorage.getItem("token");
+
         const commentsResponse = await axios.get(`${apiUrl}/api/comments`, {
           params: {
             thread_id: threadId,
@@ -118,31 +132,69 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
           },
         });
 
-        const commentsWithUsers = await Promise.all(
+        const commentsWithUsersAndInteractions = await Promise.all(
           commentsResponse.data.comments.map(async (comment: CommentData) => {
             const userResponse = await axios.get(
               `${apiUrl}/api/users/${comment.user_id}`,
             );
-            return { ...comment, user: userResponse.data };
+            const interactionsResponse = await axios.get(
+              `${apiUrl}/api/interactions`,
+              {
+                params: { comment_id: comment.comment_id },
+                headers: { Authorization: `Bearer ${token}` },
+              },
+            );
+
+            const userUpvote = interactionsResponse.data.interactions.some(
+              (interaction: InteractionsInfo) =>
+                interaction.user_id === userId &&
+                interaction.interaction_type === "upvote",
+            );
+            const userDownvote = interactionsResponse.data.interactions.some(
+              (interaction: InteractionsInfo) =>
+                interaction.user_id === userId &&
+                interaction.interaction_type === "downvote",
+            );
+
+            return {
+              ...comment,
+              user: userResponse.data,
+              interactions: interactionsResponse.data.interactions,
+              userInteractions: {
+                upvoted: userUpvote || false,
+                downvoted: userDownvote || false,
+              },
+            };
           }),
         );
 
-        const commentMap = commentsWithUsers.reduce((acc, comment) => {
-          acc[comment.comment_id] = comment;
-          return acc;
-        }, {});
+        const commentMap = commentsWithUsersAndInteractions.reduce(
+          (acc, comment) => {
+            acc[comment.comment_id] = comment;
+            return acc;
+          },
+          {},
+        );
+
+        const updatedUserInteractions = commentsWithUsersAndInteractions.reduce(
+          (acc, comment) => {
+            acc[comment.comment_id] = comment.userInteractions;
+            return acc;
+          },
+          {},
+        );
 
         setParentCommentMap(commentMap);
-        setComments(commentsWithUsers);
+        setComments(commentsWithUsersAndInteractions);
+        setUserInteractions(updatedUserInteractions);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching comments:", error);
         setLoading(false);
       }
     };
-
     fetchComments();
-  }, [threadId, sortBy, page]);
+  }, [threadId, sortBy, page, shouldRefetchInteractions]);
 
   const handleVote = async (
     commentId: number,
@@ -150,34 +202,48 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   ) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${apiUrl}/api/interactions`,
-        {
-          comment_id: commentId,
-          interaction_type: voteType,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+      const comment = comments.find((c) => c.comment_id === commentId);
+      const currentInteractions = comment?.interactions;
+
+      const existingInteraction = currentInteractions?.find(
+        (interaction: any) => interaction.user_id === userId,
       );
 
-      setSuccess(response.data.message);
-      setComments((prevComments) =>
-        prevComments.map((c) =>
-          c.comment_id === commentId
-            ? {
-                ...c,
-                stats: {
-                  upvotes: response.data.upvotes,
-                  downvotes: response.data.downvotes,
-                },
-              }
-            : c,
-        ),
-      );
+      if (existingInteraction) {
+        await axios.put(
+          `${apiUrl}/api/interactions/${existingInteraction.interaction_id}`,
+          { interaction_type: voteType },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      } else {
+        await axios.post(
+          `${apiUrl}/api/interactions`,
+          {
+            comment_id: commentId,
+            interaction_type: voteType,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      }
+
+      setUserInteractions((prev) => ({
+        ...prev,
+        [commentId]: {
+          upvoted: voteType === "upvote",
+          downvoted: voteType === "downvote",
+        },
+      }));
+      setShouldRefetchInteractions((prev) => !prev);
     } catch (error: any) {
+      console.error("Error handling vote:", error);
       const errorMessage =
         error.response?.data?.error ||
         "An error occurred while voting. Please try again.";
@@ -518,7 +584,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                         ? () => handleVote(comment.comment_id, "upvote")
                         : () => navigate("/login")
                     }
-                    className="btn btn-outline btn-success btn-xs flex items-center"
+                    className={`btn btn-xs flex items-center ${userInteractions[comment.comment_id]?.upvoted ? "btn-success" : "btn-outline btn-success"}`}
                   >
                     <ArrowUpIcon className="mr-1 h-3 w-3" />
                     {comment.stats.upvotes}
@@ -529,7 +595,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                         ? () => handleVote(comment.comment_id, "downvote")
                         : () => navigate("/login")
                     }
-                    className="btn btn-outline btn-error btn-xs flex items-center"
+                    className={`btn btn-xs flex items-center ${userInteractions[comment.comment_id]?.downvoted ? "btn-error" : "btn-outline btn-error"}`}
                   >
                     <ArrowDownIcon className="mr-1 h-3 w-3" />
                     {comment.stats.downvotes}

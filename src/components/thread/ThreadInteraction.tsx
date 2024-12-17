@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   ArrowUpIcon,
@@ -114,7 +114,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [shouldRefetchInteractions, setShouldRefetchInteractions] =
-    useState(false);
+    useState<boolean>(false);
 
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
