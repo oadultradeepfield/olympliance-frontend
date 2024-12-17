@@ -93,6 +93,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   >([]);
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
@@ -118,83 +119,89 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
+    if (userId > 0) {
+      const fetchComments = async () => {
+        try {
+          if (isFirstLoad) {
+            setLoading(true);
+          }
 
-        const commentsResponse = await axios.get(`${apiUrl}/api/comments`, {
-          params: {
-            thread_id: threadId,
-            sort_by: sortBy,
-            page,
-            per_page: 10,
-          },
-        });
+          const token = localStorage.getItem("token");
+          const commentsResponse = await axios.get(`${apiUrl}/api/comments`, {
+            params: {
+              thread_id: threadId,
+              sort_by: sortBy,
+              page,
+              per_page: 10,
+            },
+          });
 
-        const commentsWithUsersAndInteractions = await Promise.all(
-          commentsResponse.data.comments.map(async (comment: CommentData) => {
-            const userResponse = await axios.get(
-              `${apiUrl}/api/users/${comment.user_id}`,
-            );
-            const interactionsResponse = await axios.get(
-              `${apiUrl}/api/interactions`,
-              {
-                params: { comment_id: comment.comment_id },
-                headers: { Authorization: `Bearer ${token}` },
-              },
-            );
+          const commentsWithUsersAndInteractions = await Promise.all(
+            commentsResponse.data.comments.map(async (comment: CommentData) => {
+              const userResponse = await axios.get(
+                `${apiUrl}/api/users/${comment.user_id}`,
+              );
+              const interactionsResponse = await axios.get(
+                `${apiUrl}/api/interactions`,
+                {
+                  params: { comment_id: comment.comment_id },
+                  headers: { Authorization: `Bearer ${token}` },
+                },
+              );
 
-            const userUpvote = interactionsResponse.data.interactions.some(
-              (interaction: InteractionsInfo) =>
-                interaction.user_id === userId &&
-                interaction.interaction_type === "upvote",
-            );
-            const userDownvote = interactionsResponse.data.interactions.some(
-              (interaction: InteractionsInfo) =>
-                interaction.user_id === userId &&
-                interaction.interaction_type === "downvote",
-            );
+              const userUpvote = interactionsResponse.data.interactions.some(
+                (interaction: InteractionsInfo) =>
+                  interaction.user_id === userId &&
+                  interaction.interaction_type === "upvote",
+              );
+              const userDownvote = interactionsResponse.data.interactions.some(
+                (interaction: InteractionsInfo) =>
+                  interaction.user_id === userId &&
+                  interaction.interaction_type === "downvote",
+              );
 
-            return {
-              ...comment,
-              user: userResponse.data,
-              interactions: interactionsResponse.data.interactions,
-              userInteractions: {
-                upvoted: userUpvote || false,
-                downvoted: userDownvote || false,
-              },
-            };
-          }),
-        );
+              return {
+                ...comment,
+                user: userResponse.data,
+                interactions: interactionsResponse.data.interactions,
+                userInteractions: {
+                  upvoted: userUpvote,
+                  downvoted: userDownvote,
+                },
+              };
+            }),
+          );
 
-        const commentMap = commentsWithUsersAndInteractions.reduce(
-          (acc, comment) => {
-            acc[comment.comment_id] = comment;
-            return acc;
-          },
-          {},
-        );
+          const commentMap = commentsWithUsersAndInteractions.reduce(
+            (acc, comment) => {
+              acc[comment.comment_id] = comment;
+              return acc;
+            },
+            {},
+          );
 
-        const updatedUserInteractions = commentsWithUsersAndInteractions.reduce(
-          (acc, comment) => {
-            acc[comment.comment_id] = comment.userInteractions;
-            return acc;
-          },
-          {},
-        );
+          const updatedUserInteractions =
+            commentsWithUsersAndInteractions.reduce((acc, comment) => {
+              acc[comment.comment_id] = comment.userInteractions;
+              return acc;
+            }, {});
 
-        setParentCommentMap(commentMap);
-        setComments(commentsWithUsersAndInteractions);
-        setUserInteractions(updatedUserInteractions);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-        setLoading(false);
-      }
-    };
-    fetchComments();
-  }, [threadId, sortBy, page, shouldRefetchInteractions]);
+          setParentCommentMap(commentMap);
+          setComments(commentsWithUsersAndInteractions);
+          setUserInteractions(updatedUserInteractions);
+
+          if (isFirstLoad) {
+            setIsFirstLoad(false);
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching comments:", error);
+          setLoading(false);
+        }
+      };
+      fetchComments();
+    }
+  }, [threadId, sortBy, page, shouldRefetchInteractions, userId]);
 
   const handleVote = async (
     commentId: number,
@@ -584,7 +591,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                         ? () => handleVote(comment.comment_id, "upvote")
                         : () => navigate("/login")
                     }
-                    className={`btn btn-xs flex items-center ${userInteractions[comment.comment_id]?.upvoted ? "btn-success" : "btn-outline btn-success"}`}
+                    className={`btn btn-success btn-xs flex items-center ${userInteractions[comment.comment_id]?.upvoted ? "" : "btn-outline"}`}
                   >
                     <ArrowUpIcon className="mr-1 h-3 w-3" />
                     {comment.stats.upvotes}
@@ -595,7 +602,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                         ? () => handleVote(comment.comment_id, "downvote")
                         : () => navigate("/login")
                     }
-                    className={`btn btn-xs flex items-center ${userInteractions[comment.comment_id]?.downvoted ? "btn-error" : "btn-outline btn-error"}`}
+                    className={`btn btn-error btn-xs flex items-center ${userInteractions[comment.comment_id]?.downvoted ? "" : "btn-outline"}`}
                   >
                     <ArrowDownIcon className="mr-1 h-3 w-3" />
                     {comment.stats.downvotes}
