@@ -155,9 +155,9 @@ const ThreadList: React.FC<ThreadListProps> = ({
           key={thread.thread_id}
           className="card mx-auto mb-3 flex w-full max-w-3xl border-2 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary"
         >
-          <div className="card-body flex flex-row items-center p-3">
+          <div className="card-body flex flex-row items-start p-3">
             {badge && (
-              <div className="avatar mr-3 shrink-0">
+              <div className="avatar mr-3 mt-1 shrink-0">
                 <div className="bg-neutral-focus h-10 w-10 rounded-full text-neutral-content">
                   <img
                     src={badge.image}

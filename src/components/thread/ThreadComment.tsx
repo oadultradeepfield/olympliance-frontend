@@ -3,12 +3,14 @@ import axios from "axios";
 import {
   ArrowUpIcon,
   ArrowDownIcon,
+  ChatBubbleLeftIcon,
   ShieldCheckIcon,
   StarIcon,
   ClockIcon,
   PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 import grandmasterBadge from "../../assets/01_badges_grandmaster.png";
 import masterBadge from "../../assets/02_badges_master.png";
@@ -41,6 +43,7 @@ interface ThreadCommentProps {
 
 interface CommentData {
   comment_id: number;
+  parent_comment_id: number;
   user_id: number;
   content: string;
   stats: {
@@ -49,6 +52,10 @@ interface CommentData {
   };
   created_at: string;
   is_deleted: boolean;
+}
+
+interface ReplyCommentFormData {
+  comment: string;
 }
 
 interface UserInfo {
@@ -87,6 +94,14 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
       comment_id: 0,
       comment: "",
     });
+  const [replyCommentFormData, setReplyCommentFormData] =
+    useState<ReplyCommentFormData>({
+      comment: "",
+    });
+  const navigate = useNavigate();
+  const [parentCommentMap, setParentCommentMap] = useState<{
+    [key: number]: CommentData;
+  }>({});
 
   const apiUrl: string = import.meta.env.VITE_API_URL;
 
@@ -112,6 +127,12 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
           }),
         );
 
+        const commentMap = commentsWithUsers.reduce((acc, comment) => {
+          acc[comment.comment_id] = comment;
+          return acc;
+        }, {});
+
+        setParentCommentMap(commentMap);
         setComments(commentsWithUsers);
         setLoading(false);
       } catch (error) {
@@ -122,6 +143,78 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
 
     fetchComments();
   }, [threadId, sortBy, page]);
+
+  const handleVote = async (
+    commentId: number,
+    voteType: "upvote" | "downvote",
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${apiUrl}/api/interactions`,
+        {
+          comment_id: commentId,
+          interaction_type: voteType,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setSuccess(response.data.message);
+      setComments((prevComments) =>
+        prevComments.map((c) =>
+          c.comment_id === commentId
+            ? {
+                ...c,
+                stats: {
+                  upvotes: response.data.upvotes,
+                  downvotes: response.data.downvotes,
+                },
+              }
+            : c,
+        ),
+      );
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "An error occurred while voting. Please try again.";
+      setError(errorMessage);
+    }
+  };
+
+  const handleReplyComment = async (
+    threadId: number,
+    parentCommentId: number,
+    content: string,
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
+      const newComment = {
+        thread_id: threadId,
+        parent_comment_id: parentCommentId,
+        content: content,
+      };
+
+      const response = await axios.post(`${apiUrl}/api/comments`, newComment, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "An unkown error occurred while posting the comment. Please try again.";
+      setError(errorMessage);
+    }
+  };
 
   const handleEditComment = async (commentId: number, comment: string) => {
     try {
@@ -146,7 +239,9 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
       setTimeout(() => {
         setSuccess("");
         (
-          document.getElementById(`edit_comment_modal`) as HTMLDialogElement
+          document.getElementById(
+            `edit_comment_modal_${commentId}`,
+          ) as HTMLDialogElement
         ).close();
       }, 1000);
     } catch (error: any) {
@@ -187,7 +282,9 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
       comment: comment.content,
     });
     (
-      document.getElementById("edit_comment_modal") as HTMLDialogElement
+      document.getElementById(
+        `edit_comment_modal_${comment.comment_id}`,
+      ) as HTMLDialogElement
     ).showModal();
   };
 
@@ -196,6 +293,16 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   ) => {
     const { value } = e.target;
     setEditCommentFormData((prev) => ({
+      ...prev,
+      comment: value,
+    }));
+  };
+
+  const handleInputChangeReplyComment = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const { value } = e.target;
+    setReplyCommentFormData((prev) => ({
       ...prev,
       comment: value,
     }));
@@ -222,14 +329,18 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
       }
     };
 
+    const parentComment = comment.parent_comment_id
+      ? parentCommentMap[comment.parent_comment_id]
+      : null;
+
     return (
       <div
         key={comment.comment_id}
         className="card mx-auto mb-3 flex w-full max-w-5xl border-2 bg-base-100 px-2 py-1"
       >
-        <div className="card-body flex flex-row items-center p-3">
+        <div className="card-body flex flex-row items-start p-3">
           {badge && (
-            <div className="avatar mr-3 shrink-0">
+            <div className="avatar mr-3 mt-1 shrink-0">
               <div className="bg-neutral-focus h-10 w-10 rounded-full text-neutral-content">
                 <img
                   src={badge.image}
@@ -240,7 +351,17 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
             </div>
           )}
           <div className="flex flex-grow flex-col">
-            <div className="mb-1 text-base">
+            {parentComment && (
+              <div className="mb-2 bg-primary-content/25 p-2 text-sm italic text-base-content/75">
+                <strong>Replied to: </strong>
+                {parentComment.content?.length > 50
+                  ? `\"${parentComment.content.slice(0, 50)}...\"`
+                  : parentComment.is_deleted
+                    ? "[Comment deleted]"
+                    : `\"${parentComment.content}\"`}
+              </div>
+            )}
+            <div className="mb-3 text-base">
               {getRoleBadge()}
               <span
                 className={
@@ -249,7 +370,6 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
               >
                 {comment.is_deleted ? "[Comment deleted]" : comment.content}
               </span>
-
               {userId === comment.user?.user_id && !comment.is_deleted && (
                 <>
                   <button
@@ -258,7 +378,10 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                   >
                     <PencilIcon className="h-4 w-4 text-base-content hover:text-success" />
                   </button>
-                  <dialog id="edit_comment_modal" className="modal">
+                  <dialog
+                    id={`edit_comment_modal_${comment.comment_id}`}
+                    className="modal"
+                  >
                     <div className="modal-box min-w-96 max-w-3xl p-8 md:w-full">
                       <h2 className="mb-4 text-2xl font-bold">Edit Comment</h2>
                       <form
@@ -302,7 +425,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                             onClick={() =>
                               (
                                 document.getElementById(
-                                  "edit_comment_modal",
+                                  `edit_comment_modal_${comment.comment_id}`,
                                 ) as HTMLDialogElement
                               ).close()
                             }
@@ -327,14 +450,17 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                       onClick={() =>
                         (
                           document.getElementById(
-                            "delete_comment_modal",
+                            `delete_comment_modal_${comment.comment_id}`,
                           ) as HTMLDialogElement
                         ).showModal()
                       }
                     >
                       <TrashIcon className="h-4 w-4 text-base-content hover:text-error" />
                     </button>
-                    <dialog id="delete_comment_modal" className="modal">
+                    <dialog
+                      id={`delete_comment_modal_${comment.comment_id}`}
+                      className="modal"
+                    >
                       <div className="modal-box w-96">
                         <h3 className="text-lg font-bold">Confirm Deletion</h3>
                         <p className="pt-4">
@@ -347,7 +473,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                             onClick={() =>
                               (
                                 document.getElementById(
-                                  "delete_comment_modal",
+                                  `delete_comment_modal_${comment.comment_id}`,
                                 ) as HTMLDialogElement
                               ).close()
                             }
@@ -357,10 +483,20 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
                           <button
                             className="btn btn-error"
                             onClick={() => {
+                              console.log(
+                                "Attempting to delete comment with ID:",
+                                comment.comment_id,
+                              );
+                              console.log(
+                                "Full comment object:",
+                                comments.find(
+                                  (c) => c.comment_id === comment.comment_id,
+                                ),
+                              );
                               handleDeleteComment(comment.comment_id);
                               (
                                 document.getElementById(
-                                  "delete_comment_modal",
+                                  `delete_comment_modal_${comment.comment_id}`,
                                 ) as HTMLDialogElement
                               ).close();
                             }}
@@ -376,14 +512,112 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
             <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/75">
               {!comment.is_deleted && (
                 <>
-                  <div className="flex items-center space-x-1">
-                    <ArrowUpIcon className="h-4 w-4 text-success" />
-                    <span>{comment.stats.upvotes}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <ArrowDownIcon className="h-4 w-4 text-error" />
-                    <span>{comment.stats.downvotes}</span>
-                  </div>
+                  <button
+                    onClick={
+                      isAuthenticated
+                        ? () => handleVote(comment.comment_id, "upvote")
+                        : () => navigate("/login")
+                    }
+                    className="btn btn-outline btn-success btn-xs flex items-center"
+                  >
+                    <ArrowUpIcon className="mr-1 h-3 w-3" />
+                    {comment.stats.upvotes}
+                  </button>
+                  <button
+                    onClick={
+                      isAuthenticated
+                        ? () => handleVote(comment.comment_id, "downvote")
+                        : () => navigate("/login")
+                    }
+                    className="btn btn-outline btn-error btn-xs flex items-center"
+                  >
+                    <ArrowDownIcon className="mr-1 h-3 w-3" />
+                    {comment.stats.downvotes}
+                  </button>
+                  <button
+                    onClick={
+                      isAuthenticated
+                        ? () => {
+                            (
+                              document.getElementById(
+                                `reply_comment_modal_${comment.comment_id}`,
+                              ) as HTMLDialogElement
+                            ).showModal();
+                          }
+                        : () => navigate("/login")
+                    }
+                    className="btn btn-outline btn-primary btn-xs flex items-center"
+                  >
+                    <ChatBubbleLeftIcon className="h-3 w-3" />
+                    {"Reply"}
+                  </button>
+                  <dialog
+                    id={`reply_comment_modal_${comment.comment_id}`}
+                    className="modal"
+                  >
+                    <div className="modal-box min-w-96 max-w-2xl p-8 text-base-content md:w-full">
+                      <h2 className="mb-2 text-2xl font-bold">
+                        You're replying to the comment:
+                      </h2>
+                      <p className="mb-2 text-lg italic text-base-content/75">
+                        "{comment?.content}"
+                      </p>
+                      <form
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          handleReplyComment(
+                            threadId,
+                            comment.comment_id,
+                            replyCommentFormData.comment,
+                          );
+                        }}
+                        className="w-full"
+                      >
+                        <div className="form-control mb-4">
+                          <label className="label">
+                            <span className="label-text">Comment</span>
+                          </label>
+                          <textarea
+                            name="comment"
+                            placeholder="Write your comment here"
+                            className="textarea textarea-bordered h-60 w-full resize-none text-base"
+                            value={replyCommentFormData.comment}
+                            onChange={handleInputChangeReplyComment}
+                            maxLength={5000}
+                            required
+                          />
+                        </div>
+                        {error && (
+                          <div className="mt-4 text-center text-sm text-error">
+                            Error: {error}
+                          </div>
+                        )}
+                        {success && (
+                          <div className="mt-4 text-center text-sm text-success">
+                            {success}
+                          </div>
+                        )}
+                        <div className="modal-action">
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() =>
+                              (
+                                document.getElementById(
+                                  `reply_comment_modal_${comment.comment_id}`,
+                                ) as HTMLDialogElement
+                              ).close()
+                            }
+                          >
+                            Cancel
+                          </button>
+                          <button type="submit" className="btn btn-primary">
+                            Post Comment
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </dialog>
                 </>
               )}
               <div className="flex items-center space-x-1">

@@ -62,7 +62,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="flex h-screen flex-col">
+      <div className="flex min-h-screen flex-col">
         <div className="border-b-2">
           <Header
             isAuthenticated={isAuthenticated}
@@ -72,60 +72,68 @@ const App: React.FC = () => {
             onLogout={handleLogout}
           />
         </div>
-        <Routes>
-          <Route path="/" element=<Home /> />
-          <Route path="/:categoryTitle" element=<CategoryThreads /> />
-          <Route
-            path="/thread/:slug"
-            element=<ThreadPage
-              isAuthenticated={isAuthenticated}
-              roleId={roleId}
-              userId={userId}
-            />
-          />
-          <Route
-            path="/login"
-            element={
-              !isAuthenticated ? (
-                <AuthPage
-                  setIsAuthenticated={(authenticated: boolean) => {
-                    setIsAuthenticated(authenticated);
-                  }}
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:categoryTitle" element={<CategoryThreads />} />
+            <Route
+              path="/thread/:slug"
+              element={
+                <ThreadPage
+                  isAuthenticated={isAuthenticated}
+                  roleId={roleId}
+                  userId={userId}
                 />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
-          <Route
-            path="/followed-threads"
-            element={<FollowedThreads userId={userId} />}
-          />
-          <Route
-            path="/change-password"
-            element={<ChangePassword isAuthenticated={isAuthenticated} />}
-          />
-          <Route
-            path="/ban-user"
-            element=<BanUserPage
-              isAuthenticated={isAuthenticated}
-              roleId={roleId}
+              }
             />
-          />
-          <Route
-            path="/assign-moderator"
-            element=<AssignModeratorPage
-              isAuthenticated={isAuthenticated}
-              roleId={roleId}
+            <Route
+              path="/login"
+              element={
+                !isAuthenticated ? (
+                  <AuthPage
+                    setIsAuthenticated={(authenticated: boolean) => {
+                      setIsAuthenticated(authenticated);
+                    }}
+                  />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
-          />
-          <Route
-            path="/:categoryTitle/new"
-            element=<NewThread isAuthenticated={isAuthenticated} />
-          />
-          <Route path="/not-found" element={<NotFound />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route
+              path="/followed-threads"
+              element={<FollowedThreads userId={userId} />}
+            />
+            <Route
+              path="/change-password"
+              element={<ChangePassword isAuthenticated={isAuthenticated} />}
+            />
+            <Route
+              path="/ban-user"
+              element={
+                <BanUserPage
+                  isAuthenticated={isAuthenticated}
+                  roleId={roleId}
+                />
+              }
+            />
+            <Route
+              path="/assign-moderator"
+              element={
+                <AssignModeratorPage
+                  isAuthenticated={isAuthenticated}
+                  roleId={roleId}
+                />
+              }
+            />
+            <Route
+              path="/:categoryTitle/new"
+              element={<NewThread isAuthenticated={isAuthenticated} />}
+            />
+            <Route path="/not-found" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
         <Footer />
       </div>
     </Router>

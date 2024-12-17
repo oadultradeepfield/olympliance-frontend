@@ -706,10 +706,10 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
           </button>
           <dialog id="comment_modal" className="modal">
             <div className="modal-box min-w-96 max-w-2xl p-8 md:w-full">
-              <h2 className="mb-2 text-2xl font-bold">
+              <h2 className="mb-2 text-left text-2xl font-bold">
                 You're replying to the thread:
               </h2>
-              <p className="mb-2 text-lg italic">{thread?.title}</p>
+              <p className="mb-2 text-left text-lg italic">{thread?.title}</p>
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
