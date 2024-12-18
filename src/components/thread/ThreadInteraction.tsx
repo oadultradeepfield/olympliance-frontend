@@ -638,7 +638,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
                 : () => navigate("/login")
             }
           >
-            <ArrowUpIcon className="mr-1 h-4 w-4" />
+            <ArrowUpIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             {thread?.stats.upvotes}
           </button>
         </div>
@@ -657,7 +657,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
                 : () => navigate("/login")
             }
           >
-            <ArrowDownIcon className="mr-1 h-4 w-4" />
+            <ArrowDownIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             {thread?.stats.downvotes}
           </button>
         </div>
@@ -676,7 +676,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
                 : () => navigate("/login")
             }
           >
-            <PlusIcon className="mr-1 h-4 w-4" />
+            <PlusIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             {thread?.stats.followers}
           </button>
         </div>
@@ -696,7 +696,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
                 : () => navigate("/login")
             }
           >
-            <ChatBubbleLeftIcon className="mr-1 h-4 w-4" />
+            <ChatBubbleLeftIcon className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             {thread?.stats.comments}
           </button>
           <dialog id="comment_modal" className="modal">

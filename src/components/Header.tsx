@@ -80,8 +80,8 @@ const Header: React.FC<HeaderProps> = ({
       <div className="navbar-start">
         <Link to="/">
           <div className="btn btn-ghost px-2">
-            <img className="w-10" src="/logo.png" alt="App Logo" />
-            <div className="text-xl">Olympliance</div>
+            <img className="w-8 sm:w-10" src="/logo.png" alt="App Logo" />
+            <div className="text-lg sm:text-xl">Olympliance</div>
           </div>
         </Link>
       </div>

@@ -222,7 +222,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
         >
           {SORT_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
-              Sort by: {option.label}
+              {option.label}
             </option>
           ))}
         </select>

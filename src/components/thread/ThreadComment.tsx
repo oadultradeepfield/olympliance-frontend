@@ -722,7 +722,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
         >
           {SORT_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
-              Sort by: {option.label}
+              {option.label}
             </option>
           ))}
         </select>
