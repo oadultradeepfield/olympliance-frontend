@@ -98,13 +98,13 @@ const Header: React.FC<HeaderProps> = ({
         </button>
         {isAuthenticated ? (
           <div className="mr-2 flex items-center space-x-4">
-            <div className="dropdown">
+            <div className="dropdown" tabIndex={0}>
               <button className="avatar btn btn-ghost -mr-1 p-0">
                 <div className="w-10 rounded-full">
                   <img src={getBadgeImage(userReputation)} alt="User Badge" />
                 </div>
               </button>
-              <ul className="menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
+              <ul className="tabIndex={0} menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
                 {roleId > 0 && (
                   <li>
                     <Link to="/ban-user">Ban User</Link>
