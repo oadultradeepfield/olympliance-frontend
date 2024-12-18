@@ -79,7 +79,59 @@ This app was deployed using Netlify. To deploy, simply publish the entire direct
 
 Remember to set the required environment variable in the Site Configuration to ensure the app functions correctly. Additionally, specify the Build Command as `npm run build` and the Publish Directory as `dist` in the deployment settings to ensure the site is properly rendered.
 
+**Note**: If you encounter a bug where refreshing the Netlify app results in a "404 Not Found" error, you can fix this by creating a [`netlify.toml`](./netlify.toml) file as shown in the example below and adding the following lines:
+
+```toml
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+```
+
 ## 5. User Manual
+
+### 5.1 Getting Started
+
+When you visit the main page, you can choose to change the theme to your preference. The default theme is inferred from your system settings. When in dark mode, clicking the sun icon in the header will switch to light mode, and when in light mode, clicking the moon icon will switch to dark mode. Next to it, you’ll find the login/register button.
+
+You can view threads and comments without an account; however, you will need to create an account to interact with any threads or comments.
+
+### 5.2 Creating an Account
+
+As you go to login page, you can switch between registering if you don't have an account or logging in if you do so. This website use username-based authentication, tho you cannot change the username later, so choose it wisely. The password can be later changed, but it is recommended to save somewhere else, since you cannot change when you forgot the current password.
+
+### 5.3 Role-Based Access Controls
+
+Once logged in, you can click on your avatar icon (which will usually be a rocket emoji) to change your password, view followed threads, or log out. Moderators will have additional buttons to ban users, and admins will have another button to assign moderators. These actions work by toggling; for example, if a user is not banned, clicking the button will ban them, and vice versa. A username is required to perform these actions.
+
+**Note**: In this app, there is no functionality to assign an admin. The admin with the highest authority is assigned by directly editing their role in the database (refer to the [backend repo](https://github.com/oadultradeepfield/olympliance-backend)).
+
+### 5.4 User Reputation and Badge
+
+As you engage more with the community, you can earn reputation points, which are calculated on the backend. On the frontend, your avatar is updated based on your reputation. The ranking system is displayed as follows:
+
+- 🏆 **Grandmaster**: 3500 Points
+- 🥇 **Master**: 2000 Points
+- 🎯 **Candidate master**: 800 Points
+- 🧠 **Expert**: 400 Points
+- 🔧 **Specialist**: 100 Points
+- 🧑‍🎓 **Apprentice**: 50 Points
+- 📚 **Pupil**: 15 Points
+- 🚀 **Novice**: 0 Points
+
+Note that your rank will also be displayed next to your name when you post a thread or comment. If you are an admin or moderator, the respective badge will be displayed before the title of the content you posted.
+
+### 5.5 Threads and Comments
+
+You can choose a thread category to begin with on the homepage. Currently, we have around 11 categories, following the officially recognized International Science Olympiads listed on [Wikipedia](https://en.wikipedia.org/wiki/International_Science_Olympiad). IAO and IOAA are categorized under Astronomy, and there is an additional General section for discussing random topics or IJSO, which are not categorized as individual subjects.
+
+In each category page, you will see a title and a list of all threads. The threads are fetched with a maximum of 5 per page. You can use the navigation buttons at the bottom to move between pages. You can also choose to sort the page by Newest, Top Upvoted, Most Comments, or Last Updated. There is a button at the top, labeled "Ask a Question," to create a new thread. To create a thread, you need to title it, write the content, and optionally add tags.
+
+If you click on any existing thread, you will be brought to a single-thread page. The thread stats, including the number of upvotes, downvotes, comments, followers, etc., are displayed on the category page, but you cannot interact with them directly. You need to visit the thread page to interact with it.
+
+On each thread page, you can interact with the thread or reply to comments. When clicked, it will open a modal to make a comment. Below the thread content, you'll find the comment section. You can freely interact with comments, just as you would with the thread. The only exception is that you cannot follow a comment. Comments can be sorted by "Oldest" or "Most Upvoted." When replying to a comment, it will display as "Replied to..." followed by that comment.
+
+**Note**: The thread and comment owners will have a pencil icon and a trash icon next to their content, allowing them to edit or delete their posts. Comments will be flagged as "[Comment deleted]" while the thread will simply disappear. Admins and moderators have access to delete any comments they find offensive, but they cannot edit them.
 
 ## 6. Acknowledgment
 
