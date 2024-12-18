@@ -86,16 +86,16 @@ const Header: React.FC<HeaderProps> = ({
         </Link>
       </div>
       <div className="navbar-end px-2">
-        <button
+        <div
           onClick={toggleTheme}
-          className="btn swap swap-rotate mr-4 rounded-full"
+          className="swap swap-rotate mr-4 rounded-full bg-base-200 p-3 transition-all duration-300 hover:bg-base-300"
         >
           {theme === "dark" ? (
             <SunIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           ) : (
             <MoonIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           )}
-        </button>
+        </div>
         {isAuthenticated ? (
           <div className="flex items-center">
             <div className="dropdown" tabIndex={0}>
