@@ -34,6 +34,11 @@
   - [3.2 Building and Running the App](#32-building-and-running-the-app)
 - [4. Deployment](#4-deployment)
 - [5. User Manual](#5-user-manual)
+  - [5.1 Getting Started](#51-getting-started)
+  - [5.2 Creating an Account](#52-creating-an-account)
+  - [5.3 Role-Based Access Controls](#53-role-based-access-controls)
+  - [5.4 User Reputation and Badge](#54-user-reputation-and-badge)
+  - [5.5 Threads and Comments](#55-threads-and-comments)
 - [6. Acknowledgment](#6-acknowledgment)
 - [7. License](#7-license)
 
@@ -125,13 +130,13 @@ Note that your rank will also be displayed next to your name when you post a thr
 
 You can choose a thread category to begin with on the homepage. Currently, we have around 11 categories, following the officially recognized International Science Olympiads listed on [Wikipedia](https://en.wikipedia.org/wiki/International_Science_Olympiad). IAO and IOAA are categorized under Astronomy, and there is an additional General section for discussing random topics or IJSO, which are not categorized as individual subjects.
 
-In each category page, you will see a title and a list of all threads. The threads are fetched with a maximum of 5 per page. You can use the navigation buttons at the bottom to move between pages. You can also choose to sort the page by Newest, Top Upvoted, Most Comments, or Last Updated. There is a button at the top, labeled "Ask a Question," to create a new thread. To create a thread, you need to title it, write the content, and optionally add tags.
+In each category page, you will see a title and a list of all threads. The threads are fetched with a maximum of 5 per page. You can use the navigation buttons at the bottom to move between pages. You can also choose to sort the page by Newest, Top Upvoted, Most Comments, or Last Updated. There is a button at the top, labeled "Ask a Question," to create a new thread. To create a thread, you need a title, a content, and optionally tags.
 
 If you click on any existing thread, you will be brought to a single-thread page. The thread stats, including the number of upvotes, downvotes, comments, followers, etc., are displayed on the category page, but you cannot interact with them directly. You need to visit the thread page to interact with it.
 
-On each thread page, you can interact with the thread or reply to comments. When clicked, it will open a modal to make a comment. Below the thread content, you'll find the comment section. You can freely interact with comments, just as you would with the thread. The only exception is that you cannot follow a comment. Comments can be sorted by "Oldest" or "Most Upvoted." When replying to a comment, it will display as "Replied to..." followed by that comment.
+On each thread page, you can interact with the thread or reply to comments. When clicked, it will open a modal to make a comment. Below the thread content, you'll find the comment section. You can freely interact with comments, just as you would with the thread. The only exception is that you cannot follow a comment. Comments can be sorted by "Oldest" or "Most Upvoted." When replying to a comment, it will display as "Replied to..." followed by that comment. Comment are fetched with a maximum of 10 per page.
 
-**Note**: The thread and comment owners will have a pencil icon and a trash icon next to their content, allowing them to edit or delete their posts. Comments will be flagged as "[Comment deleted]" while the thread will simply disappear. Admins and moderators have access to delete any comments they find offensive, but they cannot edit them.
+**Note**: The thread and comment owners will have a pencil icon and a trash icon next to their content, allowing them to edit or delete their posts. Comments will be flagged as "[Comment deleted]" while the thread will simply disappear. Admins and moderators have access to delete any comments, but they cannot edit them.
 
 ## 6. Acknowledgment
 
