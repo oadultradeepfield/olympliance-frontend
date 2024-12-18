@@ -79,7 +79,7 @@ const App: React.FC = () => {
               onLogout={handleLogout}
             />
           </div>
-          <div className="flex-grow">
+          <div className="flex flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/:categoryTitle" element={<CategoryThreads />} />

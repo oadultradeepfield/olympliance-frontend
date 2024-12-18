@@ -76,16 +76,16 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
+    <div className="bg-base-100py-3 navbar top-0 mx-auto w-full max-w-5xl">
       <div className="navbar-start">
         <Link to="/">
-          <div className="btn btn-ghost">
+          <div className="btn btn-ghost px-2">
             <img className="w-10" src="/logo.png" alt="App Logo" />
             <div className="text-xl">Olympliance</div>
           </div>
         </Link>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end px-2">
         <button
           onClick={toggleTheme}
           className="btn swap swap-rotate mr-4 rounded-full"
@@ -97,14 +97,14 @@ const Header: React.FC<HeaderProps> = ({
           )}
         </button>
         {isAuthenticated ? (
-          <div className="mr-2 flex items-center space-x-4">
+          <div className="flex items-center">
             <div className="dropdown" tabIndex={0}>
-              <button className="avatar btn btn-ghost -mr-1 p-0">
+              <button className="avatar btn btn-ghost mr-0 p-0 sm:mr-3">
                 <div className="w-10 rounded-full">
                   <img src={getBadgeImage(userReputation)} alt="User Badge" />
                 </div>
               </button>
-              <ul className="tabIndex={0} menu dropdown-content menu-sm z-[1] -ml-36 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
+              <ul className="tabIndex={0} menu dropdown-content menu-sm z-[1] -ml-44 mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
                 {roleId > 0 && (
                   <li>
                     <Link to="/ban-user">Ban User</Link>
@@ -128,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="hidden flex-col sm:flex">
               <div className="-mb-1">Welcome back,</div>
-              <div className="font-bold">{username}</div>
+              <div className="max-w-[14ch] truncate font-bold">@{username}</div>
             </div>
           </div>
         ) : (
