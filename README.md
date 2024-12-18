@@ -7,6 +7,8 @@
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7)
 
+![Mockup](/public/mock_up.jpg)
+
 ## 1. About the Project
 
 ### 1.1 Description
