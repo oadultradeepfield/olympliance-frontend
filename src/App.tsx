@@ -144,7 +144,9 @@ const App: React.FC = () => {
           <Footer />
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="flex h-screen items-center justify-center">
+          <span className="loading loading-spinner loading-lg text-base-content/75"></span>
+        </div>
       )}
     </Router>
   );
