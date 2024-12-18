@@ -91,7 +91,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   const [comments, setComments] = useState<
     (CommentData & { user?: UserInfo; interactions?: InteractionsInfo[] })[]
   >([]);
-  const [sortBy, setSortBy] = useState<string>("created_at");
+  const [sortBy, setSortBy] = useState<string>("upvotes");
   const [page, setPage] = useState<number>(1);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);

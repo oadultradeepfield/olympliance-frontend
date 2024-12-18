@@ -91,16 +91,16 @@ const Header: React.FC<HeaderProps> = ({
           className="btn swap swap-rotate mr-4 rounded-full"
         >
           {theme === "dark" ? (
-            <SunIcon className="h-6 w-6" />
+            <SunIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           ) : (
-            <MoonIcon className="h-6 w-6" />
+            <MoonIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           )}
         </button>
         {isAuthenticated ? (
           <div className="flex items-center">
             <div className="dropdown" tabIndex={0}>
               <button className="avatar btn btn-ghost mr-0 p-0 sm:mr-3">
-                <div className="w-10 rounded-full">
+                <div className="w-8 rounded-full sm:w-10">
                   <img src={getBadgeImage(userReputation)} alt="User Badge" />
                 </div>
               </button>
