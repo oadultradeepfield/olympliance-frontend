@@ -19,7 +19,9 @@ const ThreadList: React.FC<ThreadListProps> = ({
 
   const { threads, loading } = useThreads({
     apiEndpoint: `/api/threads/category/${categoryId}`,
-    params: { sort_by: sortBy, page: page, per_page: 5 },
+    sort_by: sortBy,
+    page: page,
+    per_page: 5,
   });
 
   return (

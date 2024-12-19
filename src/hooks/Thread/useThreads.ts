@@ -6,11 +6,19 @@ import { apiUrl } from "../../data/apiUrl";
 
 interface UseThreadsProps {
   apiEndpoint: string;
-  params: { sort_by: string; page: number; per_page: number };
+  sort_by: string;
+  page: number;
+  per_page: number;
   token?: string;
 }
 
-export const useThreads = ({ apiEndpoint, params, token }: UseThreadsProps) => {
+export const useThreads = ({
+  apiEndpoint,
+  sort_by,
+  page,
+  per_page,
+  token,
+}: UseThreadsProps) => {
   const [threads, setThreads] = useState<(ThreadData & { user?: UserInfo })[]>(
     [],
   );
@@ -24,7 +32,7 @@ export const useThreads = ({ apiEndpoint, params, token }: UseThreadsProps) => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const threadsResponse = await axios.get(`${apiUrl}${apiEndpoint}`, {
-          params,
+          params: { sort_by, page, per_page },
           headers,
         });
 
@@ -50,7 +58,7 @@ export const useThreads = ({ apiEndpoint, params, token }: UseThreadsProps) => {
     };
 
     fetchThreads();
-  }, [apiEndpoint, token]);
+  }, [apiEndpoint, token, sort_by, page, per_page]);
 
   return { threads, loading };
 };

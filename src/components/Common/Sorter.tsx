@@ -61,5 +61,3 @@ export const ThreadSorter: React.FC<{
     />
   );
 };
-
-export default Sorter;
