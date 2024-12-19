@@ -1,7 +1,8 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from "react";
-import axios from "axios";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { MessageDisplay } from "../../components/Common/MessageDisplay";
+import { useChangePassword } from "../../hooks/useChangePassword";
+import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 
 interface ChangePasswordProps {
   isAuthenticated: boolean;
@@ -14,8 +15,8 @@ interface PasswordState {
 }
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
-  const apiUrl: string = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const { changePassword, error, success } = useChangePassword();
 
   const [formData, setFormData] = useState<PasswordState>({
     currentPassword: "",
@@ -23,14 +24,19 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
     confirmNewPassword: "",
   });
 
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
-  const [showCurrentPassword, setShowCurrentPassword] =
-    useState<boolean>(false);
-  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
-  const [showConfirmNewPassword, setShowConfirmNewPassword] =
-    useState<boolean>(false);
+  const togglePasswordVisibility = (field: "current" | "new" | "confirm") => {
+    if (field === "current") {
+      setShowCurrentPassword((prev) => !prev);
+    } else if (field === "new") {
+      setShowNewPassword((prev) => !prev);
+    } else if (field === "confirm") {
+      setShowConfirmNewPassword((prev) => !prev);
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -46,59 +52,9 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
     }));
   };
 
-  const handleChangePassword = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `${apiUrl}/api/users/change-password`,
-        {
-          current_password: formData.currentPassword,
-          new_password: formData.newPassword,
-          confirm_password: formData.confirmNewPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      setSuccess(response.data.message || "Password changed successfully!");
-
-      setFormData({
-        currentPassword: "",
-        newPassword: "",
-        confirmNewPassword: "",
-      });
-
-      setTimeout(() => {
-        setSuccess("");
-        navigate("/");
-      }, 3000);
-    } catch (error: any) {
-      const errorMessage =
-        error.response.data.error ||
-        "An unknown error occurred while changing password. Please try again.";
-      setError(errorMessage);
-    }
-  };
-
-  const togglePasswordVisibility = (field: string) => {
-    switch (field) {
-      case "currentPassword":
-        setShowCurrentPassword(!showCurrentPassword);
-        break;
-      case "newPassword":
-        setShowNewPassword(!showNewPassword);
-        break;
-      case "confirmNewPassword":
-        setShowConfirmNewPassword(!showConfirmNewPassword);
-        break;
-    }
+    changePassword(formData);
   };
 
   return (
@@ -106,7 +62,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
       <div className="card w-96 border-2 bg-base-100">
         <div className="card-body items-center text-center">
           <h2 className="card-title mb-4 text-2xl">Change Password</h2>
-          <form onSubmit={handleChangePassword} className="w-full">
+          <form onSubmit={handleSubmit} className="w-full">
             <div className="form-control relative mx-auto w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Current Password</span>
@@ -121,17 +77,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
                   onChange={handleInputChange}
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => togglePasswordVisibility("currentPassword")}
-                  className="text-base-content-200 absolute right-2 top-1/2 -translate-y-1/2 hover:text-secondary focus:outline-none"
-                >
-                  {showCurrentPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
+                <PasswordVisibilityToggle
+                  showPassword={showCurrentPassword}
+                  onToggle={() => togglePasswordVisibility("current")}
+                />
               </div>
             </div>
             <div className="form-control relative mx-auto mt-4 w-full max-w-xs">
@@ -148,17 +97,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
                   onChange={handleInputChange}
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => togglePasswordVisibility("newPassword")}
-                  className="text-base-content-200 absolute right-2 top-1/2 -translate-y-1/2 hover:text-secondary focus:outline-none"
-                >
-                  {showNewPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
+                <PasswordVisibilityToggle
+                  showPassword={showNewPassword}
+                  onToggle={() => togglePasswordVisibility("new")}
+                />
               </div>
             </div>
             <div className="form-control relative mx-auto mt-4 w-full max-w-xs">
@@ -175,31 +117,15 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
                   onChange={handleInputChange}
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => togglePasswordVisibility("confirmNewPassword")}
-                  className="text-base-content-200 absolute right-2 top-1/2 -translate-y-1/2 hover:text-secondary focus:outline-none"
-                >
-                  {showConfirmNewPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
+                <PasswordVisibilityToggle
+                  showPassword={showConfirmNewPassword}
+                  onToggle={() => togglePasswordVisibility("confirm")}
+                />
               </div>
             </div>
 
-            {error && (
-              <div className="mt-4 text-center text-sm text-error">
-                Error: {error}
-              </div>
-            )}
-
-            {success && (
-              <div className="mt-4 text-center text-sm text-success">
-                {success}
-              </div>
-            )}
+            {error && <MessageDisplay message={error} type="error" />}
+            {success && <MessageDisplay message={success} type="success" />}
 
             <div className="form-control mx-auto mt-6 w-full max-w-xs">
               <button type="submit" className="btn btn-primary w-full">
