@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import ThreadInteraction from "../../components/Thread/ThreadInteraction";
-import ThreadComment from "../../components/Thread/ThreadComment";
+import ThreadComment from "../../components/Comment/ThreadComment";
 
 interface ThreadPageProps {
   isAuthenticated: boolean;
@@ -18,7 +18,7 @@ const ThreadPage: React.FC<ThreadPageProps> = ({
   const category = slug?.split("-")[0] || "";
 
   return (
-    <div className="mx-auto mb-24 mt-2 h-full w-full max-w-5xl flex-col items-center justify-center px-4">
+    <div className="mx-auto mb-24 mt-2 h-full w-full max-w-5xl flex-col items-center justify-center p-6">
       <ThreadInteraction
         threadId={id}
         category={category}

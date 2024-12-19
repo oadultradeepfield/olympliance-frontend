@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ThreadData } from "../data/threadData";
-import { UserInfo } from "../data/userData";
+import { ThreadData } from "../../data/threadData";
+import { UserInfo } from "../../data/userData";
 
 interface UseThreadsProps {
   apiEndpoint: string;
