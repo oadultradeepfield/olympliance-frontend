@@ -1,4 +1,4 @@
-import FollowedThreadList from "../components/users/FollowedThreadList";
+import FollowedThreadList from "../../components/User/FollowedThreadList";
 
 interface FollowedThreadsProp {
   userId: number;

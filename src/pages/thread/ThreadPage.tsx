@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import ThreadInteraction from "../components/thread/ThreadInteraction";
-import ThreadComment from "../components/thread/ThreadComment";
+import ThreadInteraction from "../../components/Thread/ThreadInteraction";
+import ThreadComment from "../../components/Thread/ThreadComment";
 
 interface ThreadPageProps {
   isAuthenticated: boolean;

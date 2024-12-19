@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,18 +6,18 @@ import {
   Navigate,
 } from "react-router-dom";
 import axios from "axios";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import AuthPage from "./pages/AuthPage";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import Home from "./pages/home/Home";
+import AuthPage from "./pages/auth/AuthPage";
 import NotFound from "./pages/NotFound";
-import ChangePassword from "./pages/ChangePassword";
-import CategoryThreads from "./pages/CategoryThreads";
-import NewThread from "./pages/NewThread";
-import ThreadPage from "./pages/ThreadPage";
-import BanUserPage from "./pages/BanUserPage";
-import AssignModeratorPage from "./pages/AssignModeratorPage";
-import FollowedThreads from "./pages/FollowedThreads";
+import ChangePassword from "./pages/auth/ChangePassword";
+import CategoryThreads from "./pages/category/CategoryThreads";
+import NewThread from "./pages/thread/NewThread";
+import ThreadPage from "./pages/thread/ThreadPage";
+import BanUserPage from "./pages/user/BanUserPage";
+import AssignModeratorPage from "./pages/user/AssignModeratorPage";
+import FollowedThreads from "./pages/thread/FollowedThreads";
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
