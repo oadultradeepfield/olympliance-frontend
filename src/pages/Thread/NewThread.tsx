@@ -17,7 +17,6 @@ interface ThreadFormData {
 const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { categoryTitle } = useParams<{ categoryTitle: string }>();
-  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -55,7 +54,6 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
     formData,
     category,
     navigate,
-    apiUrl,
   );
 
   return (

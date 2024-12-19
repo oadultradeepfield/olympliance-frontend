@@ -10,19 +10,17 @@ import { useComment } from "../../hooks/Thread/useComment";
 interface CommentButtonProps {
   isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
 }
 
 const CommentButton: React.FC<CommentButtonProps> = ({
   isAuthenticated,
   thread,
-  apiUrl,
 }) => {
   const navigate = useNavigate();
 
   const [comment, setComment] = useState("");
 
-  const { success, error, handleComment } = useComment(apiUrl);
+  const { success, error, handleComment } = useComment();
 
   const handleInputChangeComment = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

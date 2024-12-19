@@ -9,7 +9,6 @@ interface ThreadContentProps {
   userId: number;
   roleId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
   category: string;
   badge: Badge | null;
 }
@@ -18,7 +17,6 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
   userId,
   roleId,
   thread,
-  apiUrl,
   category,
   badge,
 }) => {
@@ -30,12 +28,11 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     <>
       <div className="mb-2 flex items-center">
         <div className="mr-2 text-3xl font-bold">{thread.title}</div>
-        <EditThreadModal userId={userId} apiUrl={apiUrl} thread={thread} />
+        <EditThreadModal userId={userId} thread={thread} />
         <DeleteThreadModal
           userId={userId}
           roleId={roleId}
           thread={thread}
-          apiUrl={apiUrl}
           category={category}
         />
       </div>

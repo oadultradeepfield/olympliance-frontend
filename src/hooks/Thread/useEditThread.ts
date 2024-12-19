@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../data/apiUrl";
 
-export const useEditThread = (apiUrl: string) => {
+export const useEditThread = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 

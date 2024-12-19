@@ -7,7 +7,6 @@ interface DeleteThreadModalProps {
   userId: number;
   roleId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
   category: string;
 }
 
@@ -15,10 +14,9 @@ const DeleteThreadModal: React.FC<DeleteThreadModalProps> = ({
   userId,
   roleId,
   thread,
-  apiUrl,
   category,
 }) => {
-  const { deleteThread } = useDeleteThread(apiUrl, category);
+  const { deleteThread } = useDeleteThread(category);
 
   const handleDeleteThread = () => {
     if (thread) {

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../data/apiUrl";
 
-export const useComment = (apiUrl: string) => {
+export const useComment = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 

@@ -8,15 +8,13 @@ import { UserInfo } from "../../data/userData";
 interface EditThreadModalProps {
   userId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
 }
 
 const EditThreadModal: React.FC<EditThreadModalProps> = ({
   userId,
   thread,
-  apiUrl,
 }) => {
-  const { error, success, handleEditThread } = useEditThread(apiUrl);
+  const { error, success, handleEditThread } = useEditThread();
 
   const [title, setTitle] = useState(thread?.title || "");
   const [content, setContent] = useState(thread?.content || "");

@@ -20,6 +20,7 @@ import specialistBadge from "../../assets/05_badges_specialist.png";
 import apprenticeBadge from "../../assets/06_badges_apprentice.png";
 import pupilBadge from "../../assets/07_badges_pupil.png";
 import noviceBadge from "../../assets/08_badges_novice.png";
+import { apiUrl } from "../../data/apiUrl";
 
 const getBadgeImage = (reputation: number) => {
   if (reputation >= 3500)
@@ -115,8 +116,6 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
   >({});
   const [shouldRefetchInteractions, setShouldRefetchInteractions] =
     useState<boolean>(false);
-
-  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchComments = async () => {

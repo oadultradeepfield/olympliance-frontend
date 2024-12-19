@@ -2,9 +2,9 @@ import axios from "axios";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
 import { InteractionState } from "../../data/interactionData";
+import { apiUrl } from "../../data/apiUrl";
 
 export const useInteractionButton = (
-  apiUrl: string,
   threadId: number,
   interactions: InteractionState,
   setThread: React.Dispatch<

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../data/apiUrl";
 
 interface FormState {
   username: string;
@@ -7,13 +8,11 @@ interface FormState {
 }
 
 interface UseUserManagementProps {
-  apiUrl: string;
   actionType: "moderator" | "ban";
   onSuccess?: () => void;
 }
 
 export const useUserManagement = ({
-  apiUrl,
   actionType,
   onSuccess,
 }: UseUserManagementProps) => {

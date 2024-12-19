@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
+import { apiUrl } from "../../data/apiUrl";
 
 interface UseThreadsProps {
   apiEndpoint: string;
@@ -14,7 +15,6 @@ export const useThreads = ({ apiEndpoint, params, token }: UseThreadsProps) => {
     [],
   );
   const [loading, setLoading] = useState<boolean>(true);
-  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchThreads = async () => {

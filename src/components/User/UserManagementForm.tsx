@@ -6,7 +6,6 @@ interface UserManagementFormProps {
   actionType: "moderator" | "ban";
   buttonText: string;
   buttonClassName: string;
-  apiUrl: string;
   onSuccess?: () => void;
 }
 
@@ -15,11 +14,10 @@ export const UserManagementForm: React.FC<UserManagementFormProps> = ({
   actionType,
   buttonText,
   buttonClassName,
-  apiUrl,
   onSuccess,
 }) => {
   const { formData, error, success, handleInputChange, handleSubmit } =
-    useUserManagement({ apiUrl, actionType, onSuccess });
+    useUserManagement({ actionType, onSuccess });
 
   return (
     <div className="card w-96 border-2 bg-base-100">

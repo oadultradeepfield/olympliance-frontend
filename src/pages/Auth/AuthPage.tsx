@@ -7,7 +7,6 @@ interface AuthPageProps {
 }
 
 const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
-  const apiUrl = import.meta.env.VITE_API_URL;
   const {
     formData,
     showPassword,
@@ -21,7 +20,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
     toggleAuthMode,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
-  } = useAuthForm(apiUrl, setIsAuthenticated);
+  } = useAuthForm(setIsAuthenticated);
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">

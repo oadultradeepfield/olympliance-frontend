@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Interaction } from "../../data/interactionData";
 import { InteractionState } from "../../data/interactionData";
+import { apiUrl } from "../../data/apiUrl";
 
 const useInteractions = (
-  apiUrl: string,
   threadId: number,
   userId: number,
   shouldRefetch: boolean,
@@ -64,7 +64,7 @@ const useInteractions = (
     if (threadId && userId) {
       fetchInteractions();
     }
-  }, [apiUrl, threadId, userId, shouldRefetch]);
+  }, [threadId, userId, shouldRefetch]);
 
   return {
     interactions,

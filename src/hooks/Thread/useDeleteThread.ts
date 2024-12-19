@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { apiUrl } from "../../data/apiUrl";
 
-export const useDeleteThread = (apiUrl: string, category: string) => {
+export const useDeleteThread = (category: string) => {
   const navigate = useNavigate();
 
   const deleteThread = async (threadId: number) => {

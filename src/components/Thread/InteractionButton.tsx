@@ -14,7 +14,6 @@ interface InteractionButtonProps {
   interactions: InteractionState;
   isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
   setThread: React.Dispatch<
     React.SetStateAction<(ThreadData & { user?: UserInfo }) | null>
   >;
@@ -27,13 +26,11 @@ const InteractionButton: React.FC<InteractionButtonProps> = ({
   interactions,
   isAuthenticated,
   thread,
-  apiUrl,
   setThread,
   setInteractions,
   setShouldRefetchInteractions,
 }) => {
   const { handleInteraction } = useInteractionButton(
-    apiUrl,
     thread?.thread_id || 0,
     interactions,
     setThread,

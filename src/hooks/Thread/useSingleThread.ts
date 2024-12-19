@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
+import { apiUrl } from "../../data/apiUrl";
 
 export interface ThreadFormData {
   title: string;
@@ -10,7 +11,6 @@ export interface ThreadFormData {
 }
 
 export const useSingleThread = (
-  apiUrl: string,
   threadId: number,
 ): {
   thread: (ThreadData & { user?: UserInfo }) | null;
@@ -49,7 +49,7 @@ export const useSingleThread = (
     };
 
     if (threadId) fetchThread();
-  }, [apiUrl, threadId]);
+  }, [threadId]);
 
   return { thread, loading, setThread };
 };

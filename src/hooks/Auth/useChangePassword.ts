@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../data/apiUrl";
 
 interface PasswordState {
   currentPassword: string;
@@ -18,8 +19,6 @@ interface UseChangePasswordResult {
 }
 
 export const useChangePassword = (): UseChangePasswordResult => {
-  const apiUrl: string = import.meta.env.VITE_API_URL;
-
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);

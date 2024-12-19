@@ -8,7 +8,6 @@ interface InteractionsAndCommentProps {
   interactions: InteractionState;
   isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
-  apiUrl: string;
   setThread: React.Dispatch<
     React.SetStateAction<(ThreadData & { user?: UserInfo }) | null>
   >;
@@ -20,7 +19,6 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
   interactions,
   isAuthenticated,
   thread,
-  apiUrl,
   setThread,
   setInteractions,
   setShouldRefetchInteractions,
@@ -32,7 +30,6 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
         interactions={interactions}
         isAuthenticated={isAuthenticated}
         thread={thread}
-        apiUrl={apiUrl}
         setThread={setThread}
         setInteractions={setInteractions}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
@@ -42,7 +39,6 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
         interactions={interactions}
         isAuthenticated={isAuthenticated}
         thread={thread}
-        apiUrl={apiUrl}
         setThread={setThread}
         setInteractions={setInteractions}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
@@ -52,16 +48,11 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
         interactions={interactions}
         isAuthenticated={isAuthenticated}
         thread={thread}
-        apiUrl={apiUrl}
         setThread={setThread}
         setInteractions={setInteractions}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
       />
-      <CommentButton
-        isAuthenticated={isAuthenticated}
-        thread={thread}
-        apiUrl={apiUrl}
-      />
+      <CommentButton isAuthenticated={isAuthenticated} thread={thread} />
     </div>
   );
 };

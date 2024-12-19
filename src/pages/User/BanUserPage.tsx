@@ -12,7 +12,6 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
   roleId,
 }) => {
   const navigate = useNavigate();
-  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -31,7 +30,6 @@ const BanUserPage: React.FC<BanUserPageProps> = ({
         actionType="ban"
         buttonText="Toggle Ban"
         buttonClassName="btn-error"
-        apiUrl={apiUrl}
       />
     </div>
   );

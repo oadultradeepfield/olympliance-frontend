@@ -22,12 +22,10 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   roleId,
   userId,
 }) => {
-  const apiUrl: string = import.meta.env.VITE_API_URL;
   const [shouldRefetchInteractions, setShouldRefetchInteractions] =
     useState<boolean>(false);
-  const { thread, loading, setThread } = useSingleThread(apiUrl, threadId);
+  const { thread, loading, setThread } = useSingleThread(threadId);
   const { interactions, setInteractions } = useInteractions(
-    apiUrl,
     threadId,
     userId,
     shouldRefetchInteractions,
@@ -49,7 +47,6 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
         userId={userId}
         roleId={roleId}
         thread={thread}
-        apiUrl={apiUrl}
         category={category}
         badge={badge}
       />
@@ -59,7 +56,6 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
         thread={thread}
         setThread={setThread}
         isAuthenticated={isAuthenticated}
-        apiUrl={apiUrl}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
       />
     </>

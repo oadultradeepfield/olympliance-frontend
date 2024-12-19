@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../data/apiUrl";
 
 interface ThreadFormData {
   title: string;
@@ -11,7 +12,6 @@ export const useNewThread = (
   formData: ThreadFormData,
   category: { id: number; title: string },
   navigate: (path: string) => void,
-  apiUrl: string,
 ) => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");

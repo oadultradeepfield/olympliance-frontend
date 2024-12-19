@@ -12,7 +12,6 @@ const AssignModeratorPage: React.FC<AssignModeratorPageProps> = ({
   roleId,
 }) => {
   const navigate = useNavigate();
-  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -31,7 +30,6 @@ const AssignModeratorPage: React.FC<AssignModeratorPageProps> = ({
         actionType="moderator"
         buttonText="Toggle Moderator"
         buttonClassName="btn-secondary"
-        apiUrl={apiUrl}
       />
     </div>
   );
