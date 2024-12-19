@@ -8,20 +8,20 @@ import {
 import axios from "axios";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import Home from "./pages/home/Home";
-import AuthPage from "./pages/auth/AuthPage";
+import Home from "./pages/Home/Home";
+import AuthPage from "./pages/Auth/AuthPage";
 import NotFound from "./pages/NotFound";
-import ChangePassword from "./pages/auth/ChangePassword";
-import CategoryThreads from "./pages/category/CategoryThreads";
-import NewThread from "./pages/thread/NewThread";
-import ThreadPage from "./pages/thread/ThreadPage";
-import BanUserPage from "./pages/user/BanUserPage";
-import AssignModeratorPage from "./pages/user/AssignModeratorPage";
-import FollowedThreads from "./pages/thread/FollowedThreads";
-
-const apiUrl: string = import.meta.env.VITE_API_URL;
+import ChangePassword from "./pages/Auth/ChangePassword";
+import CategoryThreads from "./pages/Category/CategoryThreads";
+import NewThread from "./pages/Thread/NewThread";
+import ThreadPage from "./pages/Thread/ThreadPage";
+import BanUserPage from "./pages/User/BanUserPage";
+import AssignModeratorPage from "./pages/User/AssignModeratorPage";
+import FollowedThreads from "./pages/Thread/FollowedThreads";
+import Loading from "./components/Common/Loading";
 
 const App: React.FC = () => {
+  const apiUrl: string = import.meta.env.VITE_API_URL;
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return !!localStorage.getItem("token");
   });
@@ -144,9 +144,7 @@ const App: React.FC = () => {
           <Footer />
         </div>
       ) : (
-        <div className="flex h-screen items-center justify-center">
-          <span className="loading loading-spinner loading-lg text-base-content/75"></span>
-        </div>
+        <Loading />
       )}
     </Router>
   );

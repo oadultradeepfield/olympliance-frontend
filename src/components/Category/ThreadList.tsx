@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { ThreadData } from "../../data/threadData";
-import { UserInfo } from "../../data/userData";
+import { useState } from "react";
 import { ThreadSorter } from "../Common/Sorter";
 import { ThreadCard } from "./ThreadCard";
 import Pagination from "../Common/Pagination";
 import Loading from "../Common/Loading";
+import { useThreads } from "../../hooks/useThreads";
 
 interface ThreadListProps {
   categoryId: number;
@@ -16,49 +14,13 @@ const ThreadList: React.FC<ThreadListProps> = ({
   categoryId,
   categoryTitle,
 }) => {
-  const [threads, setThreads] = useState<(ThreadData & { user?: UserInfo })[]>(
-    [],
-  );
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  const apiUrl: string = import.meta.env.VITE_API_URL;
-
-  useEffect(() => {
-    const fetchThreads = async () => {
-      try {
-        setLoading(true);
-        const threadsResponse = await axios.get(
-          `${apiUrl}/api/threads/category/${categoryId}`,
-          {
-            params: {
-              sort_by: sortBy,
-              page: page,
-              per_page: 5,
-            },
-          },
-        );
-
-        const threadsWithUsers = await Promise.all(
-          threadsResponse.data.threads.map(async (thread: ThreadData) => {
-            const userResponse = await axios.get(
-              `${apiUrl}/api/users/${thread.user_id}`,
-            );
-            return { ...thread, user: userResponse.data };
-          }),
-        );
-
-        setThreads(threadsWithUsers);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching threads:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchThreads();
-  }, [categoryId, sortBy, page]);
+  const { threads, loading } = useThreads({
+    apiEndpoint: `/api/threads/category/${categoryId}`,
+    params: { sort_by: sortBy, page: page, per_page: 5 },
+  });
 
   return (
     <div className="container mx-auto px-4 py-6">
