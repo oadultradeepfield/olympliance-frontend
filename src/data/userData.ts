@@ -1,4 +1,5 @@
 export interface UserInfo {
+  user_id: number;
   username: string;
   reputation: number;
   role_id: number;

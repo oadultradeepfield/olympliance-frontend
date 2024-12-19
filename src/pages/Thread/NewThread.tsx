@@ -1,6 +1,8 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
-import axios from "axios";
+import { categories } from "../../data/categoriesData";
+import { MessageDisplay } from "../../components/Common/MessageDisplay";
+import { useNewThread } from "../../hooks/Thread/useNewThread";
 
 interface NewThreadProps {
   isAuthenticated: boolean;
@@ -16,19 +18,6 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { categoryTitle } = useParams<{ categoryTitle: string }>();
   const apiUrl: string = import.meta.env.VITE_API_URL;
-  const categories = [
-    { id: 1, emoji: "📚", title: "General" },
-    { id: 2, emoji: "🧮", title: "Mathematics" },
-    { id: 3, emoji: "⚛️", title: "Physics" },
-    { id: 4, emoji: "🧪", title: "Chemistry" },
-    { id: 5, emoji: "💻", title: "Informatics" },
-    { id: 6, emoji: "🔬", title: "Biology" },
-    { id: 7, emoji: "🤯", title: "Philosophy" },
-    { id: 8, emoji: "🪐", title: "Astronomy" },
-    { id: 9, emoji: "🌏", title: "Geography" },
-    { id: 10, emoji: "💬", title: "Linguistics" },
-    { id: 11, emoji: "🗿", title: "Earth Science" },
-  ];
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,9 +41,6 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
     tags: "",
   });
 
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -65,54 +51,12 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
     }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    if (!formData.title.trim()) {
-      setError("Thread title cannot be empty");
-      return;
-    }
-
-    if (!formData.content.trim()) {
-      setError("Thread content cannot be empty");
-      return;
-    }
-
-    const tags = formData.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag !== "");
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${apiUrl}/api/threads`,
-        {
-          title: formData.title,
-          content: formData.content,
-          category_id: category.id,
-          tags: tags,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      setSuccess(response.data.message);
-      setTimeout(() => {
-        navigate(`/${categoryTitle?.toLowerCase().replace(/\s/g, "")}`);
-      }, 1000);
-    } catch (error: any) {
-      const errorMessage =
-        error.response.data.error ||
-        "An error occurred while creating the thread. Please try again.";
-      setError(errorMessage);
-    }
-  };
+  const { handleSubmit, error, success } = useNewThread(
+    formData,
+    category,
+    navigate,
+    apiUrl,
+  );
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-grow flex-col items-center justify-center px-6 py-12">
@@ -167,16 +111,11 @@ const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
                 onChange={handleInputChange}
               />
             </div>
-            {error && (
-              <div className="mt-4 text-center text-sm text-error">
-                Error: {error}
-              </div>
-            )}
-            {success && (
-              <div className="mt-4 text-center text-sm text-success">
-                {success}
-              </div>
-            )}
+
+            {error && <MessageDisplay message={error} type="error" />}
+
+            {success && <MessageDisplay message={success} type="success" />}
+
             <div className="form-control mt-6">
               <button type="submit" className="btn btn-primary w-full">
                 Create Thread

@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
-import { useChangePassword } from "../../hooks/useChangePassword";
+import { useChangePassword } from "../../hooks/Auth/useChangePassword";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 
 interface ChangePasswordProps {

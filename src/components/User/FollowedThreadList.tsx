@@ -3,7 +3,7 @@ import { ThreadSorter } from "../../components/Common/Sorter";
 import { ThreadCard } from "../../components/Category/ThreadCard";
 import Pagination from "../../components/Common/Pagination";
 import Loading from "../../components/Common/Loading";
-import { useThreads } from "../../hooks/useThreads";
+import { useThreads } from "../../hooks/Thread/useThreads";
 
 interface FollowedThreadListProps {
   userId: number;

@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   ArrowUpIcon,
-  ShieldCheckIcon,
-  StarIcon,
   ArrowDownIcon,
   PlusIcon,
   ChatBubbleLeftIcon,
@@ -11,6 +9,10 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Navigate, useNavigate } from "react-router-dom";
+import { ThreadData } from "../../data/threadData";
+import { UserInfo } from "../../data/userData";
+import { getBadge } from "../../utils/getBadge";
+import UserRoleBadge from "../Common/UserRoleBadge";
 
 interface ThreadInteractionProps {
   threadId: number;
@@ -18,30 +20,6 @@ interface ThreadInteractionProps {
   isAuthenticated: boolean;
   roleId: number;
   userId: number;
-}
-
-interface UserInfo {
-  user_id: number;
-  username: string;
-  reputation: number;
-  role_id: number;
-  is_banned: boolean;
-}
-
-interface ThreadData {
-  thread_id: number;
-  user_id: number;
-  title: string;
-  content: string;
-  stats: {
-    followers: number;
-    upvotes: number;
-    downvotes: number;
-    comments: number;
-  };
-  created_at: string;
-  updated_at: string;
-  tags: string[];
 }
 
 interface ThreadFormData {
@@ -74,17 +52,6 @@ interface InteractionState {
     id?: number;
   };
 }
-
-const getBadgeImage = (reputation: number) => {
-  if (reputation >= 3500) return "Grandmaster";
-  if (reputation >= 2000) return "Master";
-  if (reputation >= 800) return "Candidate Master";
-  if (reputation >= 400) return "Expert";
-  if (reputation >= 100) return "Specialist";
-  if (reputation >= 50) return "Apprentice";
-  if (reputation >= 15) return "Pupil";
-  return "Novice";
-};
 
 const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   threadId,
@@ -296,25 +263,6 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     }
   };
 
-  const getRoleBadge = (user?: UserInfo) => {
-    switch (user?.role_id) {
-      case 1:
-        return (
-          <div className="badge badge-secondary mr-2 items-center text-xs">
-            <ShieldCheckIcon className="mr-1 h-3 w-3" /> Moderator
-          </div>
-        );
-      case 2:
-        return (
-          <div className="badge badge-success mr-2 items-center text-xs">
-            <StarIcon className="mr-1 h-3 w-3" /> Admin
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
   const handleComment = async (threadId: number, content: string) => {
     try {
       const token = localStorage.getItem("token");
@@ -430,7 +378,7 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
     return <Navigate to="/not-found" />;
   }
 
-  const badge = thread.user ? getBadgeImage(thread.user.reputation) : null;
+  const badge = thread.user ? getBadge(thread.user.reputation) : null;
 
   return (
     <div className="px-6 pt-6">
@@ -602,10 +550,12 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
           By {thread.user?.username}
           {badge && (
             <span className="ml-1 text-sm">
-              ({badge}: {thread.user?.reputation})
+              ({badge.title}: {thread.user?.reputation})
             </span>
           )}
-          <span className="-mr-2 ml-2">{getRoleBadge(thread.user)}</span>{" "}
+          <span className="-mr-2 ml-2">
+            <UserRoleBadge roleId={roleId} />
+          </span>{" "}
           {" • "}
           {new Date(thread.created_at).toLocaleDateString()}
         </span>

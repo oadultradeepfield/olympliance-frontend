@@ -1,4 +1,4 @@
-import { useUserManagement } from "../../hooks/useUserManagement";
+import { useUserManagement } from "../../hooks/User/useUserManagement";
 import { MessageDisplay } from "../Common/MessageDisplay";
 
 interface UserManagementFormProps {

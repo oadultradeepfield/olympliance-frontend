@@ -1,4 +1,4 @@
-import { useAuthForm } from "../../hooks/useAuthForm";
+import { useAuthForm } from "../../hooks/Auth/useAuthForm";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 

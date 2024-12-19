@@ -3,7 +3,7 @@ import { ThreadSorter } from "../Common/Sorter";
 import { ThreadCard } from "./ThreadCard";
 import Pagination from "../Common/Pagination";
 import Loading from "../Common/Loading";
-import { useThreads } from "../../hooks/useThreads";
+import { useThreads } from "../../hooks/Thread/useThreads";
 
 interface ThreadListProps {
   categoryId: number;
