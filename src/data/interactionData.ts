@@ -1,5 +1,6 @@
 export interface Interaction {
   interaction_id: number;
+  user_id: number;
   thread_id: number;
   interaction_type: string;
 }

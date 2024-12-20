@@ -1,7 +1,7 @@
-import EditThreadModal from "./EditThreadModal";
+import EditThreadModal from "./EditThreadButton";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
-import DeleteThreadModal from "./DeleteThreadModal";
+import DeleteThreadModal from "./DeleteThreadButton";
 import { Badge } from "../../data/badgeData";
 import UserRoleBadge from "../Common/UserRoleBadge";
 

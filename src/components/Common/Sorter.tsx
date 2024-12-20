@@ -8,28 +8,35 @@ const Sorter: React.FC<SorterProps> = ({
   sortBy,
   onSortChange,
   sortOptions,
-}) => (
-  <div className="mb-8 flex items-center justify-between">
-    <select
-      className="select select-bordered mx-auto max-w-xs"
-      value={sortBy}
-      onChange={(e) => onSortChange(e.target.value)}
-    >
-      {sortOptions.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+}) => {
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newValue = e.target.value;
+    onSortChange(newValue);
+  };
+
+  return (
+    <div className="mb-8 flex items-center justify-between">
+      <select
+        className="select select-bordered mx-auto max-w-xs"
+        value={sortBy}
+        onChange={handleSortChange}
+      >
+        {sortOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 
 export const CommentSorter: React.FC<{
   sortBy: string;
   onSortChange: (value: string) => void;
 }> = ({ sortBy, onSortChange }) => {
   const COMMENT_SORT_OPTIONS = [
-    { value: "oldest", label: "Oldest" },
+    { value: "created_at", label: "Oldest" },
     { value: "upvotes", label: "Top Upvoted" },
   ];
 

@@ -17,7 +17,9 @@ const FollowedThreadList: React.FC<FollowedThreadListProps> = ({ userId }) => {
 
   const { threads, loading } = useThreads({
     apiEndpoint: `/api/followed-threads/${userId}`,
-    params: { sort_by: sortBy, page: page, per_page: 5 },
+    sort_by: sortBy,
+    page: page,
+    per_page: 5,
     token: token || "",
   });
 

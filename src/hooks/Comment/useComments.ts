@@ -3,21 +3,18 @@ import axios from "axios";
 import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { apiUrl } from "../../data/apiUrl";
-
-interface InteractionsInfo {
-  user_id: string;
-  interaction_type: string;
-}
+import { Interaction } from "../../data/interactionData";
 
 export const useComments = (
-  threadId: string,
+  threadId: number,
   sortBy: string,
   page: number,
-  userId: string,
+  userId: number,
   shouldRefetchInteractions: boolean,
+  shouldShowLoading: boolean,
 ) => {
   const [comments, setComments] = useState<
-    (CommentData & { user?: UserInfo; interactions?: InteractionsInfo[] })[]
+    (CommentData & { user?: UserInfo; interactions?: Interaction[] })[]
   >([]);
   const [parentCommentMap, setParentCommentMap] = useState<{
     [key: number]: CommentData;
@@ -26,18 +23,17 @@ export const useComments = (
     Record<number, { upvoted: boolean; downvoted: boolean }>
   >({});
   const [loading, setLoading] = useState<boolean>(true);
-  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        if (isFirstLoad) setLoading(true);
+        if (shouldShowLoading) setLoading(true);
 
         const commentsResponse = await axios.get(`${apiUrl}/api/comments`, {
           params: {
             thread_id: threadId,
             sort_by: sortBy,
-            page,
+            page: page,
             per_page: 10,
           },
         });
@@ -52,13 +48,13 @@ export const useComments = (
             ]);
 
             const userUpvote = interactionsResponse.data.interactions.some(
-              (interaction: InteractionsInfo) =>
+              (interaction: Interaction) =>
                 interaction.user_id === userId &&
                 interaction.interaction_type === "upvote",
             );
 
             const userDownvote = interactionsResponse.data.interactions.some(
-              (interaction: InteractionsInfo) =>
+              (interaction: Interaction) =>
                 interaction.user_id === userId &&
                 interaction.interaction_type === "downvote",
             );
@@ -91,11 +87,7 @@ export const useComments = (
         setParentCommentMap(commentMap);
         setComments(commentsWithUsersAndInteractions);
         setUserInteractions(updatedUserInteractions);
-
-        if (isFirstLoad) {
-          setIsFirstLoad(false);
-          setLoading(false);
-        }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching comments:", error);
         setLoading(false);
@@ -103,15 +95,14 @@ export const useComments = (
     };
 
     fetchComments();
-  }, [
-    apiUrl,
-    threadId,
-    sortBy,
-    page,
-    shouldRefetchInteractions,
-    userId,
-    isFirstLoad,
-  ]);
+  }, [threadId, sortBy, page, shouldRefetchInteractions, userId]);
 
-  return { comments, parentCommentMap, userInteractions, loading, setLoading };
+  return {
+    comments,
+    setComments,
+    parentCommentMap,
+    userInteractions,
+    setUserInteractions,
+    loading,
+  };
 };
