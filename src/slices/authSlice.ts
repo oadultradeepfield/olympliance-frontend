@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
   isAuthenticated: boolean;
   user: UserInfo;
-  isUserDataLoaded: boolean;
 }
 
 const initialState: AuthState = {
@@ -16,7 +15,6 @@ const initialState: AuthState = {
     username: "",
     is_banned: false,
   },
-  isUserDataLoaded: false,
 };
 
 const authSlice = createSlice({
@@ -33,9 +31,6 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
-    setIsUserDataLoaded: (state, action: PayloadAction<boolean>) => {
-      state.isUserDataLoaded = action.payload;
-    },
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = {
@@ -45,11 +40,9 @@ const authSlice = createSlice({
         username: "",
         is_banned: false,
       };
-      state.isUserDataLoaded = true;
     },
   },
 });
 
-export const { setAuthState, setUser, setIsUserDataLoaded, logout } =
-  authSlice.actions;
+export const { setAuthState, setUser, logout } = authSlice.actions;
 export default authSlice.reducer;
