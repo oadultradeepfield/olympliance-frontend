@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { apiUrl } from "../../data/apiUrl";
 import { RootState } from "../../store";
-import { setUser, setIsUserDataLoaded, logout } from "../../slices/authSlice";
+import { setUser, logout } from "../../slices/authSlice";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
 
-  const { isAuthenticated, user, isUserDataLoaded } = useSelector(
+  const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth,
   );
 
@@ -31,11 +31,11 @@ export const useAuth = () => {
               is_banned: data.is_banned,
             }),
           );
-          dispatch(setIsUserDataLoaded(true));
         })
-        .catch(() => dispatch(setIsUserDataLoaded(true)));
-    } else {
-      dispatch(setIsUserDataLoaded(true));
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+          dispatch(logout());
+        });
     }
   }, [isAuthenticated, dispatch]);
 
@@ -48,7 +48,6 @@ export const useAuth = () => {
   return {
     isAuthenticated,
     user,
-    isUserDataLoaded,
     handleLogout,
   };
 };
