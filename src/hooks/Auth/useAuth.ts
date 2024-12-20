@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { setAuthState } from "../../slices/authSlice";
+import { setAuthState, setUserDataLoaded } from "../../slices/authSlice";
 import { apiUrl } from "../../data/apiUrl";
 
 export const useAuth = () => {
@@ -29,6 +29,7 @@ export const useAuth = () => {
               },
             }),
           );
+          dispatch(setUserDataLoaded(true));
         } catch (error) {
           console.error("Error fetching user data", error);
           dispatch(
@@ -43,6 +44,7 @@ export const useAuth = () => {
               },
             }),
           );
+          dispatch(setUserDataLoaded(true));
         }
       };
 
@@ -60,6 +62,7 @@ export const useAuth = () => {
           },
         }),
       );
+      dispatch(setUserDataLoaded(true));
     }
   }, [dispatch]);
 };

@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   isAuthenticated: boolean;
+  isUserDataLoaded: boolean;
   user: UserInfo;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
+  isUserDataLoaded: false,
   user: {
     reputation: 0,
     role_id: 0,
@@ -31,6 +33,9 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
+    setUserDataLoaded: (state, action: PayloadAction<boolean>) => {
+      state.isUserDataLoaded = action.payload;
+    },
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = {
@@ -40,9 +45,11 @@ const authSlice = createSlice({
         username: "",
         is_banned: false,
       };
+      state.isUserDataLoaded = false;
     },
   },
 });
 
-export const { setAuthState, setUser, logout } = authSlice.actions;
+export const { setAuthState, setUser, setUserDataLoaded, logout } =
+  authSlice.actions;
 export default authSlice.reducer;
