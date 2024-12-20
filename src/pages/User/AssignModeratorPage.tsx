@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserManagementForm } from "../../components/User/UserManagementForm";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
-interface AssignModeratorPageProps {
-  isAuthenticated: boolean;
-  roleId: number;
-}
+const AssignModeratorPage: React.FC = ({}) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+  const roleId = useSelector((state: RootState) => state.auth.user.role_id);
 
-const AssignModeratorPage: React.FC<AssignModeratorPageProps> = ({
-  isAuthenticated,
-  roleId,
-}) => {
   const navigate = useNavigate();
 
   useEffect(() => {

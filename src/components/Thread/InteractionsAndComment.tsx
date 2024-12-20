@@ -6,7 +6,6 @@ import CommentButton from "./CommentButton";
 
 interface InteractionsAndCommentProps {
   interactions: InteractionState;
-  isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
   setThread: React.Dispatch<
     React.SetStateAction<(ThreadData & { user?: UserInfo }) | null>
@@ -17,7 +16,6 @@ interface InteractionsAndCommentProps {
 
 const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
   interactions,
-  isAuthenticated,
   thread,
   setThread,
   setInteractions,
@@ -28,7 +26,6 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
       <InteractionButton
         interaction_type="upvote"
         interactions={interactions}
-        isAuthenticated={isAuthenticated}
         thread={thread}
         setThread={setThread}
         setInteractions={setInteractions}
@@ -37,7 +34,6 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
       <InteractionButton
         interaction_type="downvote"
         interactions={interactions}
-        isAuthenticated={isAuthenticated}
         thread={thread}
         setThread={setThread}
         setInteractions={setInteractions}
@@ -46,13 +42,12 @@ const InteractionsAndComment: React.FC<InteractionsAndCommentProps> = ({
       <InteractionButton
         interaction_type="follow"
         interactions={interactions}
-        isAuthenticated={isAuthenticated}
         thread={thread}
         setThread={setThread}
         setInteractions={setInteractions}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
       />
-      <CommentButton isAuthenticated={isAuthenticated} thread={thread} />
+      <CommentButton thread={thread} />
     </div>
   );
 };

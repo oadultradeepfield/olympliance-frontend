@@ -1,18 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { apiUrl } from "../../data/apiUrl";
+import { RootState } from "../../store";
+import { setUser, setIsUserDataLoaded, logout } from "../../slices/authSlice";
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => !!localStorage.getItem("token"),
+  const dispatch = useDispatch();
+
+  const { isAuthenticated, user, isUserDataLoaded } = useSelector(
+    (state: RootState) => state.auth,
   );
-  const [user, setUser] = useState({
-    reputation: 0,
-    roleId: 0,
-    userId: 0,
-    username: "",
-  });
-  const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -24,35 +22,31 @@ export const useAuth = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(({ data }) => {
-          setUser({
-            username: data.username,
-            userId: data.user_id,
-            roleId: data.role_id,
-            reputation: data.reputation,
-          });
-          setIsUserDataLoaded(true);
+          dispatch(
+            setUser({
+              username: data.username,
+              user_id: data.user_id,
+              role_id: data.role_id,
+              reputation: data.reputation,
+              is_banned: data.is_banned,
+            }),
+          );
+          dispatch(setIsUserDataLoaded(true));
         })
-        .catch(() => setIsUserDataLoaded(true));
+        .catch(() => dispatch(setIsUserDataLoaded(true)));
     } else {
-      setIsUserDataLoaded(true);
+      dispatch(setIsUserDataLoaded(true));
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    setUser({
-      reputation: 0,
-      roleId: 0,
-      userId: 0,
-      username: "",
-    });
+    dispatch(logout());
     window.location.reload();
   };
 
   return {
     isAuthenticated,
-    setIsAuthenticated,
     user,
     isUserDataLoaded,
     handleLogout,

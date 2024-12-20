@@ -3,10 +3,8 @@ import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { categories } from "../../data/categoriesData";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import { useNewThread } from "../../hooks/Thread/useNewThread";
-
-interface NewThreadProps {
-  isAuthenticated: boolean;
-}
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface ThreadFormData {
   title: string;
@@ -14,7 +12,11 @@ interface ThreadFormData {
   tags: string;
 }
 
-const NewThread: React.FC<NewThreadProps> = ({ isAuthenticated }) => {
+const NewThread: React.FC = () => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
   const navigate = useNavigate();
   const { categoryTitle } = useParams<{ categoryTitle: string }>();
 

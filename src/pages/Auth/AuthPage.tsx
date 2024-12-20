@@ -2,11 +2,7 @@ import { useAuthForm } from "../../hooks/Auth/useAuthForm";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 
-interface AuthPageProps {
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
-}
-
-const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
+const AuthPage = () => {
   const {
     formData,
     showPassword,
@@ -20,7 +16,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ setIsAuthenticated }) => {
     toggleAuthMode,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
-  } = useAuthForm(setIsAuthenticated);
+  } = useAuthForm();
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">

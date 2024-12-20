@@ -1,21 +1,17 @@
-import EditThreadModal from "./EditThreadButton";
+import EditThreadButton from "./EditThreadButton";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
-import DeleteThreadModal from "./DeleteThreadButton";
+import DeleteThreadButton from "./DeleteThreadButton";
 import { Badge } from "../../data/badgeData";
 import UserRoleBadge from "../Common/UserRoleBadge";
 
 interface ThreadContentProps {
-  userId: number;
-  roleId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
   category: string;
   badge: Badge | null;
 }
 
 const ThreadContent: React.FC<ThreadContentProps> = ({
-  userId,
-  roleId,
   thread,
   category,
   badge,
@@ -28,13 +24,8 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     <>
       <div className="mb-2 flex items-center">
         <div className="mr-2 text-3xl font-bold">{thread.title}</div>
-        <EditThreadModal userId={userId} thread={thread} />
-        <DeleteThreadModal
-          userId={userId}
-          roleId={roleId}
-          thread={thread}
-          category={category}
-        />
+        <EditThreadButton thread={thread} />
+        <DeleteThreadButton thread={thread} category={category} />
       </div>
       <div className="mb-3 text-base text-base-content/75">
         <span>
@@ -45,7 +36,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
             </span>
           )}
           <span className="-mr-2 ml-2">
-            <UserRoleBadge roleId={roleId} />
+            <UserRoleBadge roleId={thread.user?.role_id ?? 0} />
           </span>{" "}
           {" • "}
           {new Date(thread.created_at).toLocaleDateString()}

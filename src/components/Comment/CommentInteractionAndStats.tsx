@@ -3,12 +3,10 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
 import CommentVoteButton from "./CommentVoteButton";
-import CommentReplyButton from "./ReplyCommentButton";
+import ReplyCommentButton from "./ReplyCommentButton";
 import { Badge } from "../../data/badgeData";
 
 interface CommentInteractionAndStatsProps {
-  isAuthenticated: boolean;
-  userId: number;
   badge: Badge | null;
   threadId: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
@@ -23,8 +21,6 @@ interface CommentInteractionAndStatsProps {
 }
 
 const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
-  isAuthenticated,
-  userId,
   badge,
   threadId,
   comment,
@@ -38,8 +34,6 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
       {!comment.is_deleted && (
         <>
           <CommentVoteButton
-            userId={userId}
-            isAuthenticated={isAuthenticated}
             comment={comment}
             setShouldRefetchInteractions={setShouldRefetchInteractions}
             setShouldShowLoading={setShouldShowLoading}
@@ -48,8 +42,6 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
             interactionType="upvote"
           />
           <CommentVoteButton
-            userId={userId}
-            isAuthenticated={isAuthenticated}
             comment={comment}
             setShouldRefetchInteractions={setShouldRefetchInteractions}
             setShouldShowLoading={setShouldShowLoading}
@@ -57,11 +49,10 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
             setUserInteractions={setUserInteractions}
             interactionType="downvote"
           />
-          <CommentReplyButton
+          <ReplyCommentButton
             threadId={threadId}
             parentCommentId={comment.comment_id}
             content={comment.content}
-            isAuthenticated={isAuthenticated}
           />
         </>
       )}

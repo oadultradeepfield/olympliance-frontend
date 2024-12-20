@@ -3,9 +3,10 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
 import { apiUrl } from "../../data/apiUrl";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface UseHandleVoteProps {
-  userId: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
   setShouldShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setShouldRefetchInteractions: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,13 +19,14 @@ interface UseHandleVoteProps {
 }
 
 export const useHandleVote = ({
-  userId,
   comment,
   setShouldShowLoading,
   setShouldRefetchInteractions,
   userInteractions,
   setUserInteractions,
 }: UseHandleVoteProps) => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
+
   const handleVote = async (voteType: "upvote" | "downvote") => {
     try {
       setShouldShowLoading(true);

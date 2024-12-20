@@ -3,18 +3,19 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
 import { useDeleteComment } from "../../hooks/Comment/useDeleteComment";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface DeleteCommentButtonProps {
-  userId: number;
-  roleId: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
 }
 
 const DeleteCommentButton: React.FC<DeleteCommentButtonProps> = ({
-  userId,
-  roleId,
   comment,
 }) => {
+  const roleId = useSelector((state: RootState) => state.auth.user.role_id);
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
+
   const { deleteComment } = useDeleteComment();
 
   const handleDelete = () => {

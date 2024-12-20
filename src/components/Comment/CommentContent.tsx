@@ -8,9 +8,6 @@ import CommentInteractionAndStats from "./CommentInteractionAndStats";
 import { Badge } from "../../data/badgeData";
 
 interface CommentContentProps {
-  isAuthenticated: boolean;
-  userId: number;
-  roleId: number;
   threadId: number;
   badge: Badge | null;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
@@ -26,9 +23,6 @@ interface CommentContentProps {
 }
 
 const CommentContent: React.FC<CommentContentProps> = ({
-  isAuthenticated,
-  userId,
-  roleId,
   threadId,
   badge,
   comment,
@@ -57,16 +51,10 @@ const CommentContent: React.FC<CommentContentProps> = ({
         >
           {comment.is_deleted ? "[Comment deleted]" : comment.content}
         </span>
-        <EditCommentButton userId={userId} comment={comment} />
-        <DeleteCommentButton
-          userId={userId}
-          comment={comment}
-          roleId={roleId}
-        />
+        <EditCommentButton comment={comment} />
+        <DeleteCommentButton comment={comment} />
       </div>
       <CommentInteractionAndStats
-        isAuthenticated={isAuthenticated}
-        userId={userId}
         badge={badge}
         threadId={threadId}
         comment={comment}

@@ -6,16 +6,18 @@ import { UserInfo } from "../../data/userData";
 import { useNavigate } from "react-router-dom";
 import { MessageDisplay } from "../Common/MessageDisplay";
 import { useComment } from "../../hooks/Thread/useComment";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface CommentButtonProps {
-  isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
 }
 
-const CommentButton: React.FC<CommentButtonProps> = ({
-  isAuthenticated,
-  thread,
-}) => {
+const CommentButton: React.FC<CommentButtonProps> = ({ thread }) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
   const navigate = useNavigate();
 
   const [comment, setComment] = useState("");

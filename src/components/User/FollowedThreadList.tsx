@@ -4,12 +4,11 @@ import { ThreadCard } from "../../components/Category/ThreadCard";
 import Pagination from "../../components/Common/Pagination";
 import Loading from "../../components/Common/Loading";
 import { useThreads } from "../../hooks/Thread/useThreads";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
-interface FollowedThreadListProps {
-  userId: number;
-}
-
-const FollowedThreadList: React.FC<FollowedThreadListProps> = ({ userId }) => {
+const FollowedThreadList: React.FC = () => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
 

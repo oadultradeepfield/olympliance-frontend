@@ -6,9 +6,6 @@ import CommentContent from "./CommentContent";
 import { getBadge } from "../../utils/getBadge";
 
 interface CommentCardProps {
-  isAuthenticated: boolean;
-  userId: number;
-  roleId: number;
   threadId: number;
   reputation: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
@@ -24,9 +21,6 @@ interface CommentCardProps {
 }
 
 const CommentCard: React.FC<CommentCardProps> = ({
-  isAuthenticated,
-  userId,
-  roleId,
   threadId,
   reputation,
   comment,
@@ -42,9 +36,6 @@ const CommentCard: React.FC<CommentCardProps> = ({
       <div className="card-body flex flex-row items-start p-3">
         <ReputationBadge reputation={reputation} />
         <CommentContent
-          isAuthenticated={isAuthenticated}
-          userId={userId}
-          roleId={roleId}
           threadId={threadId}
           badge={badge}
           comment={comment}

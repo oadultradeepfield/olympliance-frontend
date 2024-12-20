@@ -10,24 +10,17 @@ import InteractionsAndComment from "./InteractionsAndComment";
 interface ThreadInteractionProps {
   threadId: number;
   category: string;
-  isAuthenticated: boolean;
-  roleId: number;
-  userId: number;
 }
 
 const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
   threadId,
   category,
-  isAuthenticated,
-  roleId,
-  userId,
 }) => {
   const [shouldRefetchInteractions, setShouldRefetchInteractions] =
     useState<boolean>(false);
   const { thread, loading, setThread } = useSingleThread(threadId);
   const { interactions, setInteractions } = useInteractions(
     threadId,
-    userId,
     shouldRefetchInteractions,
   );
 
@@ -43,19 +36,12 @@ const ThreadInteraction: React.FC<ThreadInteractionProps> = ({
 
   return (
     <>
-      <ThreadContent
-        userId={userId}
-        roleId={roleId}
-        thread={thread}
-        category={category}
-        badge={badge}
-      />
+      <ThreadContent thread={thread} category={category} badge={badge} />
       <InteractionsAndComment
         interactions={interactions}
         setInteractions={setInteractions}
         thread={thread}
         setThread={setThread}
-        isAuthenticated={isAuthenticated}
         setShouldRefetchInteractions={setShouldRefetchInteractions}
       />
     </>

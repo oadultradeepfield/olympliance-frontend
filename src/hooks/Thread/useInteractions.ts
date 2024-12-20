@@ -3,15 +3,17 @@ import axios from "axios";
 import { Interaction } from "../../data/interactionData";
 import { InteractionState } from "../../data/interactionData";
 import { apiUrl } from "../../data/apiUrl";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const useInteractions = (
   threadId: number,
-  userId: number,
   shouldRefetch: boolean,
 ): {
   interactions: InteractionState;
   setInteractions: React.Dispatch<React.SetStateAction<InteractionState>>;
 } => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
   const [interactions, setInteractions] = useState<InteractionState>({
     upvote: { active: false, id: 0 },
     downvote: { active: false, id: 0 },

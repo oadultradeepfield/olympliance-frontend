@@ -7,17 +7,9 @@ import CommentHeader from "./CommentHeader";
 
 interface ThreadCommentProps {
   threadId: number;
-  userId: number;
-  roleId: number;
-  isAuthenticated: boolean;
 }
 
-const ThreadComment: React.FC<ThreadCommentProps> = ({
-  threadId,
-  userId,
-  roleId,
-  isAuthenticated,
-}) => {
+const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
   const [sortBy, setSortBy] = useState<string>("upvotes");
   const [page, setPage] = useState<number>(1);
   const [shouldRefetchInteractions, setShouldRefetchInteractions] =
@@ -34,7 +26,6 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
     threadId,
     sortBy,
     page,
-    userId,
     shouldRefetchInteractions,
     shouldShowLoading,
   );
@@ -56,9 +47,6 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({
         comments.map((comment) => (
           <CommentCard
             key={comment.comment_id}
-            isAuthenticated={isAuthenticated}
-            userId={userId}
-            roleId={roleId}
             threadId={threadId}
             reputation={comment?.user?.reputation ?? 0}
             comment={comment}

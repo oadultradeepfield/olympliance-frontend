@@ -2,21 +2,22 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
 import { useDeleteThread } from "../../hooks/Thread/useDeleteThread";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface DeleteThreadModalProps {
-  userId: number;
-  roleId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
   category: string;
 }
 
 const DeleteThreadModal: React.FC<DeleteThreadModalProps> = ({
-  userId,
-  roleId,
   thread,
   category,
 }) => {
   const { deleteThread } = useDeleteThread(category);
+
+  const roleId = useSelector((state: RootState) => state.auth.user.role_id);
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
 
   const handleDeleteThread = () => {
     if (thread) {

@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import { useChangePassword } from "../../hooks/Auth/useChangePassword";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
-
-interface ChangePasswordProps {
-  isAuthenticated: boolean;
-}
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface PasswordState {
   currentPassword: string;
@@ -14,7 +12,10 @@ interface PasswordState {
   confirmNewPassword: string;
 }
 
-const ChangePassword: React.FC<ChangePasswordProps> = ({ isAuthenticated }) => {
+const ChangePassword: React.FC = () => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
   const navigate = useNavigate();
   const { changePassword, error, success } = useChangePassword();
 

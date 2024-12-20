@@ -8,11 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
 import { useInteractionButton } from "../../hooks/Thread/useInteractionButton";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface InteractionButtonProps {
   interaction_type: "upvote" | "downvote" | "follow";
   interactions: InteractionState;
-  isAuthenticated: boolean;
   thread: (ThreadData & { user?: UserInfo }) | null;
   setThread: React.Dispatch<
     React.SetStateAction<(ThreadData & { user?: UserInfo }) | null>
@@ -24,12 +25,15 @@ interface InteractionButtonProps {
 const InteractionButton: React.FC<InteractionButtonProps> = ({
   interaction_type,
   interactions,
-  isAuthenticated,
   thread,
   setThread,
   setInteractions,
   setShouldRefetchInteractions,
 }) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
   const { handleInteraction } = useInteractionButton(
     thread?.thread_id || 0,
     interactions,

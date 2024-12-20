@@ -1,22 +1,14 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import ThemeToggle from "./ThemeToggle";
 import UserDropdown from "./UserDropdown";
 
-interface HeaderProps {
-  isAuthenticated: boolean;
-  username: string;
-  userReputation: number;
-  roleId: number;
-  onLogout: () => void;
-}
+const Header = () => {
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
-const Header: React.FC<HeaderProps> = ({
-  isAuthenticated,
-  username,
-  userReputation,
-  roleId,
-  onLogout,
-}) => {
   return (
     <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
       <div className="navbar-start">
@@ -31,14 +23,12 @@ const Header: React.FC<HeaderProps> = ({
         <ThemeToggle />
         {isAuthenticated ? (
           <div className="flex items-center">
-            <UserDropdown
-              userReputation={userReputation}
-              roleId={roleId}
-              onLogout={onLogout}
-            />
+            <UserDropdown />
             <div className="hidden flex-col sm:flex">
               <div className="-mb-1">Welcome back,</div>
-              <div className="max-w-[14ch] truncate font-bold">@{username}</div>
+              <div className="max-w-[14ch] truncate font-bold">
+                @{user.username}
+              </div>
             </div>
           </div>
         ) : (

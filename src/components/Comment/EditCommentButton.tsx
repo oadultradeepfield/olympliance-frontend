@@ -5,16 +5,16 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
 import { MessageDisplay } from "../Common/MessageDisplay";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface EditCommentButtonProps {
-  userId: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
 }
 
-const EditCommentButton: React.FC<EditCommentButtonProps> = ({
-  userId,
-  comment,
-}) => {
+const EditCommentButton: React.FC<EditCommentButtonProps> = ({ comment }) => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
+
   const { error, success, handleEditComment } = useEditComment();
 
   const [commentContent, setCommentContent] = useState(comment?.content || "");

@@ -4,11 +4,11 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface CommentVoteButtonProps {
-  userId: number;
   comment: CommentData & { user?: UserInfo; interactions?: Interaction[] };
-  isAuthenticated: boolean;
   setShouldShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setShouldRefetchInteractions: React.Dispatch<React.SetStateAction<boolean>>;
   userInteractions: Record<number, { upvoted: boolean; downvoted: boolean }>;
@@ -21,17 +21,18 @@ interface CommentVoteButtonProps {
 }
 
 const CommentVoteButton: React.FC<CommentVoteButtonProps> = ({
-  userId,
   comment,
   setShouldShowLoading,
   setShouldRefetchInteractions,
   userInteractions,
   setUserInteractions,
-  isAuthenticated,
   interactionType,
 }) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
   const { handleVote } = useHandleVote({
-    userId: userId,
     comment: comment,
     setShouldShowLoading: setShouldShowLoading,
     userInteractions: userInteractions,

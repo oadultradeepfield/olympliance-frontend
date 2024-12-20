@@ -4,15 +4,17 @@ import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { apiUrl } from "../../data/apiUrl";
 import { Interaction } from "../../data/interactionData";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export const useComments = (
   threadId: number,
   sortBy: string,
   page: number,
-  userId: number,
   shouldRefetchInteractions: boolean,
   shouldShowLoading: boolean,
 ) => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
   const [comments, setComments] = useState<
     (CommentData & { user?: UserInfo; interactions?: Interaction[] })[]
   >([]);

@@ -3,20 +3,23 @@ import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { useReplyComment } from "../../hooks/Comment/useReplyComment";
 import { MessageDisplay } from "../Common/MessageDisplay";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
-interface CommentReplyButtonProps {
+interface ReplyCommentButtonProps {
   threadId: number;
   parentCommentId: number;
   content: string;
-  isAuthenticated: boolean;
 }
 
-const CommentReplyButton: React.FC<CommentReplyButtonProps> = ({
+const ReplyCommentButton: React.FC<ReplyCommentButtonProps> = ({
   threadId,
   parentCommentId,
   content,
-  isAuthenticated,
 }) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
   const navigate = useNavigate();
   const { replyComment } = useReplyComment();
   const [replyCommentFormData, setReplyCommentFormData] = useState({
@@ -127,4 +130,4 @@ const CommentReplyButton: React.FC<CommentReplyButtonProps> = ({
   );
 };
 
-export default CommentReplyButton;
+export default ReplyCommentButton;

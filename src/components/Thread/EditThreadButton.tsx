@@ -4,16 +4,15 @@ import { MessageDisplay } from "../Common/MessageDisplay";
 import { useEditThread } from "../../hooks/Thread/useEditThread";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface EditThreadModalProps {
-  userId: number;
   thread: (ThreadData & { user?: UserInfo }) | null;
 }
 
-const EditThreadModal: React.FC<EditThreadModalProps> = ({
-  userId,
-  thread,
-}) => {
+const EditThreadModal: React.FC<EditThreadModalProps> = ({ thread }) => {
+  const userId = useSelector((state: RootState) => state.auth.user.user_id);
   const { error, success, handleEditThread } = useEditThread();
 
   const [title, setTitle] = useState(thread?.title || "");

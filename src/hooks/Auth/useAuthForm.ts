@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { apiUrl } from "../../data/apiUrl";
+import { setAuthState } from "../../slices/authSlice";
 
-export const useAuthForm = (
-  setIsAuthenticated: (isAuthenticated: boolean) => void,
-) => {
+export const useAuthForm = () => {
   const [formData, setFormData] = useState<{
     username: string;
     password: string;
@@ -21,13 +21,25 @@ export const useAuthForm = (
     useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setIsAuthenticated(true);
+      dispatch(
+        setAuthState({
+          isAuthenticated: true,
+          user: {
+            reputation: 0,
+            role_id: 0,
+            user_id: 0,
+            username: "",
+            is_banned: false,
+          },
+        }),
+      );
       navigate("/");
     }
-  }, [navigate, setIsAuthenticated]);
+  }, [navigate, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,8 +57,23 @@ export const useAuthForm = (
         username: formData.username,
         password: formData.password,
       });
-      localStorage.setItem("token", response.data.token);
-      setIsAuthenticated(true);
+
+      const { token, user } = response.data;
+      localStorage.setItem("token", token);
+
+      dispatch(
+        setAuthState({
+          isAuthenticated: true,
+          user: {
+            username: user.username,
+            user_id: user.user_id,
+            role_id: user.role_id,
+            reputation: user.reputation,
+            is_banned: user.is_banned,
+          },
+        }),
+      );
+
       navigate("/");
     } catch (error: any) {
       setError(
