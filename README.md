@@ -22,7 +22,7 @@
 ### 1.2 Tech Stack
 
 - **Programming Language**: TypeScript
-- **Library and Framework**: React
+- **Library and Framework**: React and Redux
 - **Styling**: Tailwind CSS and daisy UI
 - **Build and Deployment**: Vite and Netlify
 
