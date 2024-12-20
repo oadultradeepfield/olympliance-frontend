@@ -7,7 +7,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthenticated: !!localStorage.getItem("token"),
+  isAuthenticated: false,
   user: {
     reputation: 0,
     role_id: 0,
