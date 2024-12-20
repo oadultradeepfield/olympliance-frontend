@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -23,24 +23,6 @@ export const useAuthForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      dispatch(
-        setAuthState({
-          isAuthenticated: true,
-          user: {
-            reputation: 0,
-            role_id: 0,
-            user_id: 0,
-            username: "",
-            is_banned: false,
-          },
-        }),
-      );
-      navigate("/");
-    }
-  }, [navigate, dispatch]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -58,18 +40,22 @@ export const useAuthForm = () => {
         password: formData.password,
       });
 
-      const { token, user } = response.data;
+      const { token } = response.data;
       localStorage.setItem("token", token);
+
+      const userResponse = await axios.get(`${apiUrl}/api/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       dispatch(
         setAuthState({
           isAuthenticated: true,
           user: {
-            username: user.username,
-            user_id: user.user_id,
-            role_id: user.role_id,
-            reputation: user.reputation,
-            is_banned: user.is_banned,
+            username: userResponse.data.username,
+            user_id: userResponse.data.user_id,
+            role_id: userResponse.data.role_id,
+            reputation: userResponse.data.reputation,
+            is_banned: userResponse.data.is_banned,
           },
         }),
       );
