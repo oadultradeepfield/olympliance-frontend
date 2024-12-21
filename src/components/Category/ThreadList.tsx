@@ -24,7 +24,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
     apiEndpoint: `/api/threads/category/${categoryId}`,
     sort_by: sortBy,
     page: page,
-    per_page: 5,
+    per_page: 10,
   });
 
   const filteredThreads = filterThreads(threads, searchTerm);
@@ -62,7 +62,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
 
       <Pagination
         page={page}
-        hasMore={threads.length === 5}
+        hasMore={threads.length === 10}
         onPageChange={setPage}
       />
     </div>
