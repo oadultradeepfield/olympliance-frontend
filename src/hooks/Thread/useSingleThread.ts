@@ -41,8 +41,8 @@ export const useSingleThread = (
         const user: UserInfo = userResponse.data;
 
         setThread({ ...threadData, user });
-      } catch (error) {
-        console.error("Error fetching thread:", error);
+      } catch (error: any) {
+        console.error("Error fetching thread:", error.response.data.error);
       } finally {
         setLoading(false);
       }

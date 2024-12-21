@@ -1,17 +1,21 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
 import axios from "axios";
 import { setAuthState, setUserDataLoaded } from "../../slices/authSlice";
 import { apiUrl } from "../../data/apiUrl";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
 
-    if (token) {
-      const fetchUserData = async () => {
+    const fetchUserData = async () => {
+      if (token) {
         try {
           const userResponse = await axios.get(`${apiUrl}/api/users`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -46,23 +50,23 @@ export const useAuth = () => {
           );
           dispatch(setUserDataLoaded(true));
         }
-      };
+      } else {
+        dispatch(
+          setAuthState({
+            isAuthenticated: false,
+            user: {
+              reputation: 0,
+              role_id: 0,
+              user_id: 0,
+              username: "",
+              is_banned: false,
+            },
+          }),
+        );
+        dispatch(setUserDataLoaded(true));
+      }
+    };
 
-      fetchUserData();
-    } else {
-      dispatch(
-        setAuthState({
-          isAuthenticated: false,
-          user: {
-            reputation: 0,
-            role_id: 0,
-            user_id: 0,
-            username: "",
-            is_banned: false,
-          },
-        }),
-      );
-      dispatch(setUserDataLoaded(true));
-    }
-  }, [dispatch]);
+    fetchUserData();
+  }, [dispatch, isAuthenticated]);
 };

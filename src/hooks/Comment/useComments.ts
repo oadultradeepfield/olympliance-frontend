@@ -90,8 +90,8 @@ export const useComments = (
         setComments(commentsWithUsersAndInteractions);
         setUserInteractions(updatedUserInteractions);
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
+      } catch (error: any) {
+        console.error("Error fetching comments:", error.response.data.error);
         setLoading(false);
       }
     };

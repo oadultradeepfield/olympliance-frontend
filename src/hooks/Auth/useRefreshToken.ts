@@ -9,25 +9,23 @@ export const useRefreshToken = () => {
 
   const refreshAccessToken = async () => {
     try {
-      const refreshToken = localStorage.getItem("refresh_token");
-      if (!refreshToken) throw new Error("No refresh token found.");
-
-      const response = await axios.post(`${apiUrl}/api/refresh-token`, {
-        refresh_token: refreshToken,
-      });
+      const response = await axios.post(
+        `${apiUrl}/api/refresh-token`,
+        {},
+        { withCredentials: true },
+      );
 
       const { token } = response.data;
-      localStorage.setItem("token", token);
+      localStorage.setItem("access_token", token);
 
       dispatch(
         setAuthState({
           isAuthenticated: true,
         }),
       );
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
+    } catch (error: any) {
+      console.error("Error refreshing token:", error.response.data.error);
+      localStorage.removeItem("access_token");
       dispatch(
         setAuthState({
           isAuthenticated: false,
@@ -43,6 +41,7 @@ export const useRefreshToken = () => {
       },
       15 * 60 * 1000,
     );
+
     return () => clearInterval(interval);
   }, []);
 

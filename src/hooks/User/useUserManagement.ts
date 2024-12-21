@@ -42,7 +42,7 @@ export const useUserManagement = ({
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const userIdResponse = await axios.get(
         `${apiUrl}/api/users/get-id/${formData.username}`,
         {

@@ -13,7 +13,6 @@ export const useLeaderboard = () => {
         setLoading(true);
 
         const response = await axios.get(`${apiUrl}/api/leaderboard`);
-        console.log(response);
         if (Array.isArray(response.data.leaderboard)) {
           setLeaderboard(response.data.leaderboard);
         } else {
@@ -22,7 +21,7 @@ export const useLeaderboard = () => {
 
         setLoading(false);
       } catch (err: any) {
-        console.error("Error fetching leaderboard:", err);
+        console.error("Error fetching leaderboard:", err.response.data.error);
         setLoading(false);
       }
     };

@@ -30,7 +30,7 @@ export const useHandleVote = ({
   const handleVote = async (voteType: "upvote" | "downvote") => {
     try {
       setShouldShowLoading(true);
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       if (!token) {
         throw new Error("User is not authenticated.");
       }

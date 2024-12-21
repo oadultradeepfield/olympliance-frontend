@@ -8,7 +8,7 @@ export const useReplyComment = () => {
     content: string,
   ) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const newComment = {
         thread_id: threadId,
         parent_comment_id: parentCommentId,
@@ -26,7 +26,7 @@ export const useReplyComment = () => {
       }, 1000);
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response.data.error ||
         "An unknown error occurred while posting the comment. Please try again.";
       console.error(errorMessage);
     }

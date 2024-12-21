@@ -7,7 +7,7 @@ export const useDeleteThread = (category: string) => {
 
   const deleteThread = async (threadId: number) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       await axios.delete(`${apiUrl}/api/threads/${threadId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -19,7 +19,7 @@ export const useDeleteThread = (category: string) => {
       }, 1000);
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response.data.error ||
         "An error occurred while deleting the thread. Please try again.";
       console.error(errorMessage);
     }

@@ -58,8 +58,11 @@ const useInteractions = (
           }
         });
         setInteractions(interactionState);
-      } catch (error) {
-        console.error("Error fetching interactions:", error);
+      } catch (error: any) {
+        console.error(
+          "Error fetching interactions:",
+          error.response.data.error,
+        );
       }
     };
 

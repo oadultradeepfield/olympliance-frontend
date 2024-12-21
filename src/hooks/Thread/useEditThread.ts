@@ -13,7 +13,7 @@ export const useEditThread = () => {
     tags: string[],
   ) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const newThread = {
         title,
         content,

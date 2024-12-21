@@ -51,8 +51,8 @@ export const useThreads = ({
 
         setThreads(threadsWithUsers);
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching threads:", error);
+      } catch (error: any) {
+        console.error("Error fetching threads:", error.response.data.error);
         setLoading(false);
       }
     };

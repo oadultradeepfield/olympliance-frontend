@@ -8,7 +8,7 @@ export const useEditComment = () => {
 
   const handleEditComment = async (commentId: number, comment: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const response = await axios.put(
         `${apiUrl}/api/comments/${commentId}`,
         { content: comment },

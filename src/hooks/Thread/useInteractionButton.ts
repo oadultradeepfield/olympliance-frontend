@@ -15,7 +15,7 @@ export const useInteractionButton = (
 ) => {
   const handleInteraction = async (type: keyof InteractionState) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const currentInteraction = interactions[type];
 
       if (currentInteraction.active && currentInteraction.id) {
@@ -99,7 +99,6 @@ export const useInteractionButton = (
       }
 
       setShouldRefetchInteractions((prev) => !prev);
-      console.log(interactions);
     } catch (error) {
       console.error(`Error with ${type} interaction:`, error);
     }

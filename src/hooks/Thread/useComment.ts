@@ -8,7 +8,7 @@ export const useComment = () => {
 
   const handleComment = async (threadId: number, content: string) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const newComment = {
         thread_id: threadId,
         content: content,

@@ -37,7 +37,7 @@ export const useNewThread = (
       .filter((tag) => tag !== "");
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const response = await axios.post(
         `${apiUrl}/api/threads`,
         {
