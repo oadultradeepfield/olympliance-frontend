@@ -50,7 +50,6 @@ const authSlice = createSlice({
         username: "",
         is_banned: false,
       };
-      state.isUserDataLoaded = false;
     },
   },
 });
