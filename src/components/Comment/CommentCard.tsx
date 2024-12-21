@@ -32,7 +32,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
 }) => {
   const badge = comment.user ? getBadge(comment.user.reputation) : null;
   return (
-    <div className="card mx-auto mb-3 flex w-full max-w-5xl border-2 bg-base-100 px-2 py-1">
+    <div className="card mx-auto mb-3 flex w-full max-w-5xl border-2 border-base-content/20 bg-base-100 px-2 py-1">
       <div className="card-body flex flex-row items-start space-x-2 p-3">
         <ReputationBadge reputation={reputation} />
         <CommentContent

@@ -10,7 +10,7 @@ const Header = () => {
   );
 
   return (
-    <div className="navbar top-0 mx-auto w-full max-w-5xl bg-base-100 py-3">
+    <div className="navbar top-0 mx-auto w-full max-w-5xl py-3">
       <div className="navbar-start">
         <Link to="/">
           <div className="btn btn-ghost px-2">

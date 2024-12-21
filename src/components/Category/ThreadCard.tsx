@@ -18,13 +18,13 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
   <Link
     to={`/thread/${categoryTitle}-${slugify(thread.title)}-${thread.thread_id}`}
   >
-    <div className="card mx-auto mb-3 flex w-full max-w-3xl border-2 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary">
+    <div className="card mx-auto mb-3 flex w-full max-w-3xl border-2 border-base-content/20 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary">
       <div className="card-body flex flex-row items-start p-3">
-        <div className="mr-2 mt-1">
-          {thread.user && (
+        {thread.user && (
+          <div className="mr-2 mt-1">
             <ReputationBadge reputation={thread.user.reputation} />
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex flex-grow flex-col">
           <div className="mb-1 text-base font-semibold" title={thread.title}>
             {thread.user && <UserRoleBadge roleId={thread.user.role_id} />}
