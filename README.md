@@ -61,7 +61,7 @@ Before starting the local development server, ensure that the environment variab
 
 ### 3.2 Building and Running the App
 
-This React app was built using Vite. To start a local development server, ensure that you have Node.js and `npm` installed. For reference, this project was developed using Node.js version 23.4.0 and `npm` version 10.9.2. You can check your current versions by running the following commands:
+This React app was built using Vite. To start a local development server, ensure that you have Node.js and `npm` installed. For reference, this project was developed using Node.js version 23.4.0 and `npm` version 11.0.0. You can check your current versions by running the following commands:
 
 ```bash
 node -v
@@ -134,7 +134,7 @@ Note that your rank will also be displayed next to your name when you post a thr
 
 You can choose a thread category to begin with on the homepage. Currently, we have around 11 categories, following the officially recognized International Science Olympiads listed on [Wikipedia](https://en.wikipedia.org/wiki/International_Science_Olympiad). IAO and IOAA are categorized under Astronomy, and there is an additional General section for discussing random topics or IJSO, which are not categorized as individual subjects.
 
-In each category page, you will see a title and a list of all threads. The threads are fetched with a maximum of 5 per page. You can use the navigation buttons at the bottom to move between pages. There is a leaderboard for the mentioned reputation points below the navigation. You can also choose to sort the page by Newest, Top Upvoted, Most Comments, or Last Updated. Alternatively, you can browse thread in the page with keywords. Keywords are matched with the title, content, and tags of each thread. There is a button at the top, labeled "Ask a Question," to create a new thread. To create a thread, you need a title, a content, and optionally tags.
+In each category page, you will see a title and a list of all threads. The threads are fetched with a maximum of 5 per page. You can use the navigation buttons at the bottom to move between pages. There is a leaderboard for the mentioned reputation points below the navigation. You can also choose to sort the page by Newest, Top Upvoted, Most Comments, or Last Updated. Alternatively, you can browse the threads in the current page using keywords, which are matched with the title, content, or tags of each thread. There is a button at the top, labeled "Ask a Question," to create a new thread. To create a thread, you need a title, a content, and optionally tags.
 
 If you click on any existing thread, you will be brought to a single-thread page. The thread stats, including the number of upvotes, downvotes, comments, followers, etc., are displayed on the category page, but you cannot interact with them directly. You need to visit the thread page to interact with it.
 
