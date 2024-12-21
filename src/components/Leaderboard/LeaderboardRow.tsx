@@ -8,17 +8,8 @@ interface LeaderboardRowProps {
 }
 
 const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ user, index }) => {
-  const rowClass =
-    index === 0
-      ? "bg-yellow-100"
-      : index === 1
-        ? "bg-gray-100"
-        : index === 2
-          ? "bg-red-100"
-          : "";
-
   return (
-    <tr className={rowClass}>
+    <tr>
       <th>
         <LeaderboardRank index={index} />
       </th>

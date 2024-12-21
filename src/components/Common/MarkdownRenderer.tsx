@@ -38,7 +38,7 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
     code: ({ children, className }: CustomComponentProps) => {
       if (!className) {
         return (
-          <span className="rounded bg-gray-100 px-1 py-0.5 font-mono">
+          <span className="bg-base/50 rounded px-1 py-0.5 font-mono">
             {children}
           </span>
         );
