@@ -19,7 +19,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
     <Link to={linkPath}>
       <div
         key={id}
-        className="card transform border-2 border-base-content/20 transition-all duration-300 hover:border-secondary hover:text-secondary"
+        className="card transform border-2 border-base-content/15 transition-all duration-300 hover:border-secondary hover:text-secondary"
       >
         <div className="card-body items-center text-center">
           <div className="mb-4 flex h-16 w-24 items-center justify-center rounded-full text-6xl">

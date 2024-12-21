@@ -18,7 +18,7 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
   <Link
     to={`/thread/${categoryTitle}-${slugify(thread.title)}-${thread.thread_id}`}
   >
-    <div className="card mx-auto mb-3 flex w-full max-w-3xl border-2 border-base-content/20 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary">
+    <div className="card mx-auto mb-3 flex w-full max-w-3xl border-2 border-base-content/15 bg-base-100 px-2 py-1 transition-all duration-300 hover:border-secondary hover:text-secondary">
       <div className="card-body flex flex-row items-start p-3">
         {thread.user && (
           <div className="mr-2 mt-1">
