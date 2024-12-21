@@ -15,7 +15,7 @@ const Sorter: React.FC<SorterProps> = ({
   };
 
   return (
-    <div className="mb-8 flex items-center justify-between">
+    <div className="flex items-center justify-between">
       <select
         className="select select-bordered mx-auto max-w-xs"
         value={sortBy}

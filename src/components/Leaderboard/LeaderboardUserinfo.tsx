@@ -14,8 +14,10 @@ const LeaderboardUserInfo: React.FC<LeaderboardUserInfoProps> = ({ user }) => {
       <div className="avatar">
         <ReputationBadge reputation={user.reputation} />
       </div>
-      <div>
-        <div className="font-bold">{user.username}</div>
+      <div className="min-w-0 flex-1">
+        <div className="max-w-[20ch] truncate font-bold md:max-w-[40ch]">
+          {user.username}
+        </div>
         <div className="text-sm opacity-50">{badge.title}</div>
       </div>
     </div>

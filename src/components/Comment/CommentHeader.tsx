@@ -7,7 +7,7 @@ interface CommentHeaderProps {
 
 const CommentHeader: React.FC<CommentHeaderProps> = ({ sortBy, setSortBy }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="mb-8 flex items-center justify-between">
       <div className="text-xl font-semibold">Comments</div>
       <CommentSorter sortBy={sortBy} onSortChange={setSortBy} />
     </div>
