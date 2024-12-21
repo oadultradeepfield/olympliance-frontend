@@ -5,6 +5,7 @@ import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import { useNewThread } from "../../hooks/Thread/useNewThread";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { MarkdownRenderer } from "../../components/Common/MarkdownRenderer";
 
 interface ThreadFormData {
   title: string;
@@ -41,6 +42,33 @@ const NewThread: React.FC = () => {
     content: "",
     tags: "",
   });
+
+  const handleTabKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const textarea = e.target as HTMLTextAreaElement;
+      const { selectionStart, selectionEnd, value } = textarea;
+      const spaces = "    ";
+
+      const updatedValue =
+        value.substring(0, selectionStart) +
+        spaces +
+        value.substring(selectionEnd);
+
+      setFormData((prevState) => ({
+        ...prevState,
+        content: updatedValue,
+      }));
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd =
+          selectionStart + spaces.length;
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -82,18 +110,34 @@ const NewThread: React.FC = () => {
               />
             </div>
             <div className="form-control mb-4">
-              <label className="label">
+              <div className="label">
                 <span className="label-text">Content</span>
-              </label>
-              <textarea
-                name="content"
-                placeholder="Write your thread content here"
-                className="textarea textarea-bordered h-60 w-full resize-none text-base"
-                value={formData.content}
-                onChange={handleInputChange}
-                maxLength={5000}
-                required
-              />
+                <span className="label cursor-pointer">
+                  <span className="label-text mr-3">Preview Mode</span>
+                  <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={showPreview}
+                    onChange={() => setShowPreview(!showPreview)}
+                  />
+                </span>
+              </div>
+              {showPreview ? (
+                <div className="textarea textarea-bordered h-60 w-full cursor-not-allowed resize-none overflow-auto text-base">
+                  <MarkdownRenderer content={formData.content} />
+                </div>
+              ) : (
+                <textarea
+                  name="content"
+                  placeholder="Write your thread content here"
+                  className="textarea textarea-bordered h-60 w-full resize-none font-mono text-base"
+                  value={formData.content}
+                  onChange={handleInputChange}
+                  onKeyDown={handleTabKeyPress}
+                  maxLength={5000}
+                  required
+                />
+              )}
             </div>
             <div className="form-control mb-4">
               <label className="label">

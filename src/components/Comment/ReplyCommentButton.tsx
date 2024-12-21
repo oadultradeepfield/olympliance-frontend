@@ -5,6 +5,7 @@ import { useReplyComment } from "../../hooks/Comment/useReplyComment";
 import { MessageDisplay } from "../Common/MessageDisplay";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { MarkdownRenderer } from "../Common/MarkdownRenderer";
 
 interface ReplyCommentButtonProps {
   threadId: number;
@@ -22,32 +23,28 @@ const ReplyCommentButton: React.FC<ReplyCommentButtonProps> = ({
   );
   const navigate = useNavigate();
   const { replyComment } = useReplyComment();
-  const [replyCommentFormData, setReplyCommentFormData] = useState({
-    comment: "",
-  });
+  const [replyCommentFormData, setReplyCommentFormData] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const handleInputChangeReplyComment = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setReplyCommentFormData({
-      ...replyCommentFormData,
-      comment: event.target.value,
-    });
+    setReplyCommentFormData(e.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!replyCommentFormData.comment.trim()) {
+    if (!replyCommentFormData.trim()) {
       setError("Comment cannot be empty.");
       return;
     }
 
-    replyComment(threadId, parentCommentId, replyCommentFormData.comment)
+    replyComment(threadId, parentCommentId, replyCommentFormData)
       .then(() => {
         setSuccess("Your comment has been posted!");
-        setReplyCommentFormData({ comment: "" });
+        setReplyCommentFormData("");
         (
           document.getElementById(
             `reply_comment_modal_${parentCommentId}`,
@@ -57,6 +54,27 @@ const ReplyCommentButton: React.FC<ReplyCommentButtonProps> = ({
       .catch(() => {
         setError("Failed to post your comment.");
       });
+  };
+
+  const handleTabKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const textarea = e.target as HTMLTextAreaElement;
+      const { selectionStart, selectionEnd, value } = textarea;
+      const spaces = "    ";
+
+      setReplyCommentFormData(
+        value.substring(0, selectionStart) +
+          spaces +
+          value.substring(selectionEnd),
+      );
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd =
+          selectionStart + spaces.length;
+        textarea.focus();
+      }, 0);
+    }
   };
 
   const handleOpenModal = () => {
@@ -93,23 +111,40 @@ const ReplyCommentButton: React.FC<ReplyCommentButtonProps> = ({
           <h2 className="mb-2 text-2xl font-bold">
             You're replying to the comment:
           </h2>
-          <p className="mb-2 text-lg italic text-base-content/75">
-            "{content}"
-          </p>
+          <MarkdownRenderer
+            content={`"${content}"`}
+            className="mb-2 text-lg italic text-base-content/75"
+          ></MarkdownRenderer>
           <form onSubmit={handleSubmit} className="w-full">
             <div className="form-control mb-4">
-              <label className="label">
+              <div className="label">
                 <span className="label-text">Comment</span>
-              </label>
-              <textarea
-                name="comment"
-                placeholder="Write your comment here"
-                className="textarea textarea-bordered h-60 w-full resize-none text-base"
-                value={replyCommentFormData.comment}
-                onChange={handleInputChangeReplyComment}
-                maxLength={5000}
-                required
-              />
+                <span className="label cursor-pointer">
+                  <span className="label-text mr-3">Preview Mode</span>
+                  <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={showPreview}
+                    onChange={() => setShowPreview(!showPreview)}
+                  />
+                </span>
+              </div>
+              {showPreview ? (
+                <div className="textarea textarea-bordered flex h-60 max-h-60 w-full cursor-not-allowed resize-none justify-start overflow-auto text-base">
+                  <MarkdownRenderer content={replyCommentFormData} />
+                </div>
+              ) : (
+                <textarea
+                  name="comment"
+                  placeholder="Write your comment here"
+                  className="textarea textarea-bordered h-60 w-full resize-none font-mono text-base"
+                  value={replyCommentFormData}
+                  onChange={handleInputChangeReplyComment}
+                  onKeyDown={handleTabKeyPress}
+                  maxLength={5000}
+                  required
+                />
+              )}
             </div>
 
             {error && <MessageDisplay message={error} type="error" />}

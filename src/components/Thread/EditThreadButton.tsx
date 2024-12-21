@@ -6,6 +6,7 @@ import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { MarkdownRenderer } from "../Common/MarkdownRenderer";
 
 interface EditThreadModalProps {
   thread: (ThreadData & { user?: UserInfo }) | null;
@@ -18,6 +19,7 @@ const EditThreadModal: React.FC<EditThreadModalProps> = ({ thread }) => {
   const [title, setTitle] = useState(thread?.title || "");
   const [content, setContent] = useState(thread?.content || "");
   const [tags, setTags] = useState(thread?.tags.join(", ") || "");
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -41,6 +43,27 @@ const EditThreadModal: React.FC<EditThreadModalProps> = ({ thread }) => {
     );
   };
 
+  const handleTabKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const textarea = e.target as HTMLTextAreaElement;
+      const { selectionStart, selectionEnd, value } = textarea;
+      const spaces = "    ";
+
+      setContent(
+        value.substring(0, selectionStart) +
+          spaces +
+          value.substring(selectionEnd),
+      );
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd =
+          selectionStart + spaces.length;
+        textarea.focus();
+      }, 0);
+    }
+  };
+
   if (userId !== thread?.user?.user_id || !thread) {
     return null;
   }
@@ -58,7 +81,7 @@ const EditThreadModal: React.FC<EditThreadModalProps> = ({ thread }) => {
         <PencilIcon className="h-6 w-6 text-base-content hover:text-success" />
       </button>
       <dialog id="edit_modal" className="modal">
-        <div className="modal-box min-w-96 max-w-3xl p-8 md:w-full">
+        <div className="modal-box min-w-96 max-w-3xl overflow-hidden p-8 md:w-full">
           <h2 className="mb-4 text-2xl font-bold">Edit Thread</h2>
           <form onSubmit={handleSubmit} className="w-full">
             <div className="form-control mb-4">
@@ -77,18 +100,34 @@ const EditThreadModal: React.FC<EditThreadModalProps> = ({ thread }) => {
               />
             </div>
             <div className="form-control mb-4">
-              <label className="label">
+              <div className="label">
                 <span className="label-text">Content</span>
-              </label>
-              <textarea
-                name="content"
-                placeholder="Write your thread content here"
-                className="textarea textarea-bordered h-60 w-full resize-none text-base"
-                value={content}
-                onChange={handleInputChange}
-                maxLength={5000}
-                required
-              />
+                <span className="label cursor-pointer">
+                  <span className="label-text mr-3">Preview Mode</span>
+                  <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={showPreview}
+                    onChange={() => setShowPreview(!showPreview)}
+                  />
+                </span>
+              </div>
+              {showPreview ? (
+                <div className="textarea textarea-bordered h-60 max-h-60 w-full cursor-not-allowed resize-none overflow-auto text-base">
+                  <MarkdownRenderer content={content} />
+                </div>
+              ) : (
+                <textarea
+                  name="content"
+                  placeholder="Write your thread content here"
+                  className="textarea textarea-bordered h-60 w-full resize-none font-mono text-base"
+                  value={content}
+                  onChange={handleInputChange}
+                  onKeyDown={handleTabKeyPress}
+                  maxLength={5000}
+                  required
+                />
+              )}
             </div>
             <div className="form-control mb-4">
               <label className="label">

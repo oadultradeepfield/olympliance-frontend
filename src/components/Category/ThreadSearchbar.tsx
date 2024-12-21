@@ -12,7 +12,7 @@ const ThreadSearchbar: React.FC<ThreadSearchbarProps> = ({
   };
 
   return (
-    <div className="w-full sm:w-72">
+    <div className="w-72">
       <label className="input input-bordered flex w-full items-center gap-2">
         <input
           type="text"
