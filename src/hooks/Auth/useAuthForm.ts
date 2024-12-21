@@ -40,8 +40,9 @@ export const useAuthForm = () => {
         password: formData.password,
       });
 
-      const { token } = response.data;
+      const { token, refresh_token } = response.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("refresh_token", refresh_token);
 
       const userResponse = await axios.get(`${apiUrl}/api/users`, {
         headers: { Authorization: `Bearer ${token}` },

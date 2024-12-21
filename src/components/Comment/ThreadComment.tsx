@@ -31,7 +31,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
   );
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto mb-4">
       <CommentHeader sortBy={sortBy} setSortBy={setSortBy} />
 
       {loading && <Loading />}

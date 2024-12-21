@@ -10,7 +10,7 @@ const ThreadPage: React.FC = ({}) => {
   return (
     <div className="mx-auto mb-24 mt-2 h-full w-full max-w-5xl flex-col items-center justify-center p-6">
       <ThreadInteraction threadId={id} category={category} />
-      <div className="divider"></div>
+      <div className="divider my-4"></div>
       <ThreadComment threadId={id} />
     </div>
   );

@@ -5,10 +5,12 @@ import { useAuth } from "./hooks/Auth/useAuth";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import Loading from "./components/Common/Loading";
+import { useRefreshToken } from "./hooks/Auth/useRefreshToken";
 
 const App: React.FC = () => {
   const { isUserDataLoaded } = useSelector((state: RootState) => state.auth);
   useAuth();
+  useRefreshToken();
 
   if (!isUserDataLoaded) {
     return (
