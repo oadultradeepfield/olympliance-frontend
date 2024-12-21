@@ -24,7 +24,9 @@ const FollowedThreadList: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <ThreadSorter sortBy={sortBy} onSortChange={setSortBy} />
+      <div className="mb-8">
+        <ThreadSorter sortBy={sortBy} onSortChange={setSortBy} />
+      </div>
 
       {loading && <Loading />}
 

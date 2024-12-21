@@ -35,7 +35,6 @@ export const useAuth = () => {
           );
           dispatch(setUserDataLoaded(true));
         } catch (error) {
-          console.error("Error fetching user data", error);
           dispatch(
             setAuthState({
               isAuthenticated: false,

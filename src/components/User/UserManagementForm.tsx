@@ -20,7 +20,7 @@ export const UserManagementForm: React.FC<UserManagementFormProps> = ({
     useUserManagement({ actionType, onSuccess });
 
   return (
-    <div className="card w-96 border-2 bg-base-100">
+    <div className="card w-96 border-2 border-base-content/15 bg-base-100">
       <div className="card-body items-center text-center">
         <h2 className="card-title mb-4 text-2xl">{title}</h2>
         <form onSubmit={handleSubmit} className="w-full">
