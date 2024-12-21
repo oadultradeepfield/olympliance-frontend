@@ -37,7 +37,6 @@ const EditCommentButton: React.FC<EditCommentButtonProps> = ({ comment }) => {
   return (
     <>
       <button
-        className="pl-2"
         onClick={() =>
           (
             document.getElementById(

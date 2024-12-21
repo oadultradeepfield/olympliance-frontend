@@ -1,11 +1,9 @@
-import UserRoleBadge from "../Common/UserRoleBadge";
 import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
-import EditCommentButton from "./EditCommentButton";
-import DeleteCommentButton from "./DeleteCommentButton";
 import CommentInteractionAndStats from "./CommentInteractionAndStats";
 import { Badge } from "../../data/badgeData";
+import { MarkdownRenderer } from "../Common/MarkdownRenderer";
 
 interface CommentContentProps {
   threadId: number;
@@ -44,15 +42,16 @@ const CommentContent: React.FC<CommentContentProps> = ({
               : `\"${parentComment.content}\"`}
         </div>
       )}
-      <div className="mb-3 text-base">
-        <UserRoleBadge roleId={comment?.user?.role_id ?? 0} />
+      <div className="mb-2 text-base">
         <span
           className={comment.is_deleted ? "italic text-base-content/75" : ""}
         >
-          {comment.is_deleted ? "[Comment deleted]" : comment.content}
+          {comment.is_deleted ? (
+            "[Comment deleted]"
+          ) : (
+            <MarkdownRenderer className="-mt-2" content={comment.content} />
+          )}
         </span>
-        <EditCommentButton comment={comment} />
-        <DeleteCommentButton comment={comment} />
       </div>
       <CommentInteractionAndStats
         badge={badge}

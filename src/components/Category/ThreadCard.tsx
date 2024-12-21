@@ -28,7 +28,7 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
         <div className="flex flex-grow flex-col">
           <div className="mb-1 text-base font-semibold" title={thread.title}>
             {thread.user && <UserRoleBadge roleId={thread.user.role_id} />}
-            {thread.title}
+            <span className="ml-2">{thread.title}</span>
           </div>
           <ThreadStats
             upvotes={thread.stats.upvotes}

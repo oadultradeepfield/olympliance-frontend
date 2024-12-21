@@ -5,6 +5,9 @@ import { Interaction } from "../../data/interactionData";
 import CommentVoteButton from "./CommentVoteButton";
 import ReplyCommentButton from "./ReplyCommentButton";
 import { Badge } from "../../data/badgeData";
+import EditCommentButton from "./EditCommentButton";
+import DeleteCommentButton from "./DeleteCommentButton";
+import UserRoleBadge from "../Common/UserRoleBadge";
 
 interface CommentInteractionAndStatsProps {
   badge: Badge | null;
@@ -70,6 +73,9 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
           )}
         </span>
       </div>
+      <UserRoleBadge roleId={comment?.user?.role_id ?? 0} />
+      <EditCommentButton comment={comment} />
+      <DeleteCommentButton comment={comment} />
     </div>
   );
 };

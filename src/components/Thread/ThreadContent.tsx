@@ -4,6 +4,7 @@ import { UserInfo } from "../../data/userData";
 import DeleteThreadButton from "./DeleteThreadButton";
 import { Badge } from "../../data/badgeData";
 import UserRoleBadge from "../Common/UserRoleBadge";
+import { MarkdownRenderer } from "../Common/MarkdownRenderer";
 
 interface ThreadContentProps {
   thread: (ThreadData & { user?: UserInfo }) | null;
@@ -35,7 +36,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
               ({badge.title}: {thread.user?.reputation})
             </span>
           )}
-          <span className="-mr-2 ml-2">
+          <span className="ml-2">
             <UserRoleBadge roleId={thread.user?.role_id ?? 0} />
           </span>{" "}
           {" • "}
@@ -51,7 +52,9 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
           ))}
         </div>
       )}
-      <div className="mb-6 max-w-none text-lg">{thread.content}</div>
+      <div className="my-6 max-w-none text-lg">
+        <MarkdownRenderer content={thread.content} />
+      </div>
     </>
   );
 };

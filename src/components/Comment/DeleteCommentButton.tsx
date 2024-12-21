@@ -40,7 +40,6 @@ const DeleteCommentButton: React.FC<DeleteCommentButtonProps> = ({
   return (
     <>
       <button
-        className="pl-2"
         onClick={() =>
           (
             document.getElementById(
