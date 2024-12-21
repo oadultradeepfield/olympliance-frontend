@@ -9,7 +9,7 @@ const Pagination: React.FC<PaginationProps> = ({
   hasMore,
   onPageChange,
 }) => (
-  <div className="mb-8 mt-12 flex justify-center">
+  <div className="mb-4 mt-12 flex justify-center">
     <div className="join">
       <button
         className="btn join-item"

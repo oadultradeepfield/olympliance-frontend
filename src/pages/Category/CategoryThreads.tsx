@@ -2,6 +2,7 @@ import { useParams, Navigate } from "react-router-dom";
 import CategoryHero from "../../components/Category/CategoryHero";
 import ThreadList from "../../components/Category/ThreadList";
 import { categories } from "../../data/categoriesData";
+import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
 const CategoryThreads: React.FC = () => {
   const { categoryTitle } = useParams<{ categoryTitle: string }>();
@@ -23,6 +24,8 @@ const CategoryThreads: React.FC = () => {
         categoryId={category.id}
         categoryTitle={category.title.toLowerCase().replace(/\s/g, "")}
       />
+      <div className="divider"></div>
+      <Leaderboard />
     </div>
   );
 };
