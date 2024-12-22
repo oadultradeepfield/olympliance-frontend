@@ -35,10 +35,16 @@ export const useAuthForm = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await axios.post(`${apiUrl}/api/login`, {
-        username: formData.username,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/api/login`,
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
       const { access_token } = response.data;
       localStorage.setItem("access_token", access_token);
