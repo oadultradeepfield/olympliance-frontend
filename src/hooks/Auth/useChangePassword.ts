@@ -30,7 +30,7 @@ export const useChangePassword = (): UseChangePasswordResult => {
     setSuccess("");
 
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       const response = await axios.put(
         `${apiUrl}/api/users/change-password`,
         {
@@ -40,7 +40,7 @@ export const useChangePassword = (): UseChangePasswordResult => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         },
       );

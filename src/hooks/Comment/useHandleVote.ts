@@ -30,8 +30,8 @@ export const useHandleVote = ({
   const handleVote = async (voteType: "upvote" | "downvote") => {
     try {
       setShouldShowLoading(true);
-      const token = localStorage.getItem("access_token");
-      if (!token) {
+      const access_token = localStorage.getItem("access_token");
+      if (!access_token) {
         throw new Error("User is not authenticated.");
       }
 
@@ -47,7 +47,7 @@ export const useHandleVote = ({
           { interaction_type: voteType },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${access_token}`,
             },
           },
         );
@@ -60,7 +60,7 @@ export const useHandleVote = ({
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${access_token}`,
             },
           },
         );

@@ -12,14 +12,14 @@ const FollowedThreadList: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [page, setPage] = useState<number>(1);
 
-  const token = localStorage.getItem("access_token");
+  const access_token = localStorage.getItem("access_token");
 
   const { threads, loading } = useThreads({
     apiEndpoint: `/api/followed-threads/${userId}`,
     sort_by: sortBy,
     page: page,
     per_page: 5,
-    token: token || "",
+    access_token: access_token || "",
   });
 
   return (

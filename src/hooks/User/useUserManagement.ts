@@ -42,12 +42,12 @@ export const useUserManagement = ({
     }
 
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       const userIdResponse = await axios.get(
         `${apiUrl}/api/users/get-id/${formData.username}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         },
       );
@@ -63,7 +63,7 @@ export const useUserManagement = ({
         {},
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         },
       );

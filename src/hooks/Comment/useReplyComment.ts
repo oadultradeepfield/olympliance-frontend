@@ -8,7 +8,7 @@ export const useReplyComment = () => {
     content: string,
   ) => {
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       const newComment = {
         thread_id: threadId,
         parent_comment_id: parentCommentId,
@@ -17,7 +17,7 @@ export const useReplyComment = () => {
 
       await axios.post(`${apiUrl}/api/comments`, newComment, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${access_token}`,
         },
       });
 

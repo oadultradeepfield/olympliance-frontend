@@ -13,7 +13,7 @@ export const useEditThread = () => {
     tags: string[],
   ) => {
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       const newThread = {
         title,
         content,
@@ -25,7 +25,7 @@ export const useEditThread = () => {
         newThread,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         },
       );

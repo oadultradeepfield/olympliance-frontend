@@ -8,15 +8,22 @@ export const useRefreshToken = () => {
   const dispatch = useDispatch();
 
   const refreshAccessToken = async () => {
+    const current_token = localStorage.getItem("access_token");
+
     try {
       const response = await axios.post(
         `${apiUrl}/api/refresh-token`,
         {},
-        { withCredentials: true },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${current_token}`,
+          },
+        },
       );
 
-      const { token } = response.data;
-      localStorage.setItem("access_token", token);
+      const { access_token } = response.data;
+      localStorage.setItem("access_token", access_token);
 
       dispatch(
         setAuthState({
@@ -24,7 +31,10 @@ export const useRefreshToken = () => {
         }),
       );
     } catch (error: any) {
-      console.error("Error refreshing token:", error.response.data.error);
+      console.error(
+        "Error refreshing access_token:",
+        error.response.data.error,
+      );
       localStorage.removeItem("access_token");
       dispatch(
         setAuthState({
@@ -39,7 +49,7 @@ export const useRefreshToken = () => {
       () => {
         refreshAccessToken();
       },
-      15 * 60 * 1000,
+      14.5 * 60 * 1000,
     );
 
     return () => clearInterval(interval);

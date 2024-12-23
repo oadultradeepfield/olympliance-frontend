@@ -12,13 +12,13 @@ export const useAuth = () => {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const access_token = localStorage.getItem("access_token");
 
     const fetchUserData = async () => {
-      if (token) {
+      if (access_token) {
         try {
           const userResponse = await axios.get(`${apiUrl}/api/users`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${access_token}` },
           });
 
           dispatch(

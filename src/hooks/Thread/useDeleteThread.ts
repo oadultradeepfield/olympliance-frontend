@@ -7,10 +7,10 @@ export const useDeleteThread = (category: string) => {
 
   const deleteThread = async (threadId: number) => {
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       await axios.delete(`${apiUrl}/api/threads/${threadId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${access_token}`,
         },
       });
 

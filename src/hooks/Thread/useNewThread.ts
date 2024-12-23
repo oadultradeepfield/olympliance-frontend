@@ -37,7 +37,7 @@ export const useNewThread = (
       .filter((tag) => tag !== "");
 
     try {
-      const token = localStorage.getItem("access_token");
+      const access_token = localStorage.getItem("access_token");
       const response = await axios.post(
         `${apiUrl}/api/threads`,
         {
@@ -48,7 +48,7 @@ export const useNewThread = (
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         },
       );
