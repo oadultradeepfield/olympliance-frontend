@@ -2,6 +2,7 @@ import { useAuthForm } from "../../hooks/Auth/useAuthForm";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import GoogleSigninButton from "../../components/Auth/GoogleSigninButton";
+import { Link } from "react-router-dom"; // Make sure to import Link for navigation
 
 const AuthPage = () => {
   const {
@@ -97,6 +98,35 @@ const AuthPage = () => {
 
             {error && <MessageDisplay message={error} type="error" />}
             {success && <MessageDisplay message={success} type="success" />}
+
+            {!isLogin && (
+              <div className="form-control mx-auto mt-4 flex w-full max-w-xs">
+                <label className="label cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required
+                    className="checkbox-primary checkbox"
+                  />
+                  <span className="ml-3 text-start text-sm">
+                    By registering, you agree to our
+                    <Link
+                      to="/terms-of-service"
+                      className="link link-primary ml-1"
+                    >
+                      Terms of Service
+                    </Link>{" "}
+                    and
+                    <Link
+                      to="/privacy-policy"
+                      className="link link-primary ml-1"
+                    >
+                      Privacy Policy
+                    </Link>
+                    .
+                  </span>
+                </label>
+              </div>
+            )}
 
             <div className="form-control mx-auto mt-6 w-full max-w-xs">
               <button type="submit" className="btn btn-primary w-full">

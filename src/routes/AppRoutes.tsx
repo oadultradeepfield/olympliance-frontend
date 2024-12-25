@@ -12,6 +12,8 @@ import FollowedThreads from "../pages/Thread/FollowedThreads";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import ChangeUsername from "../pages/Auth/ChangeUsername";
+import Terms from "../pages/Terms/Terms";
+import Policy from "../pages/Terms/Policy";
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector(
@@ -33,6 +35,8 @@ const AppRoutes = () => {
       <Route path="/ban-user" element={<BanUserPage />} />
       <Route path="/assign-moderator" element={<AssignModeratorPage />} />
       <Route path="/:categoryTitle/new" element={<NewThread />} />
+      <Route path="/terms-of-service" element={<Terms />} />
+      <Route path="/privacy-policy" element={<Policy />} />
       <Route path="/not-found" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
