@@ -49,7 +49,7 @@ export const useRefreshToken = () => {
       () => {
         refreshAccessToken();
       },
-      14.5 * 60 * 1000,
+      10 * 60 * 1000,
     );
 
     return () => clearInterval(interval);
