@@ -39,6 +39,9 @@ const ChangeUsername: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     changeUsername(formData);
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (
@@ -70,8 +73,8 @@ const ChangeUsername: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
-                  name="confirmNewPassword"
-                  placeholder="Confirm new password"
+                  name="confirmUsername"
+                  placeholder="Confirm new username"
                   className="input input-bordered w-full max-w-xs pr-10"
                   value={formData.confirmUsername}
                   onChange={handleInputChange}
