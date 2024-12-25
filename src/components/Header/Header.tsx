@@ -13,7 +13,7 @@ const Header = () => {
     <div className="navbar top-0 mx-auto w-full max-w-5xl py-3">
       <div className="navbar-start">
         <Link to="/">
-          <div className="btn btn-ghost px-2">
+          <div className="flex flex-row items-center space-x-2 text-xl font-semibold hover:text-primary">
             <img className="w-8 sm:w-10" src="/logo.png" alt="App Logo" />
             <div className="text-lg sm:text-xl">Olympliance</div>
           </div>
