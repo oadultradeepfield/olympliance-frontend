@@ -11,6 +11,7 @@ import AssignModeratorPage from "../pages/User/AssignModeratorPage";
 import FollowedThreads from "../pages/Thread/FollowedThreads";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import ChangeUsername from "../pages/Auth/ChangeUsername";
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector(
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         element={!isAuthenticated ? <AuthPage /> : <Navigate to="/" />}
       />
       <Route path="/followed-threads" element={<FollowedThreads />} />
+      <Route path="/change-username" element={<ChangeUsername />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/ban-user" element={<BanUserPage />} />
       <Route path="/assign-moderator" element={<AssignModeratorPage />} />

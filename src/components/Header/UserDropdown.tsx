@@ -32,6 +32,9 @@ const UserDropdown = () => {
           <Link to="/followed-threads">View Followed Threads</Link>
         </li>
         <li>
+          <Link to="/change-username">Change Username</Link>
+        </li>
+        <li>
           <Link to="/change-password">Change Password</Link>
         </li>
         <li>
