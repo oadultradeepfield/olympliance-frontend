@@ -72,7 +72,7 @@ export const useRefreshToken = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [dispatch]);
+  }, []);
 
   return { refreshAccessToken };
 };
