@@ -33,7 +33,7 @@ export const useRefreshToken = () => {
     } catch (error: any) {
       console.error(
         "Error refreshing access_token:",
-        error.response.data.error,
+        error.response?.data?.error || "Unknown error",
       );
       localStorage.removeItem("access_token");
       dispatch(
@@ -44,16 +44,35 @@ export const useRefreshToken = () => {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        refreshAccessToken();
-      },
-      10 * 60 * 1000,
-    );
+  const calculateRefreshTime = (token: string): number => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const decoded = JSON.parse(atob(base64));
 
-    return () => clearInterval(interval);
-  }, []);
+      const expirationTime = decoded.exp * 1000;
+      const refreshTime = expirationTime - 3 * 60 * 1000;
+
+      return Math.max(refreshTime - Date.now(), 0);
+    } catch (error) {
+      console.error("Failed to decode access token:", error);
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    const current_token = localStorage.getItem("access_token");
+
+    if (current_token) {
+      const timeUntilRefresh = calculateRefreshTime(current_token);
+
+      const timer = setTimeout(() => {
+        refreshAccessToken();
+      }, timeUntilRefresh);
+
+      return () => clearTimeout(timer);
+    }
+  }, [dispatch]);
 
   return { refreshAccessToken };
 };
