@@ -6,12 +6,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import Loading from "./components/Common/Loading";
 import { useRefreshToken } from "./hooks/Auth/useRefreshToken";
-import { useGoogleAuth } from "./hooks/Auth/useGoogleAuth";
 
 const App: React.FC = () => {
   const { isUserDataLoaded } = useSelector((state: RootState) => state.auth);
   useAuth();
-  useGoogleAuth();
   useRefreshToken();
 
   if (!isUserDataLoaded) {
