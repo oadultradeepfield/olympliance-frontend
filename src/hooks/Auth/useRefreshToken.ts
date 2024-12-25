@@ -51,7 +51,7 @@ export const useRefreshToken = () => {
       const decoded = JSON.parse(atob(base64));
 
       const expirationTime = decoded.exp * 1000;
-      const refreshTime = expirationTime - 3 * 60 * 1000;
+      const refreshTime = expirationTime - 14 * 60 * 1000;
 
       return Math.max(refreshTime - Date.now(), 0);
     } catch (error) {
