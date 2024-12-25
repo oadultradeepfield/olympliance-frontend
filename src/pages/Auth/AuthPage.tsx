@@ -1,6 +1,7 @@
 import { useAuthForm } from "../../hooks/Auth/useAuthForm";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
+import GoogleSigninButton from "../../components/Auth/GoogleSigninButton";
 
 const AuthPage = () => {
   const {
@@ -25,6 +26,8 @@ const AuthPage = () => {
           <h2 className="card-title mb-4 text-2xl">
             {isLogin ? "Login" : "Create Account"}
           </h2>
+          <GoogleSigninButton />
+          <div className="divider my-2">OR</div>
           <form
             onSubmit={isLogin ? handleLogin : handleRegister}
             className="w-full"
