@@ -41,7 +41,7 @@ const DeleteAccount: React.FC = () => {
         <h2 className="mb-6 text-2xl font-bold text-error">Delete Account</h2>
         <div className="flex flex-col space-y-4">
           <div>
-            <label className="block text-sm font-medium text-base-content/75">
+            <label className="block text-xs font-medium text-base-content/75">
               Type "permanently delete my account" to confirm
             </label>
             <input
