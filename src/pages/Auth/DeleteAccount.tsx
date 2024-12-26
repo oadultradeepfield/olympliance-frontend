@@ -6,65 +6,69 @@ import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import { useDeleteAccount } from "../../hooks/Auth/useDeleteAccount";
 
 const DeleteAccount: React.FC = () => {
+  const [confirmText, setConfirmText] = useState("");
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
   const navigate = useNavigate();
   const { deleteAccount, error, success } = useDeleteAccount();
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
-  const handleDeleteAccount = () => {
-    deleteAccount();
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
+  const isValidConfirmation =
+    confirmText.trim().toLowerCase() === "permanently delete my account";
+
+  const handleDeleteAccount = async () => {
+    if (!isValidConfirmation) return;
+
+    try {
+      await deleteAccount();
+      if (success) {
+        setTimeout(() => navigate("/", { replace: true }), 2000);
+      }
+    } catch (err) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
-      <div className="card w-96 border-2 border-base-content/15 bg-base-100">
-        <div className="card-body items-center text-center">
-          <h2 className="card-title mb-4 text-2xl">Delete Account</h2>
-          {!isDeleting ? (
-            <div className="w-full">
-              <p className="mb-4 text-sm text-error">
-                Deleting your account is irreversible. All your data will be
-                permanently removed.
-              </p>
-              <button
-                className="btn btn-error w-full"
-                onClick={() => setIsDeleting(true)}
-              >
-                Delete Account
-              </button>
-            </div>
-          ) : (
-            <div className="modal w-96">
-              <h3 className="text-lg font-bold">Confirm Deletion</h3>
-              <p className="pt-4">
-                Are you sure you want to delete your account? This action cannot
-                be undone.
-              </p>
-              <div className="modal-action mt-4 flex justify-between">
-                <button className="btn" onClick={() => setIsDeleting(false)}>
-                  Cancel
-                </button>
-                <button className="btn btn-error" onClick={handleDeleteAccount}>
-                  Confirm
-                </button>
-              </div>
-            </div>
-          )}
+      <div className="w-96 rounded-lg border-2 border-base-content/15 bg-base-100 p-6">
+        <h2 className="mb-6 text-2xl font-bold text-error">Delete Account</h2>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-base-content/75">
+              Type "permanently delete my account" to confirm
+            </label>
+            <input
+              type="text"
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              className="mt-1 w-full rounded border p-2"
+              required
+            />
+          </div>
 
-          {error && <MessageDisplay message={error} type="error" />}
-          {success && <MessageDisplay message={success} type="success" />}
+          <p className="text-sm text-error">
+            Warning: This action is permanent and will delete all your data
+            immediately.
+          </p>
+
+          <button
+            className={`btn w-full rounded-lg ${isValidConfirmation ? "btn-error" : "btn-outline btn-error cursor-not-allowed"}`}
+            onClick={handleDeleteAccount}
+            disabled={!isValidConfirmation}
+          >
+            Delete Account
+          </button>
         </div>
+
+        {error && <MessageDisplay message={error} type="error" />}
+        {success && <MessageDisplay message={success} type="success" />}
       </div>
     </div>
   );
