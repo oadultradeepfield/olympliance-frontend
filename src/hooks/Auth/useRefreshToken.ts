@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setAuthState } from "../../slices/authSlice";
@@ -7,7 +7,7 @@ import { apiUrl } from "../../data/apiUrl";
 export const useRefreshToken = () => {
   const dispatch = useDispatch();
 
-  const refreshAccessToken = async () => {
+  const refreshAccessToken = useCallback(async () => {
     const current_token = localStorage.getItem("access_token");
 
     try {
@@ -30,6 +30,8 @@ export const useRefreshToken = () => {
           isAuthenticated: true,
         }),
       );
+
+      scheduleNextRefresh(access_token);
     } catch (error: any) {
       console.error(
         "Error refreshing access_token:",
@@ -42,9 +44,9 @@ export const useRefreshToken = () => {
         }),
       );
     }
-  };
+  }, [dispatch]);
 
-  const calculateRefreshTime = (token: string): number => {
+  const calculateRefreshTime = useCallback((token: string): number => {
     try {
       const base64Url = token.split(".")[1];
       const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -58,21 +60,28 @@ export const useRefreshToken = () => {
       console.error("Failed to decode access token:", error);
       return 0;
     }
-  };
+  }, []);
+
+  const scheduleNextRefresh = useCallback(
+    (token: string) => {
+      const timeUntilRefresh = calculateRefreshTime(token);
+
+      if (timeUntilRefresh > 0) {
+        setTimeout(() => {
+          refreshAccessToken();
+        }, timeUntilRefresh);
+      }
+    },
+    [calculateRefreshTime, refreshAccessToken],
+  );
 
   useEffect(() => {
     const current_token = localStorage.getItem("access_token");
 
     if (current_token) {
-      const timeUntilRefresh = calculateRefreshTime(current_token);
-
-      const timer = setTimeout(() => {
-        refreshAccessToken();
-      }, timeUntilRefresh);
-
-      return () => clearTimeout(timer);
+      scheduleNextRefresh(current_token);
     }
-  }, [dispatch]);
+  }, [scheduleNextRefresh]);
 
   return { refreshAccessToken };
 };
