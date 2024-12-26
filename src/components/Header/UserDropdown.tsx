@@ -6,17 +6,14 @@ import { useLogout } from "../../hooks/Auth/useLogout";
 
 const UserDropdown = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-
-  const handleLogout = () => {
-    useLogout();
-  };
+  const { handleLogout } = useLogout();
 
   return (
     <div className="dropdown dropdown-end" tabIndex={0}>
       <button className="avatar mr-0 p-0 sm:mr-3">
         <ReputationBadge reputation={user.reputation} />
       </button>
-      <ul className="tabIndex={0} menu dropdown-content menu-sm z-[1] mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
+      <ul className="menu dropdown-content menu-sm z-[1] mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
         {user.role_id > 0 && (
           <li>
             <Link to="/ban-user">Ban User</Link>
