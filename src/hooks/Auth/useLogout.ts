@@ -9,7 +9,7 @@ export const useLogout = () => {
 
   const handleLogout = useCallback(async () => {
     try {
-      await axios.post(`${apiUrl}/logout`, {});
+      await axios.post(`${apiUrl}/api/logout`, {});
 
       dispatch(logout());
     } catch (error) {
