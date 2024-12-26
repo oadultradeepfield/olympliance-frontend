@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import ReputationBadge from "../Common/ReputationBadge";
@@ -7,6 +7,13 @@ import { useLogout } from "../../hooks/Auth/useLogout";
 const UserDropdown = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { handleLogout } = useLogout();
+
+  const navigate = useNavigate();
+
+  const handleLogoutAndRedirect = () => {
+    handleLogout();
+    navigate("/");
+  };
 
   return (
     <div className="dropdown dropdown-end" tabIndex={0}>
@@ -42,7 +49,7 @@ const UserDropdown = () => {
           </Link>
         </li>
         <li>
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogoutAndRedirect}>Logout</button>
         </li>
       </ul>
     </div>
