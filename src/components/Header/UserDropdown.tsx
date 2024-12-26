@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { logout } from "../../slices/authSlice";
 import ReputationBadge from "../Common/ReputationBadge";
+import { useLogout } from "../../hooks/Auth/useLogout";
 
 const UserDropdown = () => {
-  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = () => {
-    dispatch(logout());
+    useLogout();
   };
 
   return (
