@@ -4,10 +4,13 @@ import ThreadComment from "../../components/Comment/ThreadComment";
 import { categories } from "../../data/categoriesData";
 
 const ThreadPage: React.FC = () => {
-  const { category, id } = useParams<{ category?: string; id?: string }>();
+  const { categoryTitle, id } = useParams<{
+    categoryTitle: string;
+    id?: string;
+  }>();
 
   const categoryExists = categories.some(
-    (cat) => cat.title.toLowerCase() === category?.toLowerCase(),
+    (cat) => cat.title.toLowerCase() === categoryTitle?.toLowerCase(),
   );
 
   const threadId = id ? Number(id) : NaN;
@@ -18,7 +21,7 @@ const ThreadPage: React.FC = () => {
 
   return (
     <div className="mx-auto mb-24 mt-2 h-full w-full max-w-5xl flex-col items-center justify-center p-6">
-      <ThreadInteraction threadId={threadId} category={category || ""} />
+      <ThreadInteraction threadId={threadId} category={categoryTitle || ""} />
       <div className="divider my-4"></div>
       <ThreadComment threadId={threadId} />
     </div>
