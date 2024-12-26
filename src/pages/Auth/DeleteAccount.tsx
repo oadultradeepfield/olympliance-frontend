@@ -26,7 +26,7 @@ const DeleteAccount: React.FC = () => {
     if (!isValidConfirmation) return;
 
     try {
-      await deleteAccount();
+      deleteAccount();
       if (success) {
         setTimeout(() => navigate("/", { replace: true }), 2000);
       }
@@ -39,7 +39,7 @@ const DeleteAccount: React.FC = () => {
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
       <div className="w-96 rounded-xl border-2 border-base-content/15 bg-base-100 p-6">
         <h2 className="mb-6 text-2xl font-bold text-error">Delete Account</h2>
-        <div className="space-y-4">
+        <div className="flex flex-col space-y-4">
           <div>
             <label className="block text-sm font-medium text-base-content/75">
               Type "permanently delete my account" to confirm
@@ -48,7 +48,7 @@ const DeleteAccount: React.FC = () => {
               type="text"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
+              className="input input-bordered w-full"
               required
             />
           </div>
