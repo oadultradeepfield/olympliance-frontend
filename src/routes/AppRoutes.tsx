@@ -24,7 +24,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/:categoryTitle" element={<CategoryThreads />} />
-      <Route path="/thread/:slug" element={<ThreadPage />} />
+      <Route path="/:categoryTitle/thread/:id" element={<ThreadPage />} />
       <Route
         path="/login"
         element={!isAuthenticated ? <AuthPage /> : <Navigate to="/" />}
