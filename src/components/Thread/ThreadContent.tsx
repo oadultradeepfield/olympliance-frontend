@@ -52,7 +52,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
           ))}
         </div>
       )}
-      <div className="my-6 max-w-none text-lg">
+      <div className="my-6 max-w-none">
         <MarkdownRenderer content={thread.content} />
       </div>
     </>
