@@ -37,7 +37,7 @@ const DeleteAccount: React.FC = () => {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
-      <div className="w-96 rounded-lg border-2 border-base-content/15 bg-base-100 p-6">
+      <div className="w-96 rounded-xl border-2 border-base-content/15 bg-base-100 p-6">
         <h2 className="mb-6 text-2xl font-bold text-error">Delete Account</h2>
         <div className="space-y-4">
           <div>
@@ -59,7 +59,7 @@ const DeleteAccount: React.FC = () => {
           </p>
 
           <button
-            className={`btn w-full rounded-lg ${isValidConfirmation ? "btn-error" : "btn-outline btn-error cursor-not-allowed"}`}
+            className={`btn w-full rounded-lg ${isValidConfirmation ? "btn-error" : "btn-outline btn-error"}`}
             onClick={handleDeleteAccount}
             disabled={!isValidConfirmation}
           >
