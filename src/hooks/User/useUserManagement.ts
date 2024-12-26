@@ -42,14 +42,9 @@ export const useUserManagement = ({
     }
 
     try {
-      const access_token = localStorage.getItem("access_token");
       const userIdResponse = await axios.get(
         `${apiUrl}/api/users/get-id/${formData.username}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        {},
       );
 
       const userId = userIdResponse.data.user_id;
@@ -58,15 +53,7 @@ export const useUserManagement = ({
           ? `${apiUrl}/api/users/${userId}/toggle-moderator`
           : `${apiUrl}/api/users/${userId}/toggle-ban`;
 
-      const response = await axios.put(
-        endpoint,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
-      );
+      const response = await axios.put(endpoint, {}, {});
 
       setSuccess(
         response.data.message ||

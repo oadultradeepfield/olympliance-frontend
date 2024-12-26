@@ -35,23 +35,12 @@ export const useAuthForm = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/login`,
-        {
-          username: formData.username,
-          password: formData.password,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-
-      const { access_token } = response.data;
-      localStorage.setItem("access_token", access_token);
-
-      const userResponse = await axios.get(`${apiUrl}/api/users`, {
-        headers: { Authorization: `Bearer ${access_token}` },
+      await axios.post(`${apiUrl}/api/login`, {
+        username: formData.username,
+        password: formData.password,
       });
+
+      const userResponse = await axios.get(`${apiUrl}/api/users`, {});
 
       dispatch(
         setAuthState({

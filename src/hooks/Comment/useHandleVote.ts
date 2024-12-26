@@ -30,11 +30,6 @@ export const useHandleVote = ({
   const handleVote = async (voteType: "upvote" | "downvote") => {
     try {
       setShouldShowLoading(true);
-      const access_token = localStorage.getItem("access_token");
-      if (!access_token) {
-        throw new Error("User is not authenticated.");
-      }
-
       const currentInteractions = comment?.interactions;
 
       const existingInteraction = currentInteractions?.find(
@@ -45,11 +40,7 @@ export const useHandleVote = ({
         await axios.put(
           `${apiUrl}/api/interactions/${existingInteraction.interaction_id}`,
           { interaction_type: voteType },
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          },
+          {},
         );
       } else {
         await axios.post(
@@ -58,11 +49,7 @@ export const useHandleVote = ({
             comment_id: comment.comment_id,
             interaction_type: voteType,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          },
+          {},
         );
       }
 

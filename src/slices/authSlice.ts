@@ -51,7 +51,6 @@ const authSlice = createSlice({
         is_banned: false,
       };
       state.isUserDataLoaded = false;
-      localStorage.removeItem("access_token");
     },
   },
 });
