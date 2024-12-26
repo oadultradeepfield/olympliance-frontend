@@ -62,7 +62,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
 
       <Pagination
         page={page}
-        hasMore={threads.length === 10}
+        hasMore={threads.length > 10}
         onPageChange={setPage}
       />
     </div>

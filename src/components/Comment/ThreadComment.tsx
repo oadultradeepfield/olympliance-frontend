@@ -60,7 +60,7 @@ const ThreadComment: React.FC<ThreadCommentProps> = ({ threadId }) => {
 
       <Pagination
         page={page}
-        hasMore={comments.length === 10}
+        hasMore={comments.length > 10}
         onPageChange={setPage}
       />
     </div>

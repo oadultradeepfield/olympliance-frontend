@@ -16,7 +16,7 @@ const FollowedThreadList: React.FC = () => {
     apiEndpoint: `/api/followed-threads/${userId}`,
     sort_by: sortBy,
     page: page,
-    per_page: 5,
+    per_page: 10,
   });
 
   return (
@@ -40,7 +40,7 @@ const FollowedThreadList: React.FC = () => {
 
       <Pagination
         page={page}
-        hasMore={threads.length === 5}
+        hasMore={threads.length > 10}
         onPageChange={setPage}
       />
     </div>
