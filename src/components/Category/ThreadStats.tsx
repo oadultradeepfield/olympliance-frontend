@@ -45,7 +45,7 @@ const ThreadStats: React.FC<ThreadStatsProps> = ({
       {user && (
         <div className="flex items-center space-x-1">
           <span>
-            Author: {user.username}
+            Author: {user.is_deleted ? "[Deleted User]" : user.username}
             {badge && (
               <span className="ml-1 text-xs">
                 ({badge.title}: {user.reputation})

@@ -34,6 +34,11 @@ const UserDropdown = () => {
           <Link to="/change-password">Change Password</Link>
         </li>
         <li>
+          <Link to="/delete-account" className="text-error">
+            Delete Account
+          </Link>
+        </li>
+        <li>
           <button onClick={handleLogout}>Logout</button>
         </li>
       </ul>

@@ -111,7 +111,7 @@ When you visit the login page, you can choose to register if you don’t have an
 
 ### 5.3 Role-Based Access Controls
 
-Once logged in, you can click on your avatar icon (which will usually be a rocket emoji) to change your password, view followed threads, or log out. Moderators will have additional buttons to ban users, and admins will have another button to assign moderators. These actions work by toggling; for example, if a user is not banned, clicking the button will ban them, and vice versa. A username is required to perform these actions.
+Once logged in, you can click on your avatar icon (which will usually be a rocket emoji) to change your password, view followed threads, or log out. Moderators will have additional buttons to ban users, and admins will have another button to assign moderators. These actions work by toggling; for example, if a user is not banned, clicking the button will ban them, and vice versa. A username is required to perform these actions. Banned users are not allowed to interact with the website and have the same level of accessibility as the unauthenticated users.
 
 **Note**: In this app, there is no functionality to assign an admin. The admin with the highest authority is assigned by directly editing their role in the database (refer to the [backend repo](https://github.com/oadultradeepfield/olympliance-backend)).
 

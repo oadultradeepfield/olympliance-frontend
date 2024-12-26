@@ -27,6 +27,7 @@ export const useAuth = () => {
               role_id: userResponse.data.role_id,
               reputation: userResponse.data.reputation,
               is_banned: userResponse.data.is_banned,
+              is_deleted: userResponse.data.is_deleted,
             },
           }),
         );
@@ -40,6 +41,7 @@ export const useAuth = () => {
               user_id: 0,
               username: "",
               is_banned: false,
+              is_deleted: false,
             },
           }),
         );

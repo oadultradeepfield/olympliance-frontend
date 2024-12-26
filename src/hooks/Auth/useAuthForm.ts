@@ -51,6 +51,7 @@ export const useAuthForm = () => {
             role_id: userResponse.data.role_id,
             reputation: userResponse.data.reputation,
             is_banned: userResponse.data.is_banned,
+            is_deleted: userResponse.data.is_deleted,
           },
         }),
       );

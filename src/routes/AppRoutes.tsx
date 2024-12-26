@@ -14,6 +14,7 @@ import { RootState } from "../store";
 import ChangeUsername from "../pages/Auth/ChangeUsername";
 import Terms from "../pages/Terms/Terms";
 import Policy from "../pages/Terms/Policy";
+import DeleteAccount from "../pages/Auth/DeleteAccount";
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector(
@@ -32,6 +33,7 @@ const AppRoutes = () => {
       <Route path="/followed-threads" element={<FollowedThreads />} />
       <Route path="/change-username" element={<ChangeUsername />} />
       <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/delete-account" element={<DeleteAccount />} />
       <Route path="/ban-user" element={<BanUserPage />} />
       <Route path="/assign-moderator" element={<AssignModeratorPage />} />
       <Route path="/:categoryTitle/new" element={<NewThread />} />
