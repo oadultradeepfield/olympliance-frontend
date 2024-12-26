@@ -65,7 +65,8 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
       </div>
       <div className="flex items-center space-x-1">
         <span>
-          Author: {comment.user?.username}
+          Author:{" "}
+          {comment.user?.is_deleted ? "[Deleted User]" : comment.user?.username}
           {badge && (
             <span className="ml-1 text-xs">
               ({badge.title}: {comment.user?.reputation})

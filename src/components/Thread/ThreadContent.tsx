@@ -30,7 +30,8 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
       </div>
       <div className="mb-3 text-base text-base-content/75">
         <span>
-          By {thread.user?.username}
+          By{" "}
+          {thread.user?.is_deleted ? "[Deleted User]" : thread.user?.username}
           {badge && (
             <span className="ml-1 text-sm">
               ({badge.title}: {thread.user?.reputation})

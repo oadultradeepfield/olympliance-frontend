@@ -2,10 +2,14 @@ import { getBadge } from "../../utils/getBadge";
 
 interface ReputationBadgeProps {
   reputation: number;
+  is_deleted: boolean;
 }
 
-const ReputationBadge: React.FC<ReputationBadgeProps> = ({ reputation }) => {
-  const badge = getBadge(reputation);
+const ReputationBadge: React.FC<ReputationBadgeProps> = ({
+  reputation,
+  is_deleted,
+}) => {
+  const badge = is_deleted ? getBadge(0) : getBadge(reputation);
 
   if (!badge) return null;
 

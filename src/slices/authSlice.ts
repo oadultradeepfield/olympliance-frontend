@@ -16,6 +16,7 @@ const initialState: AuthState = {
     user_id: 0,
     username: "",
     is_banned: false,
+    is_deleted: false,
   },
 };
 
@@ -49,6 +50,7 @@ const authSlice = createSlice({
         user_id: 0,
         username: "",
         is_banned: false,
+        is_deleted: false,
       };
       state.isUserDataLoaded = false;
     },

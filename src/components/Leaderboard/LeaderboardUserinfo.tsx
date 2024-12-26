@@ -12,7 +12,7 @@ const LeaderboardUserInfo: React.FC<LeaderboardUserInfoProps> = ({ user }) => {
   return (
     <div className="flex items-center gap-3">
       <div className="avatar">
-        <ReputationBadge reputation={user.reputation} />
+        <ReputationBadge reputation={user.reputation} is_deleted={false} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="max-w-[20ch] truncate font-bold md:max-w-[40ch]">

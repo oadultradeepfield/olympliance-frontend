@@ -19,7 +19,10 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
       <div className="card-body flex flex-row items-start p-3">
         {thread.user && (
           <div className="mr-2 mt-1">
-            <ReputationBadge reputation={thread.user.reputation} />
+            <ReputationBadge
+              reputation={thread.user.reputation}
+              is_deleted={thread.user.is_deleted}
+            />
           </div>
         )}
         <div className="flex flex-grow flex-col">
