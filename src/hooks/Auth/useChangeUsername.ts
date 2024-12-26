@@ -22,18 +22,13 @@ export const useChangeUsername = (): UseChangeUsernameResult => {
     setSuccess("");
 
     try {
-      const access_token = localStorage.getItem("access_token");
       const response = await axios.put(
         `${apiUrl}/api/users/change-username`,
         {
           new_username: formData.newUsername,
           confirm_username: formData.confirmUsername,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        {},
       );
 
       setSuccess(response.data.message || "Username changed successfully!");

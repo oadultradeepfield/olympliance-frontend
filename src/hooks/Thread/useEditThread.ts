@@ -13,7 +13,6 @@ export const useEditThread = () => {
     tags: string[],
   ) => {
     try {
-      const access_token = localStorage.getItem("access_token");
       const newThread = {
         title,
         content,
@@ -23,11 +22,7 @@ export const useEditThread = () => {
       const response = await axios.put(
         `${apiUrl}/api/threads/${threadId}`,
         newThread,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        {},
       );
 
       setSuccess(response.data.message);

@@ -9,7 +9,6 @@ interface UseThreadsProps {
   sort_by: string;
   page: number;
   per_page: number;
-  access_token?: string;
 }
 
 export const useThreads = ({
@@ -17,7 +16,6 @@ export const useThreads = ({
   sort_by,
   page,
   per_page,
-  access_token,
 }: UseThreadsProps) => {
   const [threads, setThreads] = useState<(ThreadData & { user?: UserInfo })[]>(
     [],
@@ -29,13 +27,8 @@ export const useThreads = ({
       try {
         setLoading(true);
 
-        const headers = access_token
-          ? { Authorization: `Bearer ${access_token}` }
-          : {};
-
         const threadsResponse = await axios.get(`${apiUrl}${apiEndpoint}`, {
           params: { sort_by, page, per_page },
-          headers,
         });
 
         const threads = Array.isArray(threadsResponse.data.threads)
@@ -60,7 +53,7 @@ export const useThreads = ({
     };
 
     fetchThreads();
-  }, [apiEndpoint, access_token, sort_by, page, per_page]);
+  }, [apiEndpoint, sort_by, page, per_page]);
 
   return { threads, loading };
 };

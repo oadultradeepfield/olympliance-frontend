@@ -4,12 +4,7 @@ import { apiUrl } from "../../data/apiUrl";
 export const useDeleteComment = () => {
   const deleteComment = async (commentId: number) => {
     try {
-      const access_token = localStorage.getItem("access_token");
-      await axios.delete(`${apiUrl}/api/comments/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      await axios.delete(`${apiUrl}/api/comments/${commentId}`, {});
 
       setTimeout(() => {
         window.location.reload();

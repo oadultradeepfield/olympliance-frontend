@@ -15,17 +15,12 @@ export const useInteractionButton = (
 ) => {
   const handleInteraction = async (type: keyof InteractionState) => {
     try {
-      const access_token = localStorage.getItem("access_token");
       const currentInteraction = interactions[type];
 
       if (currentInteraction.active && currentInteraction.id) {
-        await axios.put(
-          `${apiUrl}/api/interactions/${currentInteraction.id}`,
-          { interaction_type: type },
-          {
-            headers: { Authorization: `Bearer ${access_token}` },
-          },
-        );
+        await axios.put(`${apiUrl}/api/interactions/${currentInteraction.id}`, {
+          interaction_type: type,
+        });
 
         setInteractions((prev: InteractionState) => ({
           ...prev,
@@ -57,15 +52,13 @@ export const useInteractionButton = (
           await axios.put(
             `${apiUrl}/api/interactions/${oppositeInteraction.id}`,
             { interaction_type: oppositeType },
-            { headers: { Authorization: `Bearer ${access_token}` } },
           );
         }
 
-        const response = await axios.post(
-          `${apiUrl}/api/interactions`,
-          { thread_id: threadId, interaction_type: type },
-          { headers: { Authorization: `Bearer ${access_token}` } },
-        );
+        const response = await axios.post(`${apiUrl}/api/interactions`, {
+          thread_id: threadId,
+          interaction_type: type,
+        });
 
         setInteractions((prev: InteractionState) => {
           const newState = { ...prev };

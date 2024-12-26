@@ -8,18 +8,13 @@ export const useReplyComment = () => {
     content: string,
   ) => {
     try {
-      const access_token = localStorage.getItem("access_token");
       const newComment = {
         thread_id: threadId,
         parent_comment_id: parentCommentId,
         content: content,
       };
 
-      await axios.post(`${apiUrl}/api/comments`, newComment, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      await axios.post(`${apiUrl}/api/comments`, newComment, {});
 
       setTimeout(() => {
         window.location.reload();

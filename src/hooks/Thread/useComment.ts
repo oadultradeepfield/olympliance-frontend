@@ -8,17 +8,16 @@ export const useComment = () => {
 
   const handleComment = async (threadId: number, content: string) => {
     try {
-      const access_token = localStorage.getItem("access_token");
       const newComment = {
         thread_id: threadId,
         content: content,
       };
 
-      const response = await axios.post(`${apiUrl}/api/comments`, newComment, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.post(
+        `${apiUrl}/api/comments`,
+        newComment,
+        {},
+      );
 
       setSuccess(response.data.message);
       setTimeout(() => {
