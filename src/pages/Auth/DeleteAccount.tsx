@@ -40,18 +40,16 @@ const DeleteAccount: React.FC = () => {
       <div className="w-96 rounded-xl border-2 border-base-content/15 bg-base-100 p-6">
         <h2 className="mb-6 text-2xl font-bold text-error">Delete Account</h2>
         <div className="flex flex-col space-y-4">
-          <div>
-            <label className="block text-xs font-medium text-base-content/75">
-              Type "permanently delete my account" to confirm
-            </label>
-            <input
-              type="text"
-              value={confirmText}
-              onChange={(e) => setConfirmText(e.target.value)}
-              className="input input-bordered w-full"
-              required
-            />
+          <div className="text-xs font-medium text-base-content/75">
+            Type "permanently delete my account" to confirm
           </div>
+          <input
+            type="text"
+            value={confirmText}
+            onChange={(e) => setConfirmText(e.target.value)}
+            className="input input-bordered w-full"
+            required
+          />
 
           <p className="text-sm text-error">
             Warning: This action is permanent and will delete all your data
