@@ -11,7 +11,10 @@ const UserDropdown = () => {
   return (
     <div className="dropdown dropdown-end" tabIndex={0}>
       <button className="avatar mr-0 p-0 sm:mr-3">
-        <ReputationBadge reputation={user.reputation} />
+        <ReputationBadge
+          reputation={user.reputation}
+          is_deleted={user.is_deleted}
+        />
       </button>
       <ul className="menu dropdown-content menu-sm z-[1] mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
         {user.role_id > 0 && (
