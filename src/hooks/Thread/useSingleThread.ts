@@ -36,7 +36,8 @@ export const useSingleThread = (
         const threadData: ThreadData = threadResponse.data.thread;
 
         const userResponse = await axios.get(
-          `${apiUrl}/api/userinfo?id=${threadData.user_id}, {withCredentials: false}`,
+          `${apiUrl}/api/userinfo?id=${threadData.user_id}`,
+          { withCredentials: false },
         );
 
         const user: UserInfo = userResponse.data;
