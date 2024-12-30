@@ -29,6 +29,7 @@ export const useThreads = ({
 
         const threadsResponse = await axios.get(`${apiUrl}${apiEndpoint}`, {
           params: { sort_by, page, per_page },
+          withCredentials: false,
         });
 
         const threads = Array.isArray(threadsResponse.data.threads)
