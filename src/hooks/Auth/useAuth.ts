@@ -14,9 +14,7 @@ export const useAuth = () => {
   useEffect(() => {
     const handleAuthentication = async () => {
       try {
-        const userResponse = await axios.get(`${apiUrl}/api/users`, {
-          withCredentials: true,
-        });
+        const userResponse = await axios.get(`${apiUrl}/api/users`);
 
         dispatch(
           setAuthState({

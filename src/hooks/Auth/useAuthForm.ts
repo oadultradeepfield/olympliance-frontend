@@ -35,29 +35,14 @@ export const useAuthForm = () => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post(
-        `${apiUrl}/api/login`,
-        {
-          username: formData.username,
-          password: formData.password,
-        },
-        { withCredentials: false },
-      );
-
-      const userResponse = await axios.get(`${apiUrl}/api/users`, {});
+      await axios.post(`${apiUrl}/api/login`, {
+        username: formData.username,
+        password: formData.password,
+      });
 
       dispatch(
         setAuthState({
           isAuthenticated: true,
-          user: {
-            username: userResponse.data.username,
-            user_id: userResponse.data.user_id,
-            role_id: userResponse.data.role_id,
-            reputation: userResponse.data.reputation,
-            is_banned: userResponse.data.is_banned,
-            is_deleted: userResponse.data.is_deleted,
-            created_at: userResponse.data.created_at,
-          },
         }),
       );
 
