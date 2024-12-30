@@ -3,7 +3,7 @@ export interface UserInfo {
   username: string;
   reputation: number;
   role_id: number;
-  created_at: Date;
+  created_at: Date | null;
   is_banned: boolean;
   is_deleted: boolean;
 }
