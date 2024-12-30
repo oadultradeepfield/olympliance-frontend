@@ -108,6 +108,8 @@ You can view threads and comments without an account; however, you will need to 
 
 ### 5.2 Creating an Account
 
+> ⚠️ On iOS devices or Safari, disable "Prevent Cross-Site Tracking" to enable cookies required for authentication. This is necessary because the backend is hosted on a different domain.
+
 When you visit the login page, you can choose to register if you don’t have an account or log in if you do. This website uses username-based authentication, but you can change your username later. The password can also be changed later, but it is recommended to save it somewhere else, as you cannot change it if you forget the current one. By registering on the website, you agree to its terms of service and privacy policy. Both are written to align with the Google OAuth Consent Screen external production verification. That said, you can also sign in securely using Google, but if you choose this option, you cannot sign in with your username. Furthermore, the default username is your Google account name, but you can change it later if you wish.
 
 ### 5.3 Role-Based Access Controls

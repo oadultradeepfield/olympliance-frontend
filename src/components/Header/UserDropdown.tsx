@@ -24,16 +24,6 @@ const UserDropdown = () => {
         />
       </button>
       <ul className="menu dropdown-content menu-sm z-[1] mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
-        {user.role_id > 1 && (
-          <li>
-            <Link to="/assign-moderator">Assign Moderator</Link>
-          </li>
-        )}
-        {user.role_id > 0 && (
-          <li>
-            <Link to="/ban-user">Ban User</Link>
-          </li>
-        )}
         <li>
           <Link to="/followed-threads">View Followed Threads</Link>
         </li>
@@ -46,13 +36,23 @@ const UserDropdown = () => {
         <li>
           <Link to="/change-password">Change Password</Link>
         </li>
+        {user.role_id > 1 && (
+          <li>
+            <Link to="/assign-moderator">Assign Moderator</Link>
+          </li>
+        )}
+        {user.role_id > 0 && (
+          <li>
+            <Link to="/ban-user">Ban User</Link>
+          </li>
+        )}
+        <li>
+          <button onClick={handleLogoutAndRedirect}>Logout</button>
+        </li>
         <li>
           <Link to="/delete-account" className="text-error">
             Delete Account
           </Link>
-        </li>
-        <li>
-          <button onClick={handleLogoutAndRedirect}>Logout</button>
         </li>
       </ul>
     </div>
