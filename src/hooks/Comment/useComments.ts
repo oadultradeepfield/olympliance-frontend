@@ -43,7 +43,7 @@ export const useComments = (
         const commentsWithUsersAndInteractions = await Promise.all(
           commentsResponse.data.comments.map(async (comment: CommentData) => {
             const [userResponse, interactionsResponse] = await Promise.all([
-              axios.get(`${apiUrl}/api/users/${comment.user_id}`),
+              axios.get(`${apiUrl}/api/userinfo?id=${comment.user_id}`),
               axios.get(`${apiUrl}/api/interactions`, {
                 params: { comment_id: comment.comment_id, user_id: userId },
               }),
