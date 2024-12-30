@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeKatex from "rehype-katex";
@@ -36,6 +36,8 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
     ),
 
     code: ({ children, className }: CustomComponentProps) => {
+      const [isCopied, setIsCopied] = useState(false);
+
       if (!className) {
         return (
           <span className="rounded bg-base-300/75 p-1 font-mono">
@@ -47,20 +49,34 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
       const match = /language-(\w+)/.exec(className || "");
       const language = match ? match[1] : "";
 
+      const handleCopy = () => {
+        navigator.clipboard.writeText(String(children).replace(/\n$/, ""));
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 1000);
+      };
+
       return (
-        <SyntaxHighlighter
-          style={oneDark}
-          language={language || "text"}
-          PreTag="div"
-          className="rounded-lg text-base"
-          customStyle={{
-            margin: "1rem 0",
-            padding: "1rem",
-            borderRadius: "0.5rem",
-          }}
-        >
-          {String(children).replace(/\n$/, "")}
-        </SyntaxHighlighter>
+        <div className="group relative">
+          <SyntaxHighlighter
+            style={oneDark}
+            language={language || "text"}
+            PreTag="div"
+            className="rounded-lg text-base"
+            customStyle={{
+              margin: "1rem 0",
+              padding: "1rem",
+              borderRadius: "0.5rem",
+            }}
+          >
+            {String(children).replace(/\n$/, "")}
+          </SyntaxHighlighter>
+          <button
+            onClick={handleCopy}
+            className="absolute right-2 top-2 rounded bg-gray-600 px-2 py-1 text-sm text-white transition-all duration-150 ease-in-out hover:bg-gray-500"
+          >
+            {isCopied ? "Copied" : "Copy"}
+          </button>
+        </div>
       );
     },
 
