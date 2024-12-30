@@ -42,7 +42,8 @@
   - [5.3 Role-Based Access Controls](#53-role-based-access-controls)
   - [5.4 User Reputation and Badge](#54-user-reputation-and-badge)
   - [5.5 Threads and Comments](#55-threads-and-comments)
-  - [5.6 Markdown Support](#56-markdown-support)
+  - [5.6 User Profile Card](#56-user-profile-card)
+  - [5.7 Markdown Support](#57-markdown-support)
 - [6. Acknowledgment](#6-acknowledgment)
 - [7. License](#7-license)
 
@@ -142,7 +143,11 @@ On each thread page, you can interact with the thread or reply to comments. When
 
 **Note**: The thread and comment owners will have a pencil icon and a trash icon next to their content, allowing them to edit or delete their posts. Comments will be flagged as "[Comment deleted]" while the thread will simply disappear. Admins and moderators have access to delete any comments, but they cannot edit them.
 
-### 5.6 Markdown Support
+### 5.6 User Profile Card
+
+Clicking on another user's username now opens their profile card page, designed to enhance gamification and user engagement. The profile card displays the user's reputation and join date. You can also view your own profile card by selecting "View Profile Card" from the dropdown menu under your avatar in the header.
+
+### 5.7 Markdown Support
 
 All text editors, including thread content and comments, render Markdown with some limitations (see this [file](/src/components/Common/MarkdownRenderer.tsx)). You can use code blocks and LaTeX equations. A preview toggle allows you to view the rendered output, but editing is disabled in preview mode, so be sure to turn it off before making changes. Although image uploading is not directly supported, you can embed images with their URL using markdown or HTML tags.
 
