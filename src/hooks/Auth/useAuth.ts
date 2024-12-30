@@ -14,9 +14,7 @@ export const useAuth = () => {
   useEffect(() => {
     const handleAuthentication = async () => {
       try {
-        const userResponse = await axios.get(`${apiUrl}/api/users`, {
-          withCredentials: true,
-        });
+        const userResponse = await axios.get(`${apiUrl}/api/users`);
 
         dispatch(
           setAuthState({
@@ -28,6 +26,7 @@ export const useAuth = () => {
               reputation: userResponse.data.reputation,
               is_banned: userResponse.data.is_banned,
               is_deleted: userResponse.data.is_deleted,
+              created_at: userResponse.data.created_at,
             },
           }),
         );
@@ -42,6 +41,7 @@ export const useAuth = () => {
               username: "",
               is_banned: false,
               is_deleted: false,
+              created_at: "",
             },
           }),
         );

@@ -40,19 +40,9 @@ export const useAuthForm = () => {
         password: formData.password,
       });
 
-      const userResponse = await axios.get(`${apiUrl}/api/users`, {});
-
       dispatch(
         setAuthState({
           isAuthenticated: true,
-          user: {
-            username: userResponse.data.username,
-            user_id: userResponse.data.user_id,
-            role_id: userResponse.data.role_id,
-            reputation: userResponse.data.reputation,
-            is_banned: userResponse.data.is_banned,
-            is_deleted: userResponse.data.is_deleted,
-          },
         }),
       );
 
@@ -74,10 +64,14 @@ export const useAuthForm = () => {
       return;
     }
     try {
-      const response = await axios.post(`${apiUrl}/api/register`, {
-        username: formData.username,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/api/register`,
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        { withCredentials: false },
+      );
       setSuccess(response.data.message);
       setIsLogin(true);
       setFormData({ username: "", password: "" });

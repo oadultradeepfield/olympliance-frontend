@@ -29,6 +29,7 @@ export const useThreads = ({
 
         const threadsResponse = await axios.get(`${apiUrl}${apiEndpoint}`, {
           params: { sort_by, page, per_page },
+          withCredentials: false,
         });
 
         const threads = Array.isArray(threadsResponse.data.threads)
@@ -38,7 +39,8 @@ export const useThreads = ({
         const threadsWithUsers = await Promise.all(
           threads.map(async (thread: ThreadData) => {
             const userResponse = await axios.get(
-              `${apiUrl}/api/users/${thread.user_id}`,
+              `${apiUrl}/api/userinfo?id=${thread.user_id}`,
+              { withCredentials: false },
             );
             return { ...thread, user: userResponse.data };
           }),

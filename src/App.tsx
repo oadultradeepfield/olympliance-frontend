@@ -10,11 +10,12 @@ import axios from "axios";
 
 const App: React.FC = () => {
   const { isUserDataLoaded } = useSelector((state: RootState) => state.auth);
-  useAuth();
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
   }, []);
+
+  useAuth();
 
   if (!isUserDataLoaded) {
     return (

@@ -25,7 +25,7 @@ const useInteractions = (
       try {
         const response = await axios.get<{ interactions: Interaction[] }>(
           `${apiUrl}/api/interactions?thread_id=${threadId}&user_id=${userId}`,
-          {},
+          { withCredentials: false },
         );
 
         const existingInteractions = response.data.interactions;

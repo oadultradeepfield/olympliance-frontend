@@ -15,6 +15,7 @@ import ChangeUsername from "../pages/Auth/ChangeUsername";
 import Terms from "../pages/Terms/Terms";
 import Policy from "../pages/Terms/Policy";
 import DeleteAccount from "../pages/Auth/DeleteAccount";
+import UserCardPage from "../pages/User/UserCardPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector(
@@ -30,6 +31,7 @@ const AppRoutes = () => {
         path="/login"
         element={!isAuthenticated ? <AuthPage /> : <Navigate to="/" />}
       />
+      <Route path="/user/:username" element={<UserCardPage />} />
       <Route path="/followed-threads" element={<FollowedThreads />} />
       <Route path="/change-username" element={<ChangeUsername />} />
       <Route path="/change-password" element={<ChangePassword />} />

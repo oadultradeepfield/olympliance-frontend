@@ -9,7 +9,7 @@ export const filterThreads = (threads: ThreadData[], searchTerm: string) => {
     .filter((word) => word.length > 0);
 
   return threads.filter((thread) => {
-    return searchWords.every((word) => {
+    return searchWords.some((word) => {
       return (
         thread.title.toLowerCase().includes(word) ||
         thread.content.toLowerCase().includes(word) ||
