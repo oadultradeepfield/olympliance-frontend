@@ -5,6 +5,7 @@ import DeleteThreadButton from "./DeleteThreadButton";
 import { Badge } from "../../data/badgeData";
 import UserRoleBadge from "../Common/UserRoleBadge";
 import { MarkdownRenderer } from "../Common/MarkdownRenderer";
+import { Link } from "react-router-dom";
 
 interface ThreadContentProps {
   thread: (ThreadData & { user?: UserInfo }) | null;
@@ -31,7 +32,16 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
       <div className="mb-3 text-base text-base-content/75">
         <span>
           By{" "}
-          {thread.user?.is_deleted ? "[Deleted User]" : thread.user?.username}
+          {thread.user?.is_deleted ? (
+            "[Deleted User]"
+          ) : (
+            <Link
+              className="link-hover link"
+              to={`/user/${thread.user?.username}`}
+            >
+              {thread.user?.username}
+            </Link>
+          )}
           {badge && (
             <span className="ml-1 text-sm">
               ({badge.title}: {thread.user?.reputation})

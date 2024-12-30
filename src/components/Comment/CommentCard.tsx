@@ -4,6 +4,7 @@ import { Interaction } from "../../data/interactionData";
 import ReputationBadge from "../Common/ReputationBadge";
 import CommentContent from "./CommentContent";
 import { getBadge } from "../../utils/getBadge";
+import { Link } from "react-router-dom";
 
 interface CommentCardProps {
   threadId: number;
@@ -34,10 +35,12 @@ const CommentCard: React.FC<CommentCardProps> = ({
   return (
     <div className="card mx-auto mb-3 flex w-full max-w-5xl border-2 border-base-content/15 bg-base-100 px-2 py-1">
       <div className="card-body flex flex-row items-start space-x-2 p-3">
-        <ReputationBadge
-          reputation={reputation}
-          is_deleted={comment.user?.is_deleted || false}
-        />
+        <Link className="link" to={`/user/${comment.user?.username}`}>
+          <ReputationBadge
+            reputation={reputation}
+            is_deleted={comment.user?.is_deleted || false}
+          />
+        </Link>
         <CommentContent
           threadId={threadId}
           badge={badge}

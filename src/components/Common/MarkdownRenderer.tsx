@@ -8,6 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import "katex/dist/katex.min.css";
 import { Components } from "react-markdown";
+import { Link } from "react-router-dom";
 
 interface MarkdownProps {
   content: string;
@@ -24,7 +25,42 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
   content,
   className,
 }) => {
+  const processText = (text: string) => {
+    const usernameRegex = /@[a-zA-Z0-9_-]+/g;
+
+    const parts = text.split(usernameRegex);
+    const matches = text.match(usernameRegex) || [];
+
+    return parts.reduce((acc: React.ReactNode[], part, i) => {
+      acc.push(part);
+      if (i < matches.length) {
+        acc.push(
+          <Link to={`/user/${matches[i].slice(1)}`}>
+            <span key={i} className="link link-secondary">
+              {matches[i]}
+            </span>
+          </Link>,
+        );
+      }
+      return acc;
+    }, []);
+  };
+
   const components: Components = {
+    p: ({ children }: CustomComponentProps) => {
+      if (typeof children === "string") {
+        return <p className="my-2">{processText(children)}</p>;
+      }
+      return <p className="my-2">{children}</p>;
+    },
+
+    li: ({ children }: CustomComponentProps) => {
+      if (typeof children === "string") {
+        return <li className="my-1">{processText(children)}</li>;
+      }
+      return <li className="my-1">{children}</li>;
+    },
+
     strong: ({ children }: CustomComponentProps) => (
       <strong className="font-bold">{children}</strong>
     ),
@@ -81,30 +117,38 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
     },
 
     h1: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
     h2: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
     h3: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
     h4: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
     h5: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
     h6: ({ children }: CustomComponentProps) => (
-      <span className="my-2 block font-bold">{children}</span>
+      <span className="my-2 block font-bold">
+        {processText(String(children))}
+      </span>
     ),
 
     blockquote: ({ children }: CustomComponentProps) => (
       <span className="my-2 block">{children}</span>
-    ),
-
-    p: ({ children }: CustomComponentProps) => (
-      <p className="my-2">{children}</p>
     ),
 
     ul: ({ children }: CustomComponentProps) => (
@@ -112,9 +156,6 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
     ),
     ol: ({ children }: CustomComponentProps) => (
       <ol className="my-2 list-decimal pl-6">{children}</ol>
-    ),
-    li: ({ children }: CustomComponentProps) => (
-      <li className="my-1">{children}</li>
     ),
   };
 

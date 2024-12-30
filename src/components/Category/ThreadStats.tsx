@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { UserInfo } from "../../data/userData";
 import { getBadge } from "../../utils/getBadge";
+import { Link } from "react-router-dom";
 
 interface ThreadStatsProps {
   upvotes: number;
@@ -45,7 +46,14 @@ const ThreadStats: React.FC<ThreadStatsProps> = ({
       {user && (
         <div className="flex items-center space-x-1">
           <span>
-            Author: {user.is_deleted ? "[Deleted User]" : user.username}
+            Author:{" "}
+            {user.is_deleted ? (
+              "[Deleted User]"
+            ) : (
+              <Link className="link-hover link" to={`/user/${user.username}`}>
+                {user.username}
+              </Link>
+            )}
             {badge && (
               <span className="ml-1 text-xs">
                 ({badge.title}: {user.reputation})

@@ -8,6 +8,7 @@ import { Badge } from "../../data/badgeData";
 import EditCommentButton from "./EditCommentButton";
 import DeleteCommentButton from "./DeleteCommentButton";
 import UserRoleBadge from "../Common/UserRoleBadge";
+import { Link } from "react-router-dom";
 
 interface CommentInteractionAndStatsProps {
   badge: Badge | null;
@@ -66,7 +67,16 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
       <div className="flex items-center space-x-1">
         <span>
           Author:{" "}
-          {comment.user?.is_deleted ? "[Deleted User]" : comment.user?.username}
+          {comment.user?.is_deleted ? (
+            "[Deleted User]"
+          ) : (
+            <Link
+              className="link-hover link"
+              to={`/user/${comment.user?.username}`}
+            >
+              {comment.user?.username}
+            </Link>
+          )}
           {badge && (
             <span className="ml-1 text-xs">
               ({badge.title}: {comment.user?.reputation})
