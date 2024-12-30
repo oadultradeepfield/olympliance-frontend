@@ -14,6 +14,7 @@ export const useGetUserCard = (username: string) => {
 
         const response = await axios.get(
           `${apiUrl}/api/userinfo?username=${username}`,
+          { withCredentials: false },
         );
         setUserCard(response.data);
         setLoading(false);

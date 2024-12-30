@@ -32,6 +32,7 @@ export const useComments = (
         if (shouldShowLoading) setLoading(true);
 
         const commentsResponse = await axios.get(`${apiUrl}/api/comments`, {
+          withCredentials: false,
           params: {
             thread_id: threadId,
             sort_by: sortBy,
@@ -43,8 +44,11 @@ export const useComments = (
         const commentsWithUsersAndInteractions = await Promise.all(
           commentsResponse.data.comments.map(async (comment: CommentData) => {
             const [userResponse, interactionsResponse] = await Promise.all([
-              axios.get(`${apiUrl}/api/userinfo?id=${comment.user_id}`),
+              axios.get(`${apiUrl}/api/userinfo?id=${comment.user_id}`, {
+                withCredentials: false,
+              }),
               axios.get(`${apiUrl}/api/interactions`, {
+                withCredentials: false,
                 params: { comment_id: comment.comment_id, user_id: userId },
               }),
             ]);

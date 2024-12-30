@@ -39,6 +39,7 @@ export const useThreads = ({
           threads.map(async (thread: ThreadData) => {
             const userResponse = await axios.get(
               `${apiUrl}/api/userinfo?id=${thread.user_id}`,
+              { withCredentials: false },
             );
             return { ...thread, user: userResponse.data };
           }),

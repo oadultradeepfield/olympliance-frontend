@@ -35,10 +35,14 @@ export const useAuthForm = () => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post(`${apiUrl}/api/login`, {
-        username: formData.username,
-        password: formData.password,
-      });
+      await axios.post(
+        `${apiUrl}/api/login`,
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        { withCredentials: false },
+      );
 
       const userResponse = await axios.get(`${apiUrl}/api/users`, {});
 
@@ -75,10 +79,14 @@ export const useAuthForm = () => {
       return;
     }
     try {
-      const response = await axios.post(`${apiUrl}/api/register`, {
-        username: formData.username,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/api/register`,
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        { withCredentials: false },
+      );
       setSuccess(response.data.message);
       setIsLogin(true);
       setFormData({ username: "", password: "" });

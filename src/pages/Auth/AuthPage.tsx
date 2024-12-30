@@ -2,7 +2,7 @@ import { useAuthForm } from "../../hooks/Auth/useAuthForm";
 import PasswordVisibilityToggle from "../../components/Common/PasswordVisibilityToggle";
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import GoogleSigninButton from "../../components/Auth/GoogleSigninButton";
-import { Link } from "react-router-dom"; // Make sure to import Link for navigation
+import { Link } from "react-router-dom";
 
 const AuthPage = () => {
   const {

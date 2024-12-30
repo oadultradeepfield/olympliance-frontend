@@ -12,7 +12,9 @@ export const useLeaderboard = () => {
       try {
         setLoading(true);
 
-        const response = await axios.get(`${apiUrl}/api/leaderboard`);
+        const response = await axios.get(`${apiUrl}/api/leaderboard`, {
+          withCredentials: false,
+        });
         if (Array.isArray(response.data.leaderboard)) {
           setLeaderboard(response.data.leaderboard);
         } else {
