@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { UserInfo } from "../../data/userData";
 import { getBadge } from "../../utils/getBadge";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ThreadStatsProps {
   upvotes: number;
@@ -23,6 +23,7 @@ const ThreadStats: React.FC<ThreadStatsProps> = ({
   createdAt,
   user,
 }) => {
+  const navigate = useNavigate();
   const badge = user ? getBadge(user.reputation) : null;
 
   return (
@@ -50,9 +51,15 @@ const ThreadStats: React.FC<ThreadStatsProps> = ({
             {user.is_deleted ? (
               "[Deleted User]"
             ) : (
-              <Link className="link-hover link" to={`/user/${user.username}`}>
+              <button
+                className="link-hover link"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  navigate(`/user/${user.username}`);
+                }}
+              >
                 {user.username}
-              </Link>
+              </button>
             )}
             {badge && (
               <span className="ml-1 text-xs">

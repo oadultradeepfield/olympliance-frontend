@@ -3,8 +3,8 @@ import axios from "axios";
 import { apiUrl } from "../../data/apiUrl";
 import { UserInfo } from "../../data/userData";
 
-export const useLeaderboard = (username: string) => {
-  const [userCard, setUserCard] = useState<UserInfo[]>([]);
+export const useGetUserCard = (username: string) => {
+  const [userCard, setUserCard] = useState<UserInfo>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -13,10 +13,9 @@ export const useLeaderboard = (username: string) => {
         setLoading(true);
 
         const response = await axios.get(
-          `${apiUrl}/userinfo?username=${username}`,
+          `${apiUrl}/api/userinfo?username=${username}`,
         );
         setUserCard(response.data);
-
         setLoading(false);
       } catch (err: any) {
         console.error("Error fetching user card:", err.response.data.error);
