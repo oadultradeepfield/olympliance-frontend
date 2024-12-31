@@ -26,11 +26,19 @@
 - **Styling**: Tailwind CSS and daisy UI
 - **Build and Deployment**: Vite and Netlify
 
+### 1.3 Post-CVWO Plan
+
+- Migrate from a RESTful API to GraphQL for more efficient data querying and flexibility.
+- Add a bio section to user profiles for better personalization.
+- Design the admin dashboard to unify the "Toggle Ban" and "Assign Moderator" actions, making it more intuitive and user-friendly.
+- Implement machine learning algorithms to recommend threads to users based on their past activity and interests.
+
 ## 2. Table of Contents
 
 - [1. About the Project](#1-about-the-project)
   - [1.1 Description](#11-description)
   - [1.2 Tech Stack](#12-tech-stack)
+  - [1.3 Post-CVWO Plan](#13-post-cvwo-plan)
 - [2. Table of Contents](#2-table-of-contents)
 - [3. Getting Started](#3-getting-started)
   - [3.1 Installation](#31-installation)
@@ -114,7 +122,7 @@ When you visit the login page, you can choose to register if you don’t have an
 
 ### 5.3 Role-Based Access Controls
 
-Once logged in, you can click on your avatar icon (which will usually be a rocket emoji) to change your username, password, view followed threads, delete account, or logout. You need to type the confirmation message as prompted to securely delete an account. Moderators will have additional buttons to ban users, and admins will have another button to assign moderators. These actions work by toggling; for example, if a user is not banned, clicking the button will ban them, and vice versa. A username is required to perform these actions. Banned users are not allowed to interact with the website and have the same level of accessibility as the unauthenticated users.
+Once logged in, you can click on your avatar icon (which will usually be a rocket emoji) to edit profile (change username or password), view followed threads, delete account, or logout. You need to type the confirmation message as prompted to securely delete an account. Moderators will have additional buttons to ban users, and admins will have another button to assign moderators. These actions work by toggling; for example, if a user is not banned, clicking the button will ban them, and vice versa. A username is required to perform these actions. Banned users are not allowed to interact with the website and have the same level of accessibility as the unauthenticated users.
 
 **Note**: In this app, there is no functionality to assign an admin. The admin with the highest authority is assigned by directly editing their role in the database (refer to the [backend repo](https://github.com/oadultradeepfield/olympliance-backend)).
 

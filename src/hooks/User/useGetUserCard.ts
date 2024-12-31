@@ -25,7 +25,7 @@ export const useGetUserCard = (username: string) => {
     };
 
     fetchUserCard();
-  }, []);
+  }, [username]);
 
   return { userCard, loading };
 };

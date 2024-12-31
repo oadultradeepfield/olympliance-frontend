@@ -25,16 +25,10 @@ const UserDropdown = () => {
       </button>
       <ul className="menu dropdown-content menu-sm z-[1] mt-2 w-52 rounded-box bg-base-200 p-2 shadow">
         <li>
-          <Link to="/followed-threads">View Followed Threads</Link>
+          <Link to="/followed-threads">Followed Threads</Link>
         </li>
         <li>
-          <Link to={`/user/${user.username}`}>View Profile Card</Link>
-        </li>
-        <li>
-          <Link to="/change-username">Change Username</Link>
-        </li>
-        <li>
-          <Link to="/change-password">Change Password</Link>
+          <Link to={`/user/${user.username}`}>Edit Profile</Link>
         </li>
         {user.role_id > 1 && (
           <li>
