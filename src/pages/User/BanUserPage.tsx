@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserManagementForm } from "../../components/User/UserManagementForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -11,6 +11,8 @@ const BanUserPage: React.FC = ({}) => {
   const roleId = useSelector((state: RootState) => state.auth.user.role_id);
 
   const navigate = useNavigate();
+
+  const { username } = useParams();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -29,6 +31,7 @@ const BanUserPage: React.FC = ({}) => {
         actionType="ban"
         buttonText="Toggle Ban"
         buttonClassName="btn-error"
+        username={username}
       />
     </div>
   );

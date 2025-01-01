@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useNavigate } from "react-router-dom";
 import UserRoleBadge from "../Common/UserRoleBadge";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import {
+  PencilSquareIcon,
+  ShieldCheckIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 
 interface UserCardProps {
@@ -13,9 +17,14 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = ({ userCard }) => {
-  const userId = useSelector((state: RootState) => state.auth.user.user_id);
+  const user = useSelector((state: RootState) => state.auth.user);
   const badge = getBadge(userCard.reputation);
   const navigate = useNavigate();
+
+  const canModifyUser =
+    user.role_id > 0 &&
+    user.user_id !== userCard.user_id &&
+    user.role_id > userCard.role_id;
 
   return (
     <div className="w-80 p-4">
@@ -66,7 +75,7 @@ const UserCard: React.FC<UserCardProps> = ({ userCard }) => {
             </div>
           </div>
 
-          {userId === userCard.user_id && (
+          {user.user_id === userCard.user_id && (
             <div className="mt-4 flex w-full flex-col gap-2">
               <button
                 className="btn btn-outline btn-primary btn-sm"
@@ -82,6 +91,42 @@ const UserCard: React.FC<UserCardProps> = ({ userCard }) => {
                 <LockClosedIcon className="h-4 w-4" />
                 Change Password
               </button>
+            </div>
+          )}
+
+          {user.role_id > 0 && canModifyUser && (
+            <div className="mt-4 flex w-full flex-col gap-2">
+              <div className="divider text-sm text-base-content/75">
+                Moderator Control
+              </div>
+              <button
+                className={
+                  !userCard.is_banned
+                    ? "btn btn-outline btn-error btn-sm"
+                    : "btn btn-error btn-sm"
+                }
+                onClick={() => navigate(`/ban-user/${userCard.username}`)}
+              >
+                <XCircleIcon className="h-4 w-4" />
+                {userCard.is_banned ? "Unban User" : "Ban User"}
+              </button>
+              {user.role_id > 1 && (
+                <button
+                  className={
+                    userCard.role_id == 1
+                      ? "btn btn-success btn-sm"
+                      : "btn btn-outline btn-success btn-sm"
+                  }
+                  onClick={() =>
+                    navigate(`/assign-moderator/${userCard.username}`)
+                  }
+                >
+                  <ShieldCheckIcon className="h-4 w-4" />
+                  {userCard.role_id == 1
+                    ? "Remove Moderator"
+                    : "Assign as Moderator"}
+                </button>
+              )}
             </div>
           )}
 

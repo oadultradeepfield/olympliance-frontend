@@ -38,6 +38,12 @@ const AppRoutes = () => {
       <Route path="/delete-account" element={<DeleteAccount />} />
       <Route path="/ban-user" element={<BanUserPage />} />
       <Route path="/assign-moderator" element={<AssignModeratorPage />} />
+      {/* Optional username params for fixing the name */}
+      <Route path="/ban-user/:username" element={<BanUserPage />} />
+      <Route
+        path="/assign-moderator/:username"
+        element={<AssignModeratorPage />}
+      />
       <Route path="/:categoryTitle/new" element={<NewThread />} />
       <Route path="/terms-of-service" element={<Terms />} />
       <Route path="/privacy-policy" element={<Policy />} />

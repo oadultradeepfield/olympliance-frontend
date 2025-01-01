@@ -7,6 +7,7 @@ interface UserManagementFormProps {
   buttonText: string;
   buttonClassName: string;
   onSuccess?: () => void;
+  username?: string;
 }
 
 export const UserManagementForm: React.FC<UserManagementFormProps> = ({
@@ -15,9 +16,15 @@ export const UserManagementForm: React.FC<UserManagementFormProps> = ({
   buttonText,
   buttonClassName,
   onSuccess,
+  username,
 }) => {
   const { formData, error, success, handleInputChange, handleSubmit } =
     useUserManagement({ actionType, onSuccess });
+
+  if (username) {
+    formData.username = username;
+    formData.confirmUsername = username;
+  }
 
   return (
     <div className="card w-96 border-2 border-base-content/15 bg-base-100">
@@ -32,9 +39,10 @@ export const UserManagementForm: React.FC<UserManagementFormProps> = ({
               type="text"
               name="username"
               placeholder="Enter username"
-              className="input input-bordered w-full max-w-xs"
+              className={`input input-bordered w-full max-w-xs ${username ? "cursor-not-allowed" : ""}`}
               value={formData.username}
               onChange={handleInputChange}
+              readOnly={!!username}
               required
             />
           </div>
@@ -46,9 +54,10 @@ export const UserManagementForm: React.FC<UserManagementFormProps> = ({
               type="text"
               name="confirmUsername"
               placeholder="Confirm username"
-              className="input input-bordered w-full max-w-xs"
+              className={`input input-bordered w-full max-w-xs ${username ? "cursor-not-allowed" : ""}`}
               value={formData.confirmUsername}
               onChange={handleInputChange}
+              readOnly={!!username}
               required
             />
           </div>

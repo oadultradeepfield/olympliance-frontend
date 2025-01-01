@@ -18,7 +18,7 @@ const UserCardPage: React.FC = () => {
     );
   }
 
-  if (!userCard?.user_id) {
+  if (!userCard?.user_id || userCard?.is_deleted) {
     return <Navigate to="/not-found" />;
   }
 
