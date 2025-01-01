@@ -68,10 +68,13 @@ const PrivacyPolicy = () => {
 
         <h2 className="text-2xl font-semibold">6. Cookies</h2>
         <p>
-          Our website uses cookies to enhance the user experience. Cookies are
-          small files stored on your device that allow us to remember your
-          preferences and improve our services. You can control cookie settings
-          through your browser.
+          Our website uses cookies to improve your experience. These small
+          files, stored on your device, help us remember your preferences and
+          enhance our services. You can manage cookie settings through your
+          browser. Please note that cookies are primarily used for
+          authentication and require cross-site permissions. If you've enabled
+          “Prevent Cross-Site Tracking” on iOS devices, logging in may not be
+          possible.
         </p>
 
         <h2 className="text-2xl font-semibold">

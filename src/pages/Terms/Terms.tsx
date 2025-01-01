@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Terms = () => {
   return (
     <div className="mx-auto mb-24 h-full w-full max-w-5xl flex-col items-center justify-center px-8">
@@ -41,9 +43,9 @@ const Terms = () => {
 
         <h2 className="text-2xl font-semibold">5. Privacy</h2>
         <p>
-          We collect personal data such as your email address and any
-          information you provide during account creation. For more details,
-          please refer to our Privacy Policy.
+          We collect personal data and any information you provide during
+          account creation. For more details, please refer to our{" "}
+          <Link to="/privacy-policy">Privacy Policy</Link>.
         </p>
 
         <h2 className="text-2xl font-semibold">6. Termination</h2>

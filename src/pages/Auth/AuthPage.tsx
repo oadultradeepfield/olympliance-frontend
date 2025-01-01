@@ -3,6 +3,7 @@ import PasswordVisibilityToggle from "../../components/Common/PasswordVisibility
 import { MessageDisplay } from "../../components/Common/MessageDisplay";
 import GoogleSigninButton from "../../components/Auth/GoogleSigninButton";
 import { Link } from "react-router-dom";
+import CookieAlert from "../../components/Auth/CookieAlert";
 
 const AuthPage = () => {
   const {
@@ -22,6 +23,7 @@ const AuthPage = () => {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-grow flex-col items-center justify-center px-4 py-12">
+      <CookieAlert />
       <div className="card w-96 border-2 border-base-content/15 bg-base-100">
         <div className="card-body items-center text-center">
           <h2 className="card-title mb-4 text-2xl">
