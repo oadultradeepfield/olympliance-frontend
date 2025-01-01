@@ -56,6 +56,9 @@ const ChangePassword: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     changePassword(formData);
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (

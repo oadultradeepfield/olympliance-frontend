@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../data/apiUrl";
+import { useNavigate } from "react-router-dom";
 
 interface FormState {
   username: string;
@@ -22,6 +23,8 @@ export const useUserManagement = ({
   });
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -68,6 +71,9 @@ export const useUserManagement = ({
 
       setTimeout(() => {
         setSuccess("");
+        navigate(
+          actionType === "moderator" ? "/assign-moderator" : "/ban-user",
+        );
       }, 3000);
     } catch (error: any) {
       const errorMessage =
