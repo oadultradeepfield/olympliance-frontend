@@ -40,17 +40,12 @@ export const useHandleVote = ({
         await axios.put(
           `${apiUrl}/api/interactions/${existingInteraction.interaction_id}`,
           { interaction_type: voteType },
-          {},
         );
       } else {
-        await axios.post(
-          `${apiUrl}/api/interactions`,
-          {
-            comment_id: comment.comment_id,
-            interaction_type: voteType,
-          },
-          {},
-        );
+        await axios.post(`${apiUrl}/api/interactions`, {
+          comment_id: comment.comment_id,
+          interaction_type: voteType,
+        });
       }
 
       setUserInteractions((prev) => ({

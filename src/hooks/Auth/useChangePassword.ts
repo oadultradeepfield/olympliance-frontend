@@ -30,15 +30,11 @@ export const useChangePassword = (): UseChangePasswordResult => {
     setSuccess("");
 
     try {
-      const response = await axios.put(
-        `${apiUrl}/api/users/change-password`,
-        {
-          current_password: formData.currentPassword,
-          new_password: formData.newPassword,
-          confirm_password: formData.confirmNewPassword,
-        },
-        {},
-      );
+      const response = await axios.put(`${apiUrl}/api/users/change-password`, {
+        current_password: formData.currentPassword,
+        new_password: formData.newPassword,
+        confirm_password: formData.confirmNewPassword,
+      });
 
       setSuccess(response.data.message || "Password changed successfully!");
       setTimeout(() => setSuccess(""), 3000);

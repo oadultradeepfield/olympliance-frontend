@@ -9,6 +9,7 @@ interface UseThreadsProps {
   sort_by: string;
   page: number;
   per_page: number;
+  useCredentials: boolean;
 }
 
 export const useThreads = ({
@@ -16,6 +17,7 @@ export const useThreads = ({
   sort_by,
   page,
   per_page,
+  useCredentials,
 }: UseThreadsProps) => {
   const [threads, setThreads] = useState<(ThreadData & { user?: UserInfo })[]>(
     [],
@@ -29,7 +31,7 @@ export const useThreads = ({
 
         const threadsResponse = await axios.get(`${apiUrl}${apiEndpoint}`, {
           params: { sort_by, page, per_page },
-          withCredentials: false,
+          withCredentials: useCredentials,
         });
 
         const threads = Array.isArray(threadsResponse.data.threads)

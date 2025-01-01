@@ -44,7 +44,6 @@ export const useUserManagement = ({
     try {
       const userIdResponse = await axios.get(
         `${apiUrl}/api/users/get-id/${formData.username}`,
-        {},
       );
 
       const userId = userIdResponse.data.user_id;

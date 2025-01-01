@@ -13,11 +13,7 @@ export const useComment = () => {
         content: content,
       };
 
-      const response = await axios.post(
-        `${apiUrl}/api/comments`,
-        newComment,
-        {},
-      );
+      const response = await axios.post(`${apiUrl}/api/comments`, newComment);
 
       setSuccess(response.data.message);
       setTimeout(() => {

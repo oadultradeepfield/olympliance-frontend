@@ -8,11 +8,9 @@ export const useEditComment = () => {
 
   const handleEditComment = async (commentId: number, comment: string) => {
     try {
-      const response = await axios.put(
-        `${apiUrl}/api/comments/${commentId}`,
-        { content: comment },
-        {},
-      );
+      const response = await axios.put(`${apiUrl}/api/comments/${commentId}`, {
+        content: comment,
+      });
 
       setSuccess(response.data.message);
       setTimeout(() => {

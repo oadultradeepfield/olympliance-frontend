@@ -7,9 +7,7 @@ export const useDeleteThread = (category: string) => {
 
   const deleteThread = async (threadId: number) => {
     try {
-      await axios.delete(`${apiUrl}/api/threads/${threadId}`, {
-        withCredentials: false,
-      });
+      await axios.delete(`${apiUrl}/api/threads/${threadId}`);
 
       setTimeout(() => {
         navigate(`/${category}`);

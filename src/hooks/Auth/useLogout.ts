@@ -8,7 +8,7 @@ export const useLogout = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${apiUrl}/api/logout`, {});
+      await axios.post(`${apiUrl}/api/logout`);
       dispatch(logout());
     } catch (error) {
       console.error("Logout failed:", error);

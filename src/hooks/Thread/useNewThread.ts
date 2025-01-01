@@ -37,16 +37,12 @@ export const useNewThread = (
       .filter((tag) => tag !== "");
 
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/threads`,
-        {
-          title: formData.title,
-          content: formData.content,
-          category_id: category.id,
-          tags: tags,
-        },
-        {},
-      );
+      const response = await axios.post(`${apiUrl}/api/threads`, {
+        title: formData.title,
+        content: formData.content,
+        category_id: category.id,
+        tags: tags,
+      });
 
       setSuccess(response.data.message);
       setTimeout(() => {

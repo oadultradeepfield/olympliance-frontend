@@ -22,14 +22,10 @@ export const useChangeUsername = (): UseChangeUsernameResult => {
     setSuccess("");
 
     try {
-      const response = await axios.put(
-        `${apiUrl}/api/users/change-username`,
-        {
-          new_username: formData.newUsername,
-          confirm_username: formData.confirmUsername,
-        },
-        {},
-      );
+      const response = await axios.put(`${apiUrl}/api/users/change-username`, {
+        new_username: formData.newUsername,
+        confirm_username: formData.confirmUsername,
+      });
 
       setSuccess(response.data.message || "Username changed successfully!");
       setTimeout(() => setSuccess(""), 3000);

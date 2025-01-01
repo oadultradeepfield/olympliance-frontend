@@ -17,6 +17,7 @@ const FollowedThreadList: React.FC = () => {
     sort_by: sortBy,
     page: page,
     per_page: 10,
+    useCredentials: true,
   });
 
   return (

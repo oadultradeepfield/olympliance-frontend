@@ -25,6 +25,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
     sort_by: sortBy,
     page: page,
     per_page: 10,
+    useCredentials: false,
   });
 
   const filteredThreads = filterThreads(threads, searchTerm);

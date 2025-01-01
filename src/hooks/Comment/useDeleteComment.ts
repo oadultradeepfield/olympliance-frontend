@@ -4,7 +4,7 @@ import { apiUrl } from "../../data/apiUrl";
 export const useDeleteComment = () => {
   const deleteComment = async (commentId: number) => {
     try {
-      await axios.delete(`${apiUrl}/api/comments/${commentId}`, {});
+      await axios.delete(`${apiUrl}/api/comments/${commentId}`);
 
       setTimeout(() => {
         window.location.reload();

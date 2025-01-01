@@ -14,7 +14,7 @@ export const useReplyComment = () => {
         content: content,
       };
 
-      await axios.post(`${apiUrl}/api/comments`, newComment, {});
+      await axios.post(`${apiUrl}/api/comments`, newComment);
 
       setTimeout(() => {
         window.location.reload();

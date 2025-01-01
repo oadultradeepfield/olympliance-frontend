@@ -22,7 +22,6 @@ export const useEditThread = () => {
       const response = await axios.put(
         `${apiUrl}/api/threads/${threadId}`,
         newThread,
-        {},
       );
 
       setSuccess(response.data.message);
