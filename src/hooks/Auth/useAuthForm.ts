@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiUrl } from "../../data/apiUrl";
 import { setAuthState } from "../../slices/authSlice";
@@ -20,7 +20,6 @@ export const useAuthForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -47,8 +46,7 @@ export const useAuthForm = () => {
         }),
       );
 
-      const redirectPath = location.state?.from?.pathname || "/";
-      navigate(redirectPath);
+      navigate(-1);
     } catch (error: any) {
       setError(
         error.response?.data?.error ||
