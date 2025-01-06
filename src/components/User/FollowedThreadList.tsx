@@ -6,6 +6,7 @@ import Loading from "../../components/Common/Loading";
 import { useThreads } from "../../hooks/Thread/useThreads";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { categories } from "../../data/categoriesData";
 
 const FollowedThreadList: React.FC = () => {
   const userId = useSelector((state: RootState) => state.auth.user.user_id);
@@ -19,6 +20,11 @@ const FollowedThreadList: React.FC = () => {
     per_page: 10,
     useCredentials: true,
   });
+
+  const getCategoryTitleById = (id: number) => {
+    const category = categories.find((category) => category.id === id);
+    return category!.title;
+  };
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -36,7 +42,11 @@ const FollowedThreadList: React.FC = () => {
 
       {!loading &&
         threads.map((thread) => (
-          <ThreadCard key={thread.thread_id} thread={thread} categoryTitle="" />
+          <ThreadCard
+            key={thread.thread_id}
+            thread={thread}
+            categoryTitle={getCategoryTitleById(thread.category_id)}
+          />
         ))}
 
       <Pagination

@@ -3,6 +3,7 @@ export interface ThreadData {
   user_id: number;
   title: string;
   content: string;
+  category_id: number;
   stats: {
     followers: number;
     upvotes: number;
