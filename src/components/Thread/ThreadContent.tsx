@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import EditThreadButton from "./EditThreadButton";
 import { ThreadData } from "../../data/threadData";
 import { UserInfo } from "../../data/userData";
@@ -6,6 +7,7 @@ import { Badge } from "../../data/badgeData";
 import UserRoleBadge from "../Common/UserRoleBadge";
 import { MarkdownRenderer } from "../Common/MarkdownRenderer";
 import { Link } from "react-router-dom";
+import HidePlainTextButton from "../Common/HidePlainTextButton";
 
 interface ThreadContentProps {
   thread: (ThreadData & { user?: UserInfo }) | null;
@@ -18,6 +20,27 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
   category,
   badge,
 }) => {
+  const [showPlainText, setShowPlainText] = useState<boolean>(true);
+  const [filteredContent, setFilteredContent] = useState<string>(
+    thread?.content as string,
+  );
+
+  useEffect(() => {
+    if (!showPlainText) {
+      const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
+      const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
+
+      const codeMatches = filteredContent.match(codeRegex) || [];
+      const equationMatches = filteredContent.match(equationRegex) || [];
+
+      const combinedContent = [...codeMatches, ...equationMatches].join("\n\n");
+
+      setFilteredContent(combinedContent);
+    } else {
+      setFilteredContent(thread?.content || "");
+    }
+  }, [filteredContent, showPlainText]);
+
   if (!thread) {
     return null;
   }
@@ -26,6 +49,11 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     <>
       <div className="mb-2 flex items-center">
         <div className="mr-2 text-3xl font-bold">{thread.title}</div>
+        <HidePlainTextButton
+          size={6}
+          showPlainText={showPlainText}
+          setShowPlainText={setShowPlainText}
+        />
         <EditThreadButton thread={thread} />
         <DeleteThreadButton thread={thread} category={category} />
       </div>
@@ -64,7 +92,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
         </div>
       )}
       <div className="my-6 max-w-none">
-        <MarkdownRenderer content={thread.content} />
+        <MarkdownRenderer content={filteredContent} />
       </div>
     </>
   );

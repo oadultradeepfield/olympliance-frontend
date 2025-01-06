@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { CommentData } from "../../data/commentData";
 import { UserInfo } from "../../data/userData";
 import { Interaction } from "../../data/interactionData";
@@ -30,6 +31,27 @@ const CommentContent: React.FC<CommentContentProps> = ({
   userInteractions,
   setUserInteractions,
 }) => {
+  const [showPlainText, setShowPlainText] = useState<boolean>(true);
+  const [filteredContent, setFilteredContent] = useState<string>(
+    comment?.content as string,
+  );
+
+  useEffect(() => {
+    if (!showPlainText) {
+      const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
+      const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
+
+      const codeMatches = filteredContent.match(codeRegex) || [];
+      const equationMatches = filteredContent.match(equationRegex) || [];
+
+      const combinedContent = [...codeMatches, ...equationMatches].join("\n\n");
+
+      setFilteredContent(combinedContent);
+    } else {
+      setFilteredContent(comment?.content || "");
+    }
+  }, [filteredContent, showPlainText]);
+
   return (
     <div className="flex flex-grow flex-col">
       {parentComment && (
@@ -49,7 +71,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
           {comment.is_deleted ? (
             "[Comment deleted]"
           ) : (
-            <MarkdownRenderer className="-mt-2" content={comment.content} />
+            <MarkdownRenderer className="-mt-2" content={filteredContent} />
           )}
         </span>
       </div>
@@ -61,6 +83,8 @@ const CommentContent: React.FC<CommentContentProps> = ({
         setShouldRefetchInteractions={setShouldRefetchInteractions}
         userInteractions={userInteractions}
         setUserInteractions={setUserInteractions}
+        showPlainText={showPlainText}
+        setShowPlainText={setShowPlainText}
       />
     </div>
   );

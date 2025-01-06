@@ -9,6 +9,7 @@ import EditCommentButton from "./EditCommentButton";
 import DeleteCommentButton from "./DeleteCommentButton";
 import UserRoleBadge from "../Common/UserRoleBadge";
 import { Link } from "react-router-dom";
+import HidePlainTextButton from "../Common/HidePlainTextButton";
 
 interface CommentInteractionAndStatsProps {
   badge: Badge | null;
@@ -22,6 +23,8 @@ interface CommentInteractionAndStatsProps {
       Record<number, { upvoted: boolean; downvoted: boolean }>
     >
   >;
+  showPlainText: boolean;
+  setShowPlainText: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
@@ -32,6 +35,8 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
   setShouldRefetchInteractions,
   userInteractions,
   setUserInteractions,
+  showPlainText,
+  setShowPlainText,
 }) => {
   return (
     <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/75">
@@ -87,6 +92,13 @@ const CommentInteractionAndStats: React.FC<CommentInteractionAndStatsProps> = ({
       <UserRoleBadge roleId={comment?.user?.role_id ?? 0} />
       <EditCommentButton comment={comment} />
       <DeleteCommentButton comment={comment} />
+      {!comment.is_deleted && (
+        <HidePlainTextButton
+          size={4}
+          showPlainText={showPlainText}
+          setShowPlainText={setShowPlainText}
+        />
+      )}
     </div>
   );
 };
