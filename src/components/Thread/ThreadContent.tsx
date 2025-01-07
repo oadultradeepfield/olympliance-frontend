@@ -27,13 +27,47 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
 
   useEffect(() => {
     if (!showPlainText) {
-      const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
+      const codeBlockRegex = /```[\s\S]*?```/g;
+      const inlineCodeRegex = /`[^`]+`/g;
+
+      const content = thread?.content || "";
+      const codeMatches: string[] = [];
+      const codePositions: [number, number][] = [];
+
+      let match;
+      while ((match = codeBlockRegex.exec(content)) !== null) {
+        codeMatches.push(match[0]);
+        codePositions.push([match.index, match.index + match[0].length]);
+      }
+      while ((match = inlineCodeRegex.exec(content)) !== null) {
+        codeMatches.push(match[0]);
+        codePositions.push([match.index, match.index + match[0].length]);
+      }
+
+      const isInsideCodeBlock = (matchIndex: number, matchLength: number) => {
+        return codePositions.some(
+          ([start, end]) =>
+            matchIndex >= start && matchIndex + matchLength <= end,
+        );
+      };
+
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
       const imageRegex = /!\[([^\]]*)\]\(([^)]*)\)/g;
 
-      const codeMatches = thread?.content?.match(codeRegex) || [];
-      const equationMatches = thread?.content?.match(equationRegex) || [];
-      const imageMatches = thread?.content?.match(imageRegex) || [];
+      const equationMatches = [];
+      const imageMatches = [];
+
+      while ((match = equationRegex.exec(content)) !== null) {
+        if (!isInsideCodeBlock(match.index, match[0].length)) {
+          equationMatches.push(match[0]);
+        }
+      }
+
+      while ((match = imageRegex.exec(content)) !== null) {
+        if (!isInsideCodeBlock(match.index, match[0].length)) {
+          imageMatches.push(match[0]);
+        }
+      }
 
       const combinedContent = [
         ...codeMatches,
