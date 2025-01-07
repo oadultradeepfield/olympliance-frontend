@@ -29,7 +29,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     if (!showPlainText) {
       const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
-      const imageRegex = /!\[[^\]]*\]\([^)]*\)/g;
+      const imageRegex = /!\[([^\]]*)\]\(([^)\s]+(?:\s+"[^"]*")?)\)/g;
 
       const codeMatches = filteredContent.match(codeRegex) || [];
       const equationMatches = filteredContent.match(equationRegex) || [];
