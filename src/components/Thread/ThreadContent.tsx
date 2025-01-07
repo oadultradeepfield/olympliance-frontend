@@ -43,7 +43,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
 
       setFilteredContent(combinedContent);
     } else {
-      setFilteredContent(comment?.content || "");
+      setFilteredContent(thread?.content || "");
     }
   }, [filteredContent, showPlainText]);
 
