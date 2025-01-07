@@ -29,11 +29,11 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     if (!showPlainText) {
       const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
-      const imageRegex = /!\[([^\]]*)\]\(([^)\s]+(?:\s+"[^"]*")?)\)/g;
+      const imageRegex = /!\[([^\]]*)\]\(([^)]*)\)/g;
 
-      const codeMatches = filteredContent.match(codeRegex) || [];
-      const equationMatches = filteredContent.match(equationRegex) || [];
-      const imageMatches = filteredContent.match(imageRegex) || [];
+      const codeMatches = thread?.content?.match(codeRegex) || [];
+      const equationMatches = thread?.content?.match(equationRegex) || [];
+      const imageMatches = thread?.content?.match(imageRegex) || [];
 
       const combinedContent = [
         ...codeMatches,
@@ -45,7 +45,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
     } else {
       setFilteredContent(thread?.content || "");
     }
-  }, [filteredContent, showPlainText]);
+  }, [showPlainText, thread?.content]);
 
   if (!thread) {
     return null;

@@ -40,11 +40,11 @@ const CommentContent: React.FC<CommentContentProps> = ({
     if (!showPlainText) {
       const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
-      const imageRegex = /!\[([^\]]*)\]\(([^)\s]+(?:\s+"[^"]*")?)\)/g;
+      const imageRegex = /!\[([^\]]*)\]\(([^)]*)\)/g;
 
-      const codeMatches = filteredContent.match(codeRegex) || [];
-      const equationMatches = filteredContent.match(equationRegex) || [];
-      const imageMatches = filteredContent.match(imageRegex) || [];
+      const codeMatches = comment?.content?.match(codeRegex) || [];
+      const equationMatches = comment?.content?.match(equationRegex) || [];
+      const imageMatches = comment?.content?.match(imageRegex) || [];
 
       const combinedContent = [
         ...codeMatches,
@@ -56,7 +56,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
     } else {
       setFilteredContent(comment?.content || "");
     }
-  }, [filteredContent, showPlainText]);
+  }, [showPlainText, comment?.content]);
 
   return (
     <div className="flex flex-grow flex-col">
