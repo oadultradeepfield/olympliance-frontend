@@ -27,52 +27,20 @@ const ThreadContent: React.FC<ThreadContentProps> = ({
 
   useEffect(() => {
     if (!showPlainText) {
-      const codeBlockRegex = /```[\s\S]*?```/g;
-      const inlineCodeRegex = /`[^`]+`/g;
-
-      const content = thread?.content || "";
-      const codeMatches: string[] = [];
-      const codePositions: [number, number][] = [];
-
-      let match;
-      while ((match = codeBlockRegex.exec(content)) !== null) {
-        codeMatches.push(match[0]);
-        codePositions.push([match.index, match.index + match[0].length]);
-      }
-      while ((match = inlineCodeRegex.exec(content)) !== null) {
-        codeMatches.push(match[0]);
-        codePositions.push([match.index, match.index + match[0].length]);
-      }
-
-      const isInsideCodeBlock = (matchIndex: number, matchLength: number) => {
-        return codePositions.some(
-          ([start, end]) =>
-            matchIndex >= start && matchIndex + matchLength <= end,
-        );
-      };
-
+      const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
       const imageRegex = /!\[([^\]]*)\]\(([^)]*)\)/g;
 
-      const equationMatches = [];
-      const imageMatches = [];
+      const content = thread?.content || "";
 
-      while ((match = equationRegex.exec(content)) !== null) {
-        if (!isInsideCodeBlock(match.index, match[0].length)) {
-          equationMatches.push(match[0]);
-        }
-      }
+      const codeMatches = content.match(codeRegex) || [];
+      const contentWithoutCode = content.replace(codeRegex, "");
 
-      while ((match = imageRegex.exec(content)) !== null) {
-        if (!isInsideCodeBlock(match.index, match[0].length)) {
-          imageMatches.push(match[0]);
-        }
-      }
+      const equationMatches = contentWithoutCode.match(equationRegex) || [];
+      const imageMatches = contentWithoutCode.match(imageRegex) || [];
 
       const combinedContent = [
-        ...codeMatches,
-        ...equationMatches,
-        ...imageMatches,
+        ...new Set([...codeMatches, ...equationMatches, ...imageMatches]),
       ].join("\n\n");
 
       setFilteredContent(combinedContent);
