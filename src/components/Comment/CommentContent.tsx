@@ -40,11 +40,17 @@ const CommentContent: React.FC<CommentContentProps> = ({
     if (!showPlainText) {
       const codeRegex = /```[\s\S]*?```|`[^`]+`/g;
       const equationRegex = /\$\$[\s\S]*?\$\$|\$[^\$]+\$/g;
+      const imageRegex = /!\[[^\]]*\]\([^)]*\)/g;
 
       const codeMatches = filteredContent.match(codeRegex) || [];
       const equationMatches = filteredContent.match(equationRegex) || [];
+      const imageMatches = filteredContent.match(imageRegex) || [];
 
-      const combinedContent = [...codeMatches, ...equationMatches].join("\n\n");
+      const combinedContent = [
+        ...codeMatches,
+        ...equationMatches,
+        ...imageMatches,
+      ].join("\n\n");
 
       setFilteredContent(combinedContent);
     } else {
