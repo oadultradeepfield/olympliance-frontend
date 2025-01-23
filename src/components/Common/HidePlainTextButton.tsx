@@ -16,7 +16,10 @@ const HidePlainTextButton: React.FC<HidePlainTextButtonProps> = ({
   };
 
   return (
-    <div className="tooltip" data-tip="Hide Plain Text">
+    <div
+      className="tooltip"
+      data-tip={`${showPlainText ? "Hide Plain Text" : "Show Plain Text"}`}
+    >
       <button className="p-2" onClick={toggleShowPlainText}>
         {showPlainText ? (
           <EyeSlashIcon
