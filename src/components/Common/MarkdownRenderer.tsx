@@ -9,6 +9,7 @@ import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import "katex/dist/katex.min.css";
 import { Components } from "react-markdown";
 import { Link } from "react-router-dom";
+import { CheckIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 interface MarkdownProps {
   content: string;
@@ -110,7 +111,11 @@ export const MarkdownRenderer: React.FC<MarkdownProps> = ({
             onClick={handleCopy}
             className="absolute right-2 top-2 rounded bg-gray-600 px-2 py-1 text-sm text-white transition-all duration-150 ease-in-out hover:bg-gray-500"
           >
-            {isCopied ? "Copied" : "Copy"}
+            {isCopied ? (
+              <CheckIcon className="h-5 w-5" />
+            ) : (
+              <DocumentDuplicateIcon className="h-5 w-5" />
+            )}
           </button>
         </div>
       );
