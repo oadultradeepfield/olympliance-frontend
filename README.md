@@ -31,6 +31,7 @@
 1. Add push notifications for new comments and followed threads, plus a real-time user moderation dashboard with WebSocket.
 2. Make the forum a PWA for offline use and push notifications.
 3. Implement lightweight automatic moderation to detect and flag abusive language for review.
+4. Implement Redis as a caching layer alongside PostgreSQL to enable automated caching and achieve faster performance for read-heavy operations.
 
 ## 2. Table of Contents
 
